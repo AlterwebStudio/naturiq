@@ -82,10 +82,17 @@ class cartController extends Controller
 			]);
 		}
 
+		// Update logged user profile info
 		if($request->user()) {
-			$this->client->company()->update($request->company);
-			$this->client->address()->update($request->address);
-			$this->client->update($request->except('company','address','approve'));
+			$client = new Client;
+			$client = $client->get();
+
+			if($request->company) $client->company()->update($request->company);
+			else $client->company()->update(['name'=>'']);
+
+			$client->address()->update($request->address);
+
+			$client->update($request->except('company','address','approve'));
 		}
 
 		// Generate client with aditional connections

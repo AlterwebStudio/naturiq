@@ -38,16 +38,19 @@ function image_get_thumbnail($image, $type='thumb') {
  * @param $name
  * @return mixed
  */
-function deside($name) {
+function decide($name) {
 
 	if(old($name)) return old($name);
 
 	if(Auth::user() or session()->has('client_id')) {
 		$model = new \App\Client;
 		$client = $model->get();
-		list($table, $column) = explode('.', $name);
+		if(strstr($name,'.')) list($table, $column) = explode('.', $name);
+		else $column = $name;
 		if (isset($client->$column)) return $client->$column;
-		if (isset($client->$table->$column)) return $client->$table->$column;
+		if (isset($table) and isset($client->$table->$column)) return $client->$table->$column;
 	}
+
+	return null;
 
 }
