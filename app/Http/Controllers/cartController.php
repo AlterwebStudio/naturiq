@@ -15,6 +15,7 @@ class cartController extends Controller
 	 */
 	public function index()
 	{
+//		session()->forget('client_id');
 		return view('eshop.cart');
 	}
 
@@ -51,6 +52,7 @@ class cartController extends Controller
 	 */
 	public function register(Request $request)
 	{
+
 		// Validate personal data fields
 		$request->validate([
 			'client.name' => 'required|min:5',
@@ -78,6 +80,12 @@ class cartController extends Controller
 				'address.ico' => 'required|min:8|max:8',
 				'address.dic' => 'required|min:10',
 			]);
+		}
+
+		if($request->user()) {
+			$this->client->company()->update($request->company);
+			$this->client->address()->update($request->address);
+			$this->client->update($request->except('company','address','approve'));
 		}
 
 		// Generate client with aditional connections

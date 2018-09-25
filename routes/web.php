@@ -33,9 +33,8 @@ Route::group(['prefix'=>'eshop'], function () {
 	/** 1. SHOPPING CART **/
 
 	// Display Cart
-	Route::get('cart', function () {
-		return view('eshop.cart');
-	})->name('cart');
+	Route::get('cart', 'cartController@index')
+		->name('cart');
 
 	// Add item to Cart
 	Route::post('cart', 'cartController@addToCart');
@@ -138,6 +137,11 @@ Route::resource('profil', 'profileController')
 Route::get('prihlasenie', function () {
 	return view('eshop.login');
 })->name('login');
+
+// PRIHLASENIE UZIVATELA
+Route::get('zabudnute-heslo', function () {
+//	return view('eshop.login');
+})->name('login.forgotten_password');
 
 Route::post('prihlasenie', 'userController@authenticate');
 

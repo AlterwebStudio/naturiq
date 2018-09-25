@@ -41,6 +41,31 @@ class Client extends Model
 
 
 	/**
+	 * Get Logged User or Registered Client Eloquent Model
+	 * @return mixed
+	 */
+	public function get()
+	{
+		// User is logged in and authorized
+		if(\Auth::user()) {
+			$client = \Auth::user();
+			return $this->find($client->id);
+		}
+
+		// User is going to update his
+		// temporary profile
+		if(session()->has('client_id')) {
+			$client_id = session('client_id');
+			return $this->find($client_id);
+		}
+
+		// User is not authorized and hasn't
+		// created profile yet
+		return null;
+	}
+
+
+	/**
 	 * Generate new client with aditional connections in DB
 	 * @param Request $request
 	 * @return int
@@ -58,7 +83,10 @@ class Client extends Model
 		$client['address_id'] = $address_id;
 		$client['company_id'] = $company_id;
 
-		return DB::table('clients')->insertGetId($client);
+		$client_id = DB::table('clients')->insertGetId($client);
+		session('client_id', $client_id);
+
+		return $client_id;
 
 	}
 

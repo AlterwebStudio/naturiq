@@ -60,14 +60,14 @@
 				</li>
 
 				<li>
-					<a href="#" class="nav-link">
+					<a href="{{ route('login') }}" class="nav-link">
 						<i class="fas fa-user"></i>
 					</a>
 				</li>
 
 
 				<li>
-					<a href="/eshop/cart" class="nav-link numbered-index" data-number="{{ Cart::count() }}">
+					<a href="{{ route('cart') }}" class="nav-link numbered-index" data-number="{{ Cart::count() }}">
 						<i class="fas fa-shopping-bag"></i>
 					</a>
 				</li>

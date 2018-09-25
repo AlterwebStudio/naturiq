@@ -119,6 +119,7 @@
 
                     </div>
 
+                    @if (! session()->has('coupon') )
                     <div class="coupon col-12">
                         <form id="coupon-form" action="{{ route('cart.activate_coupon') }}" method="post" class="validate-form">
                             @csrf
@@ -133,6 +134,7 @@
                             </div>
                         </form>
                     </div>
+                    @endif
 
                 </div>
 
@@ -159,7 +161,7 @@
 
                                     <div class="form-group">
                                         <label for="name-surname">Meno a priezvisko*</label>
-                                        <input id="name-surname" name="client[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno a priezvisko" value="{{ old('client.name') }}">
+                                        <input id="name-surname" name="client[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno a priezvisko" value="{{ deside('client.name') }}">
                                         <div class="input_msg" data-id="name-surname"></div>
                                     </div>
 
@@ -168,14 +170,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="eml">E-mail*</label>
-                                                <input id="eml" name="client[email]" class="form-control required" type="eml" data-invalid-response="Prosíme vyplňte váš e-mail" value="{{ old('client.email') }}">
+                                                <input id="eml" name="client[email]" class="form-control required" type="eml" data-invalid-response="Prosíme vyplňte váš e-mail" value="{{ deside('client.email') }}">
                                                 <div class="input_msg" data-id="eml"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="tel">Telefónne číslo*</label>
-                                                <input id="tel" name="client[phone]" class="form-control required" type="tel" data-invalid-response="Prosíme vyplňte vaše telefónne číslo" value="{{ old('client.phone') }}">
+                                                <input id="tel" name="client[phone]" class="form-control required" type="tel" data-invalid-response="Prosíme vyplňte vaše telefónne číslo" value="{{ deside('client.phone') }}">
                                                 <div class="input_msg" data-id="tel"></div>
                                             </div>
                                         </div>
@@ -186,14 +188,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="city">Mesto*</label>
-                                                <input id="city" name="client[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('client.city') }}">
+                                                <input id="city" name="client[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ deside('client.city') }}">
                                                 <div class="input_msg" data-id="city"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="street">Ulica a popisné číslo*</label>
-                                                <input id="street" name="client[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('client.street') }}">
+                                                <input id="street" name="client[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ deside('client.street') }}">
                                                 <div class="input_msg" data-id="street"></div>
                                             </div>
                                         </div>
@@ -204,14 +206,14 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="psc">PSČ*</label>
-                                                <input id="psc" name="client[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ old('client.zip') }}">
+                                                <input id="psc" name="client[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ deside('client.zip') }}">
                                                 <div class="input_msg" data-id="psc"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="country">Krajina*</label>
-                                                <input id="country" name="client[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('client.country') }}">
+                                                <input id="country" name="client[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ deside('client.country') }}">
                                                 <div class="input_msg" data-id="country"></div>
                                             </div>
                                         </div>
@@ -244,14 +246,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-city">Mesto*</label>
-                                                <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('address.city') }}">
+                                                <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ deside('address.city') }}">
                                                 <div class="input_msg" data-id="delivery-city"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-street">Ulica a popisné číslo*</label>
-                                                <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('address.street') }}">
+                                                <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ deside('address.street') }}">
                                                 <div class="input_msg" data-id="delivery-street"></div>
                                             </div>
                                         </div>
@@ -262,14 +264,14 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="delivery-psc">PSČ*</label>
-                                                <input id="delivery-psc" name="address[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ old('address.zip') }}">
+                                                <input id="delivery-psc" name="address[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ deside('address.zip') }}">
                                                 <div class="input_msg" data-id="delivery-psc"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="delivery-country">Krajina</label>
-                                                <input id="delivery-country" name="address[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('address.country') }}">
+                                                <input id="delivery-country" name="address[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ deside('address.country') }}">
                                                 <div class="input_msg" data-id="delivery-country"></div>
                                             </div>
                                         </div>
@@ -302,7 +304,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="company-name">Názov spoločnosti*</label>
-                                                <input id="company-name" name="company[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ old('company.name') }}">
+                                                <input id="company-name" name="company[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ deside('company.name') }}">
                                                 <div class="input_msg" data-id="company-name"></div>
                                             </div>
                                         </div>
@@ -313,14 +315,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="company-id">IČO*</label>
-                                                <input id="company-id" name="company[ico]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte IČO spoločnosti" value="{{ old('company.ico') }}">
+                                                <input id="company-id" name="company[ico]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte IČO spoločnosti" value="{{ deside('company.ico') }}">
                                                 <div class="input_msg" data-id="company-id"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="company-tax-id">DIČ*</label>
-                                                <input id="company-tax-id" name="company[dic]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte DIČ spoločnosti" value="{{ old('company.dic') }}">
+                                                <input id="company-tax-id" name="company[dic]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte DIČ spoločnosti" value="{{ deside('company.dic') }}">
                                                 <div class="input_msg" data-id="company-tax-id"></div>
                                             </div>
                                         </div>
@@ -331,7 +333,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="company-vat-id">IČ DPH</label>
-                                                <input id="company-vat-id" name="company[icdph]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ old('company.icdph') }}">
+                                                <input id="company-vat-id" name="company[icdph]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ deside('company.icdph') }}">
                                                 <div class="input_msg" data-id="company-vat-id"></div>
                                             </div>
                                         </div>

@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'clients',
         ],
 
         'api' => [
@@ -65,6 +65,12 @@ return [
     */
 
     'providers' => [
+
+        'clients' => [
+            'driver' => 'database',
+            'table' => 'clients',
+        ],
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
