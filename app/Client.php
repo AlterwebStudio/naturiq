@@ -23,7 +23,7 @@ class Client extends Model
 		'street',
 		'zip',
 		'city',
-		'country_id',
+		'country',
 		'phone',
 		'email',
 		'password',
@@ -54,10 +54,11 @@ class Client extends Model
 		$address_id = DB::table('addresses')->insertGetId($request->address);
 		$company_id = DB::table('companies')->insertGetId($request->company);
 
-		$request->client['address_id'] = $address_id;
-		$request->client['company_id'] = $company_id;
+		$client = $request->client;
+		$client['address_id'] = $address_id;
+		$client['company_id'] = $company_id;
 
-		return DB::table('clients')->insertGetId($request->client);
+		return DB::table('clients')->insertGetId($client);
 
 	}
 

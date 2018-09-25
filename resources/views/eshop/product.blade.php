@@ -90,7 +90,7 @@
 							Gramáž
 						</span>
 
-                    <form id="prodcut" action="{{ route('cart') }}" method="post">
+                    <form id="product" action="{{ route('cart') }}" method="post">
 
                         @csrf
 

@@ -10,15 +10,16 @@ class Coupon extends Model
 
 	/**
 	 * @desc Get Coupon Eloquent Model by Code
+	 * @param null $code
 	 * @return mixed
 	 */
-	public static function get()
+	public static function get($code=null)
 	{
 		if(session()->has('coupon')) {
 			$code = session('coupon');
-			return self::where('code', '=', $code)->first();
 		}
-		return false;
+		if(empty($code)) return null;
+		return self::where('code', '=', $code)->first();
 	}
 
 	/**

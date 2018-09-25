@@ -67,7 +67,7 @@ Route::group(['prefix'=>'eshop'], function () {
 		->name('cart.remove_coupon');
 
 	// Execute Client Registration Form
-	Route::post('cart', 'cartController@register')
+	Route::post('cart/register', 'cartController@register')
 		->name('cart.register');
 
 

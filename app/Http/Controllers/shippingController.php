@@ -41,7 +41,7 @@ class shippingController extends Controller
 		if(Auth::check())
 		{
 			$client_id = Auth::user()->id;
-			$order = $order->updateOrCreate(
+			$order->updateOrCreate(
 				['client_id' => $client_id, 'status_id' => 0],
 				[
 					'shipping_id' => $request->shipping_id,
