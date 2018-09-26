@@ -47,10 +47,33 @@ function decide($name) {
 		$client = $model->get();
 		if(strstr($name,'.')) list($table, $column) = explode('.', $name);
 		else $column = $name;
-		if (isset($client->$column)) return $client->$column;
 		if (isset($table) and isset($client->$table->$column)) return $client->$table->$column;
+		if (isset($client->$column)) return $client->$column;
 	}
 
 	return null;
 
+}
+
+
+/**
+ * @desc Returns true if variable has no empty value
+ * @param $variable
+ * @return boolean
+ */
+function is_set($variable) {
+	if(is_array($variable)) {
+		if(count($variable) > 0) return true;
+	}
+	else {
+		if(isset($variable)
+			and $variable != ''
+			and $variable != 'NULL'
+			and $variable != null
+			and empty($variable) == false
+			and strlen($variable) > 0) {
+			return true;
+		}
+	}
+	return false;
 }

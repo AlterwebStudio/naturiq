@@ -31,6 +31,11 @@
 
                             @if (Auth::check())
                                 <p class="alert alert-secondary text-center mt-5">Autorizácia prebehla v poriadku, boli ste prihlásený!<br/><b>Prajeme vám príjemný nákup.</b></p>
+                                <div class="form-group mt-4 text-right" >
+                                    <div class="row">
+                                        <div class="col-md-auto ml-auto order-1 order-md-2 mb-3 mb-md-0 text-right"><a href="{{ route('eshop.logout') }}" class="btn btn-orange w-100">Odhlásiť z účtu</a></div>
+                                    </div>
+                                </div>
                             @else
 
                             <p class="text-center m-0">

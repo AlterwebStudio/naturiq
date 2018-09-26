@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 class Client extends Model
 {
 
-	public $timestamps = false;
-
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -27,6 +25,8 @@ class Client extends Model
 		'phone',
 		'email',
 		'password',
+		'type',
+		'temp'
 	];
 
 

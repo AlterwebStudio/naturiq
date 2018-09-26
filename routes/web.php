@@ -149,4 +149,4 @@ Route::post('prihlasenie', 'userController@authenticate');
 Route::get('odhlasenie', function () {
 	Auth::logout();
 	return redirect('prihlasenie');
-});
+})->name('eshop.logout');

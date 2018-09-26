@@ -225,7 +225,7 @@
 
 
                                 <!-- INA DORUCOVACIA -->
-                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#dorucovacia" @if (decide('address')) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="dorucovacia">
+                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#dorucovacia" @if (is_set(decide('address.street'))) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="dorucovacia">
                                     <div class="col-auto">
                                         <h3 class="form-header__name">
                                             INÁ DORUČOVACIA ADRESA
@@ -239,22 +239,22 @@
                                     </div>
                                 </div>
 
-                                <div class="collapse @if (decide('address')) show @endif" id="dorucovacia">
+                                <div class="collapse @if (is_set(decide('address.street'))) show @endif" id="dorucovacia">
 
                                     <!-- Mesto + ulica -->
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="delivery-city">Mesto*</label>
-                                                <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.city') }}">
-                                                <div class="input_msg" data-id="delivery-city"></div>
+                                                <label for="delivery-street">Ulica a popisné číslo*</label>
+                                                <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.street') }}">
+                                                <div class="input_msg" data-id="delivery-street"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="delivery-street">Ulica a popisné číslo*</label>
-                                                <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.street') }}">
-                                                <div class="input_msg" data-id="delivery-street"></div>
+                                                <label for="delivery-city">Mesto*</label>
+                                                <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.city') }}">
+                                                <div class="input_msg" data-id="delivery-city"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -282,7 +282,7 @@
                                 <!-- KONIEC SEKCIE FORMULARU -->
 
                                 <!-- Objednavka na firmu -->
-                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#company" @if (decide('company')) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="company">
+                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#company" @if (is_set(decide('company.name'))) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="company">
                                     <div class="col-auto">
                                         <h3 class="form-header__name">
                                             Objednávka na firmu
@@ -296,7 +296,7 @@
                                     </div>
                                 </div>
 
-                                <div class="collapse @if (decide('company')) show @endif" id="company">
+                                <div class="collapse @if (is_set(decide('company.name'))) show @endif" id="company">
 
 
                                     <!-- MENO SPOLOČNOSTI -->
