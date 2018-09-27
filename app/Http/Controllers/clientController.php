@@ -40,8 +40,8 @@ class clientController extends Controller
 		if($request->company) {
 			$request->validate([
 				'company.name' => 'required',
-				'address.ico' => 'required|min:8|max:8',
-				'address.dic' => 'required|min:10',
+				'company.ico' => 'required|min:8|max:8',
+				'company.dic' => 'required|min:10',
 			]);
 		}
 
@@ -87,9 +87,7 @@ class clientController extends Controller
 			'country'=>'',
 		]);
 
-		$client->update($request->except('company','address'));
-
-		dd($request->except('company','address'));
+		$client->update($request->input('client'));
 
 		return true;
 	}}

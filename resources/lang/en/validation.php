@@ -93,7 +93,7 @@ return [
     'numeric'              => ':attribute môže obsahovať iba čísla bez medzier.',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
-    'required'             => 'The :attribute field is required.',
+    'required'             => 'Vyplňte prosím povinnú položku :attribute.',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_with'        => 'The :attribute field is required when :values is present.',
@@ -149,6 +149,16 @@ return [
     	'client.zip' => 'PSČ',
     	'client.city' => 'Mesto',
     	'client.country' => 'Krajina',
+
+		'address.street' => 'Ulica doručovacej adresy',
+		'address.zip' => 'PSČ doručovacej adresy',
+		'address.city' => 'Mesto doručovacej adresy',
+		'address.country' => 'Krajina doručovacej adresy',
+
+		'company.name' => 'Názov firmy',
+		'company.ico' => 'IČO',
+		'company.dic' => 'DIČ',
+		'company.icdph' => 'IČ DPH',
 	],
 
 ];

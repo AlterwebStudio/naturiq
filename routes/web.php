@@ -69,6 +69,11 @@ Route::group(['prefix'=>'eshop'], function () {
 	Route::post('cart/register', 'cartController@register')
 		->name('cart.register');
 
+	// Execute Client Registration Form
+	Route::get('cart/register', function() {
+		return redirect(route('cart'));
+	});
+
 
 
 	/** 2. SHIPPING AND PAYMENT METHODS **/
@@ -77,9 +82,21 @@ Route::group(['prefix'=>'eshop'], function () {
 	Route::get('doprava-a-platba', 'shippingController@index')
 		->name('eshop.shipping_payment');
 
+	// Store selected methods
+	Route::post('doprava-a-platba', 'shippingController@store')
+		->name('eshop.shipping_payment');
+
 
 
 	/** 3. CONFIRMATION AND PAYMENT **/
+
+	// Remove Discount Coupon
+	Route::get('sumarizacia', 'confirmationController@index')
+		->name('eshop.confirmation');
+
+	// Remove Discount Coupon
+	Route::post('sumarizacia', 'confirmationController@store')
+		->name('eshop.confirmation');
 
 
 
