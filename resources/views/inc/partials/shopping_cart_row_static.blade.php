@@ -1,37 +1,42 @@
-<div class="shopping-cart__row">
+@if (isset($item))
+
+  <div class="shopping-cart__row">
 
   <!-- OBRAZOK PRODUKTU -->
   <div class="col-12 text-center col-sm-2 pr-sm-4  mb-3 mb-sm-0">
-    <a href="product.php" class="image text-center">
-      <img src="/images/produkty/1.png" alt="">
+    <a href="{{ route('product_detail', [App\Product::get_category_slug($item->id),str_slug($item->name),$item->id]) }}" class="image text-center">
+      <img src="{{ image_get_thumbnail(asset('/storage/'.$item->options->image),'small') }}" alt="{{ $item->name }}">
     </a>
   </div>
 
   <!-- NAZOV PRODUKTU -->
   <div class="col-sm-4 text-center text-sm-left mb-3 mb-sm-0">
     <div class="name">
-      <a class="heading" href="product.php">
-          Arónia chokeberries
+      <a class="heading" href="{{ route('product_detail', [App\Product::get_category_slug($item->id),str_slug($item->name),$item->id]) }}">
+        {{ $item->name }}
       </a>
-      <div class="variant">
-        250g
-      </div>
+      @if ($item->options->has('weight'))
+        <div class="variant">
+          {{ $item->options->weight }}
+        </div>
+      @endif
     </div>
   </div>
 
   <!-- POCET -->
   <div class="col-sm mb-3 mb-sm-0 text-center">
-    <span class="text-sm">2ks</span>
+    <span class="text-sm">{{ $item->qty }}ks</span>
   </div>
 
   <div class="col-sm prices mb-3 mb-sm-0 text-sm-right text-center">
     <div class="price_total">
-      12.40 €
+      {{ number_format($item->subtotal,2, ',', ' ') }} &euro;
     </div>
     <div class="price_unit">
-      6.20 € / ks
+      {{ number_format($item->price,2, ',', ' ') }} &euro; / ks
     </div>
   </div>
 
 
 </div>
+@endif

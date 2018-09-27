@@ -159,6 +159,9 @@ return [
 		'company.ico' => 'IČO',
 		'company.dic' => 'DIČ',
 		'company.icdph' => 'IČ DPH',
+
+		'shipping_id' => 'DOPRAVA',
+		'payment_id' => 'PLATBA',
 	],
 
 ];

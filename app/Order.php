@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use \Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Order extends Model
@@ -11,9 +11,10 @@ class Order extends Model
 	/**
 	 * @var Order ID
 	 */
-	public $id = null;
+//	public $id;
 
     public $fillable = [
+    	'id',
     	'client_id',
     	'shipping_id',
     	'payment_id',
@@ -53,11 +54,63 @@ class Order extends Model
 
 
 	/**
+	 * @desc Restore order (Just in case user logged back after session expired)
+	 * @param $order_id
+	 */
+	public function restore($order_id)
+	{
+		Cart::restore($order_id);
+	}
+
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function status()
+	{
+		return $this->belongsTo('App\Status');
+	}
+
+
+	public function statuses() {
+		return Status::all();
+	}
+
+
+	/**
+	 * @param $stamp
+	 * @return false|string
+	 */
+	public function getCreatedAtAttribute($stamp)
+	{
+		return date('d.n.Y, H:i:s', strtotime($stamp));
+	}
+
+
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function payment()
 	{
 		return $this->belongsTo('App\Payment');
+	}
+
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function client()
+	{
+		return $this->belongsTo('App\Client');
+	}
+
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
+	 */
+	public function items()
+	{
+		return $this->hasOne('App\OrderItems','identifier');
 	}
 
 
@@ -68,8 +121,18 @@ class Order extends Model
 	 */
 	public function total()
 	{
-		$this->amount = floatval(Cart::total());
-		return ($this->amount + $this->shipping->price + $this->payment->price);
+		$amount = floatval(str_replace(",", ".", Cart::subtotal()));
+		return ($amount + floatval($this->shipping->price) + floatval($this->payment->price));
+	}
+
+
+	/**
+	 * @param $price
+	 * @return string
+	 */
+	public function getTotalPriceAttribute($price) {
+		setlocale(LC_MONETARY, 'de_DE');
+		return money_format('%!n €', $price);
 	}
 
 
@@ -85,12 +148,13 @@ class Order extends Model
     	if(Auth::check())
     	{
 			$client_id = Auth::user()->id;
-			$order = $this->where([
-				'client_id' => $client_id,
-				'status_id' => '0'
-			])->get()->first()->toArray();
-			$this->id = $order['id'];
-			return $order['id'];
+			$order = $this->where('client_id',$client_id)->where('status_id','0')->first();
+
+			if($order and isset($order->id)) {
+				$this->id = $order->id;
+				return $order->id;
+			}
+			return null;
 		}
 		return false;
 	}

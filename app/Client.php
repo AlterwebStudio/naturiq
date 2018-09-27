@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,10 +47,10 @@ class Client extends Model
 	 */
 	public function get()
 	{
+
 		// User is logged in and authorized
-		if(\Auth::user()) {
-			$client = \Auth::user();
-			return $this->find($client->id);
+		if(Auth::user()) {
+			return $this->find(Auth::user()->id);
 		}
 
 		// User is going to update his

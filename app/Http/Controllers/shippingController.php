@@ -51,7 +51,7 @@ class shippingController extends Controller
 				]
 			);
 
-			return redirect('/sumarizacia');
+			return redirect(route('eshop.confirmation'));
 		}
 
 	}

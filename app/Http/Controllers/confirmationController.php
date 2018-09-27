@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Coupon;
+use \Auth;
 use App\Client;
 use App\Order;
 use App\Mail\OrderNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -19,25 +22,61 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class confirmationController extends Controller
 {
 
+	private $order = null;
+	private $data = null;
+
+	/**
+	 * confirmationController constructor.
+	 */
+	public function set()
+	{
+		$Order = new Order;
+		$order = $Order->get();
+
+		$this->order_id = $Order->id;
+		$this->order = $order;
+
+		if($order) {
+			$data = [];
+			$data['order'] = $order;
+			$data['shipping'] = $order->shipping;
+			$data['payment'] = $order->payment;
+			$data['total'] = $order->total();
+			$this->set_data($data);
+		}
+	}
+
+	/**
+	 * @desc Set Order Data
+	 * @param $data
+	 */
+	public function set_data($data) {
+		$this->data = $data;
+	}
+
+	/**
+	 * @desc Get Order Data
+	 * @return null
+	 */
+	public function get_data() {
+		return $this->data;
+	}
+
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function index()
 	{
-		$data = [];
+		$this->set();
 
-		$Order = new Order;
-		$order = $Order->get();
-
-		$Client = new Client;
-		$client = $Client->get();
-
-		if(!$order or !$client) $data['warning'] = 'Objednávka neexistuje, <a href="/prihlasenie">prihláste sa prosím</a>.';
-
-		return view('eshop.confirmation')->with([
-			'client' => $client,
-			'order' => $order,
-		]);
+		if($this->data) {
+			return view('eshop.confirmation')
+				->with('data',$this->data);
+		}
+		else {
+			return view('eshop.confirmation')
+				->with('warning', 'Objednávka neexistuje. Vráťte sa späť na <a href="/eshop">E-shop</a>.');
+		}
 	}
 
 	/**
@@ -46,10 +85,11 @@ class confirmationController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$this->set();
 
-		if($request->session()->exists('client_id') and null != $this->order) {
+		if((Auth::check() or $request->session()->exists('client_id')) and $this->order and $this->data) {
 
-			Cart::store($this->order_id);
+			Cart::store($this->order_id); // todo: doriešiť celkovú cenu objednávky v maili - vyzerá že nezohľadňuje zľavové kupóny
 
 			//$this->payment_gopay();
 
@@ -59,7 +99,7 @@ class confirmationController extends Controller
 			$this->enclose();
 			$this->clear();
 
-			return view('eshop.greetings')->with([
+			return redirect(route('eshop.greetings'))->with([
 				'order' => $this->data
 			]);
 
@@ -143,6 +183,7 @@ class confirmationController extends Controller
 
 	/**
 	 * Notify client and customer about order placement
+	 * @param $email_address
 	 */
 	private function notify($email_address) {
 		Mail::to($email_address)->send( new OrderNotification($this->data) );
@@ -160,7 +201,8 @@ class confirmationController extends Controller
 	 */
 	public function clear()
 	{
-		Cart::destroy();
+		\Cart::destroy();
+		(new Coupon)->remove();
 	}
 
 }

@@ -33,29 +33,30 @@ Route::group(['prefix'=>'eshop'], function () {
 	/** 1. SHOPPING CART **/
 
 	// Display Cart
-	Route::get('cart', 'cartController@index')
+	Route::get('kosik', 'cartController@index')
 		->name('cart');
 
 	// Add item to Cart
-	Route::post('cart', 'cartController@addToCart');
+	Route::post('kosik', 'cartController@addToCart');
 
 	// Remove Item from the Cart
-	Route::get('cart/remove/{rowId}', function ($rowId) {
+	Route::get('kosik/remove/{rowId}', function ($rowId) {
 		Cart::remove($rowId);
 		return view('eshop.cart');
 	})->name('cart.remove_item');
 
 	// Update Cart Item Quantity
-	Route::post('cart/update/{rowId}', function ($rowId) {
+	Route::post('kosik/update/{rowId}', function ($rowId) {
 		Cart::update($rowId,request('quantity'));
 		return redirect()->back();
 	})->name('cart.update_quantity');
 
 	// Empty Cart
-	Route::get('cart/empty', function () {
+	Route::get('kosik/empty', function () {
 		Cart::destroy();
 		return view('eshop.cart');
 	});
+
 
 	// Activate Discount Coupon
 	Route::post('cart/coupon/activate', 'CouponController@activate')
@@ -64,6 +65,7 @@ Route::group(['prefix'=>'eshop'], function () {
 	// Remove Discount Coupon
 	Route::get('cart/coupon/remove', 'CouponController@remove')
 		->name('cart.remove_coupon');
+
 
 	// Execute Client Registration Form
 	Route::post('cart/register', 'cartController@register')
@@ -83,20 +85,28 @@ Route::group(['prefix'=>'eshop'], function () {
 		->name('eshop.shipping_payment');
 
 	// Store selected methods
-	Route::post('doprava-a-platba', 'shippingController@store')
-		->name('eshop.shipping_payment');
+	Route::post('doprava-a-platba', 'shippingController@store');
 
 
 
 	/** 3. CONFIRMATION AND PAYMENT **/
 
-	// Remove Discount Coupon
-	Route::get('sumarizacia', 'confirmationController@index')
+	// View Order and Client Data
+	Route::get('sumarizacia-objednavky', 'confirmationController@index')
+		->middleware('verify.data')
 		->name('eshop.confirmation');
 
-	// Remove Discount Coupon
-	Route::post('sumarizacia', 'confirmationController@store')
-		->name('eshop.confirmation');
+	// Submit the Order and generate Payment method Gateway if was requested
+	Route::post('sumarizacia-objednavky', 'confirmationController@store')
+		->middleware('verify.data');
+
+
+
+	/** 4. GREETINGS PAGE **/
+
+	Route::get('dakujeme-za-objednavku', function() {
+		return view('eshop.greetings');
+	})->name('eshop.greetings');
 
 
 
@@ -123,47 +133,44 @@ Route::group(['prefix'=>'eshop'], function () {
 		->where('product_id','[0-9-]+')
 		->name('product_detail');
 
+
+
+	/** LOGIN / LOGOUT / REGISTRATION / AUTHORIZATION **/
+
+	// Registration form
+	Route::get('registracia-zakaznika', function() {
+		if(Auth::check()) return redirect('/dodacie-udaje');
+		else return view('eshop.register');
+	});
+
+	// Submit registration form
+	Route::post('registracia', 'registerController@store');
+
+
+	// Update User profile
+	Route::resource('profil', 'profileController')
+		->only('index','store');
+
+
+	// Login User form
+	Route::get('prihlasenie-uzivatela', function () {
+		return view('eshop.login');
+	})->name('login');
+
+	// Login User
+	Route::post('prihlasenie', 'userController@authenticate');
+
+
+	// Forgotten password
+	Route::get('zabudnute-heslo', function () {
+	//	return view('eshop.login');
+	})->name('login.forgotten_password');
+
+
+	// Logout User
+	Route::get('odhlasenie', function () {
+		Auth::logout();
+		return redirect('prihlasenie');
+	})->name('eshop.logout');
+
 });
-
-
-
-// REGISTRACIA ZAKAZNIKA
-Route::get('registracia', function() {
-	if(Auth::check()) return redirect('/dodacie-udaje');
-	else return view('eshop.register');
-});
-Route::post('registracia', 'registerController@store');
-
-// DODACIE UDAJE
-Route::resource('dodacie-udaje', 'deliveryController')
-	->only('index','store');
-
-// DOPRAVA A PLATBA
-Route::resource('doprava-a-platba', 'shippingController')
-	->only('index','store');
-
-// SUMARIZACIA
-Route::resource('sumarizacia', 'confirmationController')
-	->only('index','store');
-
-// PROFIL UZIVATELA
-Route::resource('profil', 'profileController')
-	->only('index','store');
-
-// PRIHLASENIE UZIVATELA
-Route::get('prihlasenie', function () {
-	return view('eshop.login');
-})->name('login');
-
-// PRIHLASENIE UZIVATELA
-Route::get('zabudnute-heslo', function () {
-//	return view('eshop.login');
-})->name('login.forgotten_password');
-
-Route::post('prihlasenie', 'userController@authenticate');
-
-// ODHLASENIE UZIVATELA
-Route::get('odhlasenie', function () {
-	Auth::logout();
-	return redirect('prihlasenie');
-})->name('eshop.logout');
