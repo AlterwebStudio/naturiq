@@ -42,6 +42,17 @@ class Client extends Model
 
 
 	/**
+	 * Client has model assigned or User is logged in
+	 * @return bool
+	 */
+	public static function exists()
+	{
+		if(Auth::check() or session()->has('client')) return true;
+		return false;
+	}
+
+
+	/**
 	 * Get Logged User or Registered Client Eloquent Model
 	 * @return mixed
 	 */
@@ -49,8 +60,14 @@ class Client extends Model
 	{
 
 		// User is logged in and authorized
-		if(Auth::user()) {
-			return $this->find(Auth::user()->id);
+		if(Auth::check()) {
+			return Auth::user();
+		}
+
+		// User has own model eloquent generated
+		// and stored in the session
+		if(session()->has('client')) {
+			return session('client');
 		}
 
 		// User is going to update his
@@ -68,6 +85,7 @@ class Client extends Model
 
 	/**
 	 * Generate new client with aditional connections in DB
+	 * Store generated Client model into the session
 	 * @param Request $request
 	 * @return int
 	 */
@@ -85,7 +103,7 @@ class Client extends Model
 		$client['company_id'] = $company_id;
 
 		$client_id = DB::table('clients')->insertGetId($client);
-		session('client_id', $client_id);
+		session(['client'=>$this->find($client_id)]);
 
 		return $client_id;
 

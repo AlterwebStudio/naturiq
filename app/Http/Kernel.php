@@ -59,6 +59,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-		'verify.data' => \App\Http\Middleware\VerifyDataAccess::class,
+		'verify.client' => \App\Http\Middleware\ClientExists::class,
+		'verify.order' => \App\Http\Middleware\OrderExists::class,
+		'verify.cart' => \App\Http\Middleware\ItemsInCart::class,
     ];
 }

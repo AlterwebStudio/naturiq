@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Order;
 use App\Payment;
 use App\Shipping;
@@ -38,11 +39,12 @@ class shippingController extends Controller
 			'payment_id' => 'required'
 		]);
 
-		if(Auth::check())
+		if(Client::exists())
 		{
-			$client_id = Auth::user()->id;
+			$Client = new Client;
+			$client = $Client->get();
 			$order->updateOrCreate(
-				['client_id' => $client_id, 'status_id' => 0],
+				['client_id' => $client->id, 'status_id' => 0],
 				[
 					'shipping_id' => $request->shipping_id,
 					'shipping_price' => Shipping::find($request->payment_id)->price,
@@ -50,6 +52,9 @@ class shippingController extends Controller
 					'payment_price' => Payment::find($request->payment_id)->price,
 				]
 			);
+
+			// Store the order in the session
+			session(['order'=>$order]);
 
 			return redirect(route('eshop.confirmation'));
 		}

@@ -19,7 +19,7 @@
 
         <p class="alert alert-secondary mb-5">
             Ďakujeme za vašu objednávku na NATURIQ.SK.<br/>
-            Číslo vašej objednávky: <b>{{ $data['order']->number }}</b>
+            Číslo vašej objednávky: <b>{{ $data->number }}</b>
         </p>
 
         <table class="table table-striped mb-5">
@@ -64,7 +64,7 @@
             <tr class="font-weight-bold">
                 <td colspan="2">&nbsp;</td>
                 <td>Celkom k úhrade</td>
-                <td class="table-primary"><big>{{ number_format($data['total'],2, ',', ' ') }} &euro;</big></td>
+                <td class="table-primary"><big>{{ $data->total_price }}</big></td>
             </tr>
             </tfoot>
         </table>
@@ -78,27 +78,27 @@
                 <td class="col-3" style="width:25%"><h5 class="font-weight-bold">Kontaktné údaje</h5></td>
             </tr>
             <tr>
-                <td class="table-secondary">{{ $data['order']->client->name }}</td>
-                <td>{{ $data['order']->client->company->name }}</td>
-                <td class="table-secondary">{{ $data['order']->client->address->street }}</td>
-                <td>{{ $data['order']->client->phone }}</td>
+                <td class="table-secondary">{{ $data->client->name }}</td>
+                <td>{{ $data->client->company->name }}</td>
+                <td class="table-secondary">{{ $data->client->address->street }}</td>
+                <td>{{ $data->client->phone }}</td>
             </tr>
             <tr>
-                <td class="table-secondary">{{ $data['order']->client->street }}</td>
-                <td>IČO: {{ $data['order']->client->company->ico }}</td>
-                <td class="table-secondary">{{ $data['order']->client->address->zip }}</td>
-                <td>{{ $data['order']->client->email }}</td>
+                <td class="table-secondary">{{ $data->client->street }}</td>
+                <td>IČO: {{ $data->client->company->ico }}</td>
+                <td class="table-secondary">{{ $data->client->address->zip }}</td>
+                <td>{{ $data->client->email }}</td>
             </tr>
             <tr>
-                <td class="table-secondary">{{ $data['order']->client->zip }}</td>
-                <td>DIČ: {{ $data['order']->client->company->dic }}</td>
-                <td class="table-secondary">{{ $data['order']->client->address->city }}</td>
+                <td class="table-secondary">{{ $data->client->zip }}</td>
+                <td>DIČ: {{ $data->client->company->dic }}</td>
+                <td class="table-secondary">{{ $data->client->address->city }}</td>
                 <td></td>
             </tr>
             <tr>
-                <td class="table-secondary">{{ $data['order']->client->city }}</td>
-                <td>IČ DPH: {{ $data['order']->client->company->icdph }}</td>
-                <td class="table-secondary">{{ $data['order']->client->address->country }}</td>
+                <td class="table-secondary">{{ $data->client->city }}</td>
+                <td>IČ DPH: {{ $data->client->company->icdph }}</td>
+                <td class="table-secondary">{{ $data->client->address->country }}</td>
                 <td></td>
             </tr>
         </table>

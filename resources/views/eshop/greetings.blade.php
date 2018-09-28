@@ -26,9 +26,9 @@
 
                         <h1 class="title text-center mt-5 mb-5">Ďakujeme za vašu objednávku!</h1>
 
-                        <p class="alert bg-light lh-15">Práve sme vám odoslali e-mail s potvrdením vašej objednávky a všetkými potrebnými informáciami. Číslo vašej objednávky: <b>{{ $order['order']->number }}</b></p>
+                        <p class="alert bg-light lh-15">Práve sme vám odoslali e-mail s potvrdením vašej objednávky a všetkými potrebnými informáciami. Číslo vašej objednávky: <b>{{ $dataset['order']->number }}</b></p>
 
-                        @if (isset($order))
+                        @if (isset($dataset['order']))
 
                             @if (Cart::count() > 0)
                             <table class="table mb-5">
@@ -69,27 +69,27 @@
                                     <td class="col-3"><h5 class="font-weight-bold">Kontaktné údaje</h5></td>
                                 </tr>
                                 <tr>
-                                    <td class="bg-light">{{ $order['order']->client->name }}</td>
-                                    <td>{{ $order['order']->client->company->name }}</td>
-                                    <td class="bg-light">{{ $order['order']->client->address->street }}</td>
-                                    <td>{{ $order['order']->client->phone }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->name }}</td>
+                                    <td>{{ $dataset['order']->client->company->name }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->address->street }}</td>
+                                    <td>{{ $dataset['order']->client->phone }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="bg-light">{{ $order['order']->client->street }}</td>
-                                    <td>IČO: {{ $order['order']->client->company->ico }}</td>
-                                    <td class="bg-light">{{ $order['order']->client->address->zip }}</td>
-                                    <td>{{ $order['order']->client->email }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->street }}</td>
+                                    <td>IČO: {{ $dataset['order']->client->company->ico }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->address->zip }}</td>
+                                    <td>{{ $dataset['order']->client->email }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="bg-light">{{ $order['order']->client->zip }}</td>
-                                    <td>DIČ: {{ $order['order']->client->company->dic }}</td>
-                                    <td class="bg-light">{{ $order['order']->client->address->city }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->zip }}</td>
+                                    <td>DIČ: {{ $dataset['order']->client->company->dic }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->address->city }}</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td class="bg-light">{{ $order['order']->client->city }}</td>
-                                    <td>IČ DPH: {{ $order['order']->client->company->icdph }}</td>
-                                    <td class="bg-light">{{ $order['order']->client->address->country }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->city }}</td>
+                                    <td>IČ DPH: {{ $dataset['order']->client->company->icdph }}</td>
+                                    <td class="bg-light">{{ $dataset['order']->client->address->country }}</td>
                                     <td></td>
                                 </tr>
                             </table>

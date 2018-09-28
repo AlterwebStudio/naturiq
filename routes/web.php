@@ -82,10 +82,12 @@ Route::group(['prefix'=>'eshop'], function () {
 
 	// Remove Discount Coupon
 	Route::get('doprava-a-platba', 'shippingController@index')
+		->middleware(['verify.client','verify.cart'])
 		->name('eshop.shipping_payment');
 
 	// Store selected methods
-	Route::post('doprava-a-platba', 'shippingController@store');
+	Route::post('doprava-a-platba', 'shippingController@store')
+		->middleware(['verify.client','verify.cart']);
 
 
 
@@ -93,12 +95,12 @@ Route::group(['prefix'=>'eshop'], function () {
 
 	// View Order and Client Data
 	Route::get('sumarizacia-objednavky', 'confirmationController@index')
-		->middleware('verify.data')
+		->middleware(['verify.client','verify.order'])
 		->name('eshop.confirmation');
 
 	// Submit the Order and generate Payment method Gateway if was requested
 	Route::post('sumarizacia-objednavky', 'confirmationController@store')
-		->middleware('verify.data');
+		->middleware(['verify.client','verify.order']);
 
 
 

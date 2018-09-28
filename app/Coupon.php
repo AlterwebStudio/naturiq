@@ -38,7 +38,7 @@ class Coupon extends Model
 	 * Deactivate / Remove discount coupon from the order
 	 * @return boolean
 	 */
-	public function remove()
+	public static function remove()
 	{
 		if(session()->has('coupon')) {
 			return session()->forget('coupon');

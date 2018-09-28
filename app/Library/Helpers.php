@@ -1,4 +1,7 @@
 <?php
+
+use App\Client;
+
 /**
  * @desc Format money
  * @param $price
@@ -42,9 +45,11 @@ function decide($name) {
 
 	if(old($name)) return old($name);
 
-	if(Auth::user() or session()->has('client_id')) {
-		$model = new \App\Client;
+	if(Client::exists()) {
+
+		$model = new Client;
 		$client = $model->get();
+
 		if(strstr($name,'.')) list($table, $column) = explode('.', $name);
 		else $column = $name;
 		if (isset($table) and isset($client->$table->$column)) return $client->$table->$column;

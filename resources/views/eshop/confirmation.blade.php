@@ -148,7 +148,7 @@
 
                                     <div class="form-group">
                                         <label for="name-surname">Meno a priezvisko</label>
-                                        <span class="filled-data">{{ $data['order']->client->name }}</span>
+                                        <span class="filled-data">{{ $order->client->name }}</span>
                                     </div>
 
                                     <!-- E mail + Tel c -->
@@ -156,13 +156,13 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="eml">E-mail</label>
-                                                <span class="filled-data">{{ $data['order']->client->email }}</span>
+                                                <span class="filled-data">{{ $order->client->email }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="tel">Telefónne číslo</label>
-                                                <span class="filled-data">{{ $data['order']->client->phone }}</span>
+                                                <span class="filled-data">{{ $order->client->phone }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -172,13 +172,13 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="city">Mesto</label>
-                                                <span class="filled-data">{{ $data['order']->client->city }}</span>
+                                                <span class="filled-data">{{ $order->client->city }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="street">Ulica a popisné číslo</label>
-                                                <span class="filled-data">{{ $data['order']->client->street }}</span>
+                                                <span class="filled-data">{{ $order->client->street }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -188,13 +188,13 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="psc">PSČ</label>
-                                                <span class="filled-data">{{ $data['order']->client->zip }}</span>
+                                                <span class="filled-data">{{ $order->client->zip }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="country">Krajina</label>
-                                                <span class="filled-data">{{ $data['order']->client->country }}</span>
+                                                <span class="filled-data">{{ $order->client->country }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -221,20 +221,20 @@
 
                                 <div>
 
-                                @if (is_set($data['order']->client->address->street))
+                                @if (is_set($order->client->address->street))
 
                                     <!-- Mesto + ulica -->
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-street">Ulica a popisné číslo</label>
-                                                <span class="filled-data">{{ $data['order']->client->address->street }}</span>
+                                                <span class="filled-data">{{ $order->client->address->street }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-city">Mesto</label>
-                                                <span class="filled-data">{{ $data['order']->client->address->city }}</span>
+                                                <span class="filled-data">{{ $order->client->address->city }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -244,13 +244,13 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="delivery-psc">PSČ</label>
-                                                <span class="filled-data">{{ $data['order']->client->address->zip }}</span>
+                                                <span class="filled-data">{{ $order->client->address->zip }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="delivery-country">Krajina</label>
-                                                <span class="filled-data">{{ $data['order']->client->address->country }}</span>
+                                                <span class="filled-data">{{ $order->client->address->country }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -283,14 +283,14 @@
 
                                 <div>
 
-                                @if (is_set($data['order']->client->company->name))
+                                @if (is_set($order->client->company->name))
 
                                     <!-- MENO SPOLOČNOSTI -->
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="company-name">Názov spoločnosti</label>
-                                                <span class="filled-data">{{ $data['order']->client->company->name }}</span>
+                                                <span class="filled-data">{{ $order->client->company->name }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -300,19 +300,19 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="company-id">IČO</label>
-                                                <span class="filled-data">{{ $data['order']->client->company->ico }}</span>
+                                                <span class="filled-data">{{ $order->client->company->ico }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="company-tax-id">DIČ</label>
-                                                <span class="filled-data">{{ $data['order']->client->company->dic }}</span>
+                                                <span class="filled-data">{{ $order->client->company->dic }}</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="company-vat-id">IČ DPH</label>
-                                                <span class="filled-data">{{ $data['order']->client->company->icdph }}</span>
+                                                <span class="filled-data">{{ $order->client->company->icdph }}</span>
                                             </div>
                                         </div>
                                     </div>

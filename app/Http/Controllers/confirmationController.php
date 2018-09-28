@@ -8,6 +8,7 @@ use App\Client;
 use App\Order;
 use App\Mail\OrderNotification;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -69,27 +70,27 @@ class confirmationController extends Controller
 	{
 		$this->set();
 
-		if($this->data) {
+		if($this->order) {
 			return view('eshop.confirmation')
-				->with('data',$this->data);
+				->with('order',$this->order);
 		}
 		else {
-			return view('eshop.confirmation')
-				->with('warning', 'Objednávka neexistuje. Vráťte sa späť na <a href="/eshop">E-shop</a>.');
+			$error = new MessageBag(['Objednávka neexistuje.']);
+			return redirect(route('cart'))
+				->withErrors($error);
 		}
 	}
 
 	/**
-	 * @param Request $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function store(Request $request)
+	public function store()
 	{
 		$this->set();
 
-		if((Auth::check() or $request->session()->exists('client_id')) and $this->order and $this->data) {
+		if(Client::exists() and is_array($this->data)) {
 
-			Cart::store($this->order_id); // todo: doriešiť celkovú cenu objednávky v maili - vyzerá že nezohľadňuje zľavové kupóny
+//			Cart::store($this->order_id); // todo: doriešiť celkovú cenu objednávky v maili - vyzerá že nezohľadňuje zľavové kupóny
 
 			//$this->payment_gopay();
 
@@ -97,14 +98,15 @@ class confirmationController extends Controller
 			$this->notify('tetrev@alterweb.sk'); // Notifikacia klientovi
 			$this->notify($this->data['order']->client->email); // Notifikacia zakaznikovi
 			$this->enclose();
-			$this->clear();
+//			$this->clear();
+//			dd($this->get_data());
+			return redirect(route('eshop.greetings'))->with('dataset',$this->get_data());
 
-			return redirect(route('eshop.greetings'))->with([
-				'order' => $this->data
-			]);
-
-		} else {
-			return back();
+		}
+		else {
+			$error = new MessageBag(['Objednávka ale údaje o zákazníkovi nie sú k dispozícií.']);
+			return redirect()->back()
+				->withErrors($error);
 		}
 
 	}
@@ -113,7 +115,7 @@ class confirmationController extends Controller
 	 * @desc Execute payment by GoPay service
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
-	private function payment_gopay() {
+/*	private function payment_gopay() {
 		$gopay = GoPay\payments([
 			'goid' => config('gopay.goid'),
 			'clientId' => config('gopay.clientId'),
@@ -159,17 +161,14 @@ class confirmationController extends Controller
 
 		if ($response->hasSucceed()) {
 			// response format: https://doc.gopay.com/en/?shell#standard-payment
-			/*
 			$msg = "hooray, API returned {$response}<br />\n";
 			$msg .= "Gateway url: {$response->json['gw_url']}";
-			dd($msg);
-			*/
 			return redirect($response->json['gw_url']);
 		} else {
 			// errors format: https://doc.gopay.com/en/?shell#http-result-codes
 			dd("Chyba pri spracovaní platby {$response->statusCode}: {$response}");
 		}
-	}
+	}*/
 
 	/**
 	 * Prepare values to update in db [order number, status ...]
@@ -186,7 +185,7 @@ class confirmationController extends Controller
 	 * @param $email_address
 	 */
 	private function notify($email_address) {
-		Mail::to($email_address)->send( new OrderNotification($this->data) );
+		Mail::to($email_address)->send( new OrderNotification($this->order) );
 	}
 
 	/**
@@ -201,8 +200,8 @@ class confirmationController extends Controller
 	 */
 	public function clear()
 	{
-		\Cart::destroy();
-		(new Coupon)->remove();
+		Cart::destroy();
+		Coupon::remove();
 	}
 
 }

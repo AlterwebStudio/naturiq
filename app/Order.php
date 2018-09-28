@@ -2,8 +2,9 @@
 
 namespace App;
 
+use Auth;
+use App\Client;
 use Illuminate\Database\Eloquent\Model;
-use \Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Order extends Model
@@ -29,6 +30,16 @@ class Order extends Model
     	'note',
 	];
 
+	/**
+	 * @desc Returns true if Order Eloquent Model is stored in session
+	 * @return bool
+	 */
+	public static function exists()
+	{
+    	if(session()->has('order')) return true;
+    	return false;
+	}
+
 
 	/**
 	 * @desc Vrati collect instanciu rozpracovanej objednavky
@@ -37,9 +48,14 @@ class Order extends Model
 	 */
 	public function get()
 	{
+//		if($this->exists()) {
+//			return session('order');
+//		}
+
 		if($this->get_id()) {
 			return $this->find($this->id);
 		}
+
 		return null;
 	}
 
@@ -72,9 +88,9 @@ class Order extends Model
 	}
 
 
-	public function statuses() {
-		return Status::all();
-	}
+//	public function statuses() {
+//		return Status::all();
+//	}
 
 
 	/**
@@ -145,14 +161,16 @@ class Order extends Model
 	 */
 	public function get_id()
 	{
-    	if(Auth::check())
+    	if(Client::exists())
     	{
-			$client_id = Auth::user()->id;
-			$order = $this->where('client_id',$client_id)->where('status_id','0')->first();
+			$client = session('client');
+			if ($client and is_set($client->id)) {
+				$order = $this->where('client_id',$client->id)->where('status_id','0')->first();
 
-			if($order and isset($order->id)) {
-				$this->id = $order->id;
-				return $order->id;
+				if($order and isset($order->id)) {
+					$this->id = $order->id;
+					return $order->id;
+				}
 			}
 			return null;
 		}

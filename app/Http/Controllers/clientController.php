@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Client;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,7 @@ class clientController extends Controller
 		}
 
 		// User is logged in so update his profile
-		if($request->user()) {
+		if(Client::exists()) {
 
 			$this->update($request);
 

@@ -13,14 +13,14 @@ class OrderNotification extends Mailable
 
     public $data = [];
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new message instance.
+	 *
+	 * @param null $order
+	 */
     public function __construct($order=null)
     {
-        if(is_array($order)) $this->data = $order;
+        $this->data = $order;
     }
 
     /**
