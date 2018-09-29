@@ -45,13 +45,13 @@
 
                                     <tr class="bg-light">
                                         <td class="col-2">
-                                            <div class="bg-light rounded"><img src="{{ asset($row->model->image) }}" /></div>
+                                            <div class="bg-light rounded"><img src="{{ asset('storage/'.$row->options->image) }}" /></div>
                                         </td>
                                         <td class="align-middle lh-15">
-                                            <strong class="big"><a href="{{ route('product_detail', [str_slug($row->name),$row->id]) }}">{{ $row->name }}</a></strong>
-                                            <p>@if ($row->options->has('size')) Veľkosť: {{ $row->options->size }} @endif</p>
+                                            <strong class="big">{{ $row->name }}</strong>
+                                            <p>@if ($row->options->has('weight')) Balenie: {{ $row->options->weight }} @endif</p>
                                         </td>
-                                        <td class="align-middle text-center">{{ $row->qty }}</td>
+                                        <td class="align-middle text-center">{{ $row->qty }}x</td>
                                     </tr>
 
                                 @endforeach

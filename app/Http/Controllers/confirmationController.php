@@ -90,7 +90,7 @@ class confirmationController extends Controller
 
 		if(Client::exists() and is_array($this->data)) {
 
-//			Cart::store($this->order_id); // todo: doriešiť celkovú cenu objednávky v maili - vyzerá že nezohľadňuje zľavové kupóny
+			Cart::store($this->order_id); // todo: doriešiť celkovú cenu objednávky v maili - vyzerá že nezohľadňuje zľavové kupóny
 
 			//$this->payment_gopay();
 
@@ -98,13 +98,12 @@ class confirmationController extends Controller
 			$this->notify('tetrev@alterweb.sk'); // Notifikacia klientovi
 			$this->notify($this->data['order']->client->email); // Notifikacia zakaznikovi
 			$this->enclose();
-//			$this->clear();
-//			dd($this->get_data());
-			return redirect(route('eshop.greetings'))->with('dataset',$this->get_data());
+			$this->clear();
+			return view('eshop.greetings')->with('dataset',$this->data);
 
 		}
 		else {
-			$error = new MessageBag(['Objednávka ale údaje o zákazníkovi nie sú k dispozícií.']);
+			$error = new MessageBag(['Objednávka alebo údaje o zákazníkovi nie sú k dispozícií.']);
 			return redirect()->back()
 				->withErrors($error);
 		}
@@ -177,7 +176,7 @@ class confirmationController extends Controller
 		$this->order->number = date('Ymd-') . $this->order_id;
 		$this->order->status_id = 1;
 		$this->order->customer = $this->data['order']->client->name;
-		$this->order->total_price = $this->data['total'];
+		$this->order->total_price = $this->order->total();
 	}
 
 	/**
