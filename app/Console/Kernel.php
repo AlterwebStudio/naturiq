@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +25,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // Delete Daily temporary clients from database
+        // Triggers also delete additional Address, Company and temporary Order
+         $schedule->call(function() {
+
+             $yesterday = date('Y-m-d H:i:s', strtotime('yesterday'));
+
+             DB::table('clients')
+                 ->where('temp','1')
+                 ->where('created_at','<=',$yesterday)
+                 ->delete();
+
+         })->daily();
     }
 
     /**

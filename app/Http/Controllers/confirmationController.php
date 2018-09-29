@@ -23,6 +23,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class confirmationController extends Controller
 {
 
+    private $order_id = null;
 	private $order = null;
 	private $data = null;
 
@@ -31,10 +32,9 @@ class confirmationController extends Controller
 	 */
 	public function set()
 	{
-		$Order = new Order;
-		$order = $Order->get();
+		$order = (new Order)->get();
 
-		$this->order_id = $Order->id;
+		$this->order_id = $order->id;
 		$this->order = $order;
 
 		if($order) {

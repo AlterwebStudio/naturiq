@@ -32,8 +32,6 @@ class shippingController extends Controller
 	public function store(Request $request)
 	{
 
-		$order = new Order;
-
 		$request->validate([
 			'shipping_id' => 'required',
 			'payment_id' => 'required'
@@ -41,20 +39,25 @@ class shippingController extends Controller
 
 		if(Client::exists())
 		{
-			$Client = new Client;
-			$client = $Client->get();
-			$order->updateOrCreate(
-				['client_id' => $client->id, 'status_id' => 0],
-				[
-					'shipping_id' => $request->shipping_id,
-					'shipping_price' => Shipping::find($request->payment_id)->price,
-					'payment_id' => $request->payment_id,
-					'payment_price' => Payment::find($request->payment_id)->price,
-				]
-			);
+		    // Set Client as regular user / not temporary
+			$client = (new Client)->get();
+            $client->temp = '0';
+            $client->save();
+
+            // Update Order
+            $order = (new Order)->get();
+			$order->shipping_id = $request->shipping_id;
+			$order->shipping_price = Shipping::findOrFail($request->shipping_id)->price;
+
+			$order->payment_id = $request->payment_id;
+			$order->payment_price = Payment::findOrFail($request->payment_id)->price;
+
+			$order->save();
 
 			// Store the order in the session
-			session(['order'=>$order]);
+			session([
+			    'order_id'=>$order->id
+            ]);
 
 			return redirect(route('eshop.confirmation'));
 		}

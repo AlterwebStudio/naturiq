@@ -47,9 +47,24 @@ class Client extends Model
 	 */
 	public static function exists()
 	{
-		if(Auth::check() or session()->has('client')) return true;
+		if(Auth::check() or session()->has('client_id')) return true;
 		return false;
 	}
+
+    /**
+     * Get User ID or Temporary Client ID
+     * @return \Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed
+     */
+    public static function id()
+    {
+	    if(self::exists()) {
+
+            if(Auth::check()) {
+                return Auth::user()->id; // User id
+            } else return session('client_id'); // Temporary Client id
+
+        }
+    }
 
 
 	/**
@@ -64,12 +79,6 @@ class Client extends Model
 			return Auth::user();
 		}
 
-		// User has own model eloquent generated
-		// and stored in the session
-		if(session()->has('client')) {
-			return session('client');
-		}
-
 		// User is going to update his
 		// temporary profile
 		if(session()->has('client_id')) {
@@ -80,33 +89,6 @@ class Client extends Model
 		// User is not authorized and hasn't
 		// created profile yet
 		return null;
-	}
-
-
-	/**
-	 * Generate new client with aditional connections in DB
-	 * Store generated Client model into the session
-	 * @param Request $request
-	 * @return int
-	 */
-	public function generate(Request $request)
-	{
-
-		if(!$request->address) $request->address = [];
-		if(!$request->company) $request->company = [];
-
-		$address_id = DB::table('addresses')->insertGetId($request->address);
-		$company_id = DB::table('companies')->insertGetId($request->company);
-
-		$client = $request->client;
-		$client['address_id'] = $address_id;
-		$client['company_id'] = $company_id;
-
-		$client_id = DB::table('clients')->insertGetId($client);
-		session(['client'=>$this->find($client_id)]);
-
-		return $client_id;
-
 	}
 
 

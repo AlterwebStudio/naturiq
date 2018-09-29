@@ -68,7 +68,7 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 	// Execute Client Registration Form
-	Route::post('cart/register', 'cartController@register')
+	Route::post('cart/register', 'clientController@register')
 		->name('cart.register');
 
 	// Execute Client Registration Form

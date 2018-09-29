@@ -10,6 +10,6 @@ class Company extends Model
 	public $timestamps = false;
 
     protected $fillable = [
-    'name', 'ico', 'dic', 'icdph'
+    'name', 'ico', 'dic', 'icdph', 'use'
 	];
 }

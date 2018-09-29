@@ -27,7 +27,8 @@ class CreateProductsTable extends Migration {
 			$table->text('nutritions', 65535)->nullable();
 			$table->string('image')->nullable();
 			$table->text('gallery', 65535)->nullable();
-			$table->simple_array('featured')->nullable()->default(0);
+//			$table->simple_array('featured')->nullable()->default(0);
+			$table->enum('featured', array('0','1'))->nullable()->default(0);
 			$table->enum('active', array('0','1'))->nullable()->default('1');
 			$table->integer('buys')->nullable();
 			$table->timestamps();

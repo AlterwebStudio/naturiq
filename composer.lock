@@ -1294,16 +1294,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.5",
+            "version": "2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3"
+                "reference": "0578b32b30b22de3e8664f797cf846fc9246f786"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/54859fabea8b3beecbb1a282888d5c990036b9e3",
-                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/0578b32b30b22de3e8664f797cf846fc9246f786",
+                "reference": "0578b32b30b22de3e8664f797cf846fc9246f786",
                 "shasum": ""
             },
             "require": {
@@ -1347,7 +1347,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-08-16T20:49:45+00:00"
+            "time": "2018-09-25T20:47:26+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -3878,16 +3878,16 @@
         },
         {
             "name": "tcg/voyager",
-            "version": "v1.1.4",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/the-control-group/voyager.git",
-                "reference": "19ccb0fcbfb7f6a22ffd3a151186186f43e845c0"
+                "reference": "61aef0aa1f1a3587244ac6db2da37fbb1cc174ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/the-control-group/voyager/zipball/19ccb0fcbfb7f6a22ffd3a151186186f43e845c0",
-                "reference": "19ccb0fcbfb7f6a22ffd3a151186186f43e845c0",
+                "url": "https://api.github.com/repos/the-control-group/voyager/zipball/61aef0aa1f1a3587244ac6db2da37fbb1cc174ef",
+                "reference": "61aef0aa1f1a3587244ac6db2da37fbb1cc174ef",
                 "shasum": ""
             },
             "require": {
@@ -3941,7 +3941,7 @@
                 "laravel",
                 "panel"
             ],
-            "time": "2018-09-15T21:14:42+00:00"
+            "time": "2018-09-18T14:22:22+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

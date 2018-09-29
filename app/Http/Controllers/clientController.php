@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class clientController extends Controller
 {
@@ -46,20 +47,82 @@ class clientController extends Controller
 			]);
 		}
 
-		// User is logged in so update his profile
 		if(Client::exists()) {
 
+            // User is logged in so update his profile
 			$this->update($request);
 
-		} else {
-
-			// Generate client with aditional connections
-			$client = new Client;
-			$client->generate($request);
 		}
 
-		return true;
+		return redirect()->route('eshop.shipping_payment');
 	}
+
+
+    /**
+     * Generate new client with aditional connections in DB
+     * Store generated Client into the session as Array
+     * Returns true if Client was stored
+     * @param Request $request
+     * @return bool
+     */
+/*    public function generate(Request $request)
+    {
+
+        $client = new Client;
+
+        if($request->address) {
+            $address = $request->address;
+            $address['use'] = '1';
+        } else $address['use'] = '0';
+
+        if($request->company) {
+            $company = $request->company;
+            $company['use'] = '1';
+        } else $company['use'] = '0';
+
+        $client->address_id = DB::table('addresses')->insertGetId($address);
+        $client->company_id = DB::table('companies')->insertGetId($company);
+
+        $client->save($request->input('client'));
+
+        // Store the Client in the Session
+        if($client_id) {
+            session([
+                'client_id' => $client_id
+            ]);
+            if(session()->has('client_id')) return true;
+        }
+
+        return false;
+
+    }*/
+
+
+    /**
+     * Generate temporary Client with no profile details
+     * @return bool
+     */
+    public static function generate_temp()
+    {
+
+        $client = new Client;
+
+        $client->address_id = DB::table('addresses')->insertGetId([]);
+        $client->company_id = DB::table('companies')->insertGetId([]);
+
+        $client->save();
+
+        // Store the Client in the Session
+        if($client->id) {
+            session([
+                'client_id' => $client->id
+            ]);
+            if(session()->has('client_id')) return true;
+        }
+
+        return false;
+
+    }
 
 
 	/**
@@ -69,24 +132,21 @@ class clientController extends Controller
 	 */
 	private function update(Request $request)
 	{
-		$client = new Client;
-		$client = $client->get();
+		$client = (new Client)->get();
 
-		if($request->company) $client->company()->update($request->company);
-		else $client->company()->update([
-			'name'=>'',
-			'ico'=>'',
-			'dic'=>'',
-			'icdph'=>'',
-		]);
+        if($request->address) {
+            $address = $request->address;
+            $address['use'] = '1';
+        } else $address['use'] = '0';
 
-		if($request->address) $client->address()->update($request->address);
-		else $client->address()->update([
-			'street'=>'',
-			'zip'=>'',
-			'city'=>'',
-			'country'=>'',
-		]);
+        $client->address()->update($address);
+
+        if($request->company) {
+            $company = $request->company;
+            $company['use'] = '1';
+        } else $company['use'] = '0';
+
+		$client->company()->update($company);
 
 		$client->update($request->input('client'));
 

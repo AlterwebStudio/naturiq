@@ -18,7 +18,7 @@ class CreateCouponsTable extends Migration {
 			$table->string('title', 100)->nullable();
 			$table->string('code', 32)->nullable();
 			$table->float('value', 5)->nullable();
-			$table->simple_array('type')->nullable();
+//			$table->simple_array('type')->nullable();
 		});
 	}
 

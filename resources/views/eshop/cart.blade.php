@@ -161,7 +161,7 @@
 
                                     <div class="form-group">
                                         <label for="name-surname">Meno a priezvisko*</label>
-                                        <input id="name-surname" name="client[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno a priezvisko" value="{{ decide('client.name') }}">
+                                        <input id="name-surname" name="client[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno a priezvisko" value="{{ $client->name }}">
                                         <div class="input_msg" data-id="name-surname"></div>
                                     </div>
 
@@ -170,14 +170,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="eml">E-mail*</label>
-                                                <input id="eml" name="client[email]" class="form-control required" type="eml" data-invalid-response="Prosíme vyplňte váš e-mail" value="{{ decide('client.email') }}">
+                                                <input id="eml" name="client[email]" class="form-control required" type="eml" data-invalid-response="Prosíme vyplňte váš e-mail" value="{{ $client->email }}">
                                                 <div class="input_msg" data-id="eml"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="tel">Telefónne číslo*</label>
-                                                <input id="tel" name="client[phone]" class="form-control required" type="tel" data-invalid-response="Prosíme vyplňte vaše telefónne číslo" value="{{ decide('client.phone') }}">
+                                                <input id="tel" name="client[phone]" class="form-control required" type="tel" data-invalid-response="Prosíme vyplňte vaše telefónne číslo" value="{{ $client->phone }}">
                                                 <div class="input_msg" data-id="tel"></div>
                                             </div>
                                         </div>
@@ -188,14 +188,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="city">Mesto*</label>
-                                                <input id="city" name="client[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('client.city') }}">
+                                                <input id="city" name="client[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ $client->city }}">
                                                 <div class="input_msg" data-id="city"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="street">Ulica a popisné číslo*</label>
-                                                <input id="street" name="client[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('client.street') }}">
+                                                <input id="street" name="client[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ $client->street }}">
                                                 <div class="input_msg" data-id="street"></div>
                                             </div>
                                         </div>
@@ -206,14 +206,14 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="psc">PSČ*</label>
-                                                <input id="psc" name="client[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ decide('client.zip') }}">
+                                                <input id="psc" name="client[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ $client->zip }}">
                                                 <div class="input_msg" data-id="psc"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="country">Krajina*</label>
-                                                <input id="country" name="client[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('client.country') }}">
+                                                <input id="country" name="client[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ $client->country }}">
                                                 <div class="input_msg" data-id="country"></div>
                                             </div>
                                         </div>
@@ -225,7 +225,7 @@
 
 
                                 <!-- INA DORUCOVACIA -->
-                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#dorucovacia" @if (is_set(decide('address.street'))) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="dorucovacia">
+                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#dorucovacia" @if ($client->address->use==1) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="dorucovacia">
                                     <div class="col-auto">
                                         <h3 class="form-header__name">
                                             INÁ DORUČOVACIA ADRESA
@@ -239,21 +239,21 @@
                                     </div>
                                 </div>
 
-                                <div class="collapse @if (is_set(decide('address.street'))) show @endif" id="dorucovacia">
+                                <div class="collapse @if ($client->address->use==1) show @endif" id="dorucovacia">
 
                                     <!-- Mesto + ulica -->
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-street">Ulica a popisné číslo*</label>
-                                                <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.street') }}">
+                                                <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ $client->address->street }}">
                                                 <div class="input_msg" data-id="delivery-street"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-city">Mesto*</label>
-                                                <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.city') }}">
+                                                <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ $client->address->city }}">
                                                 <div class="input_msg" data-id="delivery-city"></div>
                                             </div>
                                         </div>
@@ -264,14 +264,14 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="delivery-psc">PSČ*</label>
-                                                <input id="delivery-psc" name="address[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ decide('address.zip') }}">
+                                                <input id="delivery-psc" name="address[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ $client->address->zip }}">
                                                 <div class="input_msg" data-id="delivery-psc"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="delivery-country">Krajina</label>
-                                                <input id="delivery-country" name="address[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ decide('address.country') }}">
+                                                <input id="delivery-country" name="address[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ $client->address->country }}">
                                                 <div class="input_msg" data-id="delivery-country"></div>
                                             </div>
                                         </div>
@@ -282,7 +282,7 @@
                                 <!-- KONIEC SEKCIE FORMULARU -->
 
                                 <!-- Objednavka na firmu -->
-                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#company" @if (is_set(decide('company.name'))) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="company">
+                                <div class="form-header row mt-3" data-toggle="collapse" data-target="#company" @if ($client->company->use == 1) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="company">
                                     <div class="col-auto">
                                         <h3 class="form-header__name">
                                             Objednávka na firmu
@@ -296,7 +296,7 @@
                                     </div>
                                 </div>
 
-                                <div class="collapse @if (is_set(decide('company.name'))) show @endif" id="company">
+                                <div class="collapse @if ($client->company->use == 1) show @endif" id="company">
 
 
                                     <!-- MENO SPOLOČNOSTI -->
@@ -304,7 +304,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="company-name">Názov spoločnosti*</label>
-                                                <input id="company-name" name="company[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ decide('company.name') }}">
+                                                <input id="company-name" name="company[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ $client->company->name }}">
                                                 <div class="input_msg" data-id="company-name"></div>
                                             </div>
                                         </div>
@@ -315,14 +315,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="company-id">IČO*</label>
-                                                <input id="company-id" name="company[ico]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte IČO spoločnosti" value="{{ decide('company.ico') }}">
+                                                <input id="company-id" name="company[ico]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte IČO spoločnosti" value="{{ $client->company->ico }}">
                                                 <div class="input_msg" data-id="company-id"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="company-tax-id">DIČ*</label>
-                                                <input id="company-tax-id" name="company[dic]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte DIČ spoločnosti" value="{{ decide('company.dic') }}">
+                                                <input id="company-tax-id" name="company[dic]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte DIČ spoločnosti" value="{{ $client->company->dic }}">
                                                 <div class="input_msg" data-id="company-tax-id"></div>
                                             </div>
                                         </div>
@@ -333,7 +333,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="company-vat-id">IČ DPH</label>
-                                                <input id="company-vat-id" name="company[icdph]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ decide('company.icdph') }}">
+                                                <input id="company-vat-id" name="company[icdph]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ $client->company->icdph }}">
                                                 <div class="input_msg" data-id="company-vat-id"></div>
                                             </div>
                                         </div>

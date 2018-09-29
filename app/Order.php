@@ -36,27 +36,22 @@ class Order extends Model
 	 */
 	public static function exists()
 	{
-    	if(session()->has('order')) return true;
+    	if(session()->has('order_id')) return true;
     	return false;
 	}
 
 
 	/**
-	 * @desc Vrati collect instanciu rozpracovanej objednavky
+	 * @desc Returns Collect instance of temporary Order
 	 *
 	 * @return null
 	 */
 	public function get()
 	{
-//		if($this->exists()) {
-//			return session('order');
-//		}
-
-		if($this->get_id()) {
-			return $this->find($this->id);
+	    $order_id = $this->get_id();
+		if($order_id) {
+			return $this->find($order_id);
 		}
-
-		return null;
 	}
 
 
@@ -161,20 +156,22 @@ class Order extends Model
 	 */
 	public function get_id()
 	{
+        if(Order::exists())
+        {
+            return session('order_id');
+        }
+
     	if(Client::exists())
     	{
-			$client = session('client');
-			if ($client and is_set($client->id)) {
-				$order = $this->where('client_id',$client->id)->where('status_id','0')->first();
+			$client_id = session('client_id');
+            $order = $this->where('client_id',$client_id)->where('status_id','0')->first();
 
-				if($order and isset($order->id)) {
-					$this->id = $order->id;
-					return $order->id;
-				}
-			}
-			return null;
+            if(isset($order->id)) {
+                return $order->id;
+            }
 		}
-		return false;
+
+		return null;
 	}
 
 }

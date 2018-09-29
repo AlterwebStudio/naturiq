@@ -26,7 +26,7 @@ class CreateClientsTable extends Migration {
 			$table->string('email', 64)->nullable();
 			$table->string('password', 64)->nullable();
 			$table->string('remember_token', 100)->nullable();
-			$table->simple_array('type')->nullable()->default(0)->comment('0=neregistrovany,1=registrovany,2=velkoobchod');
+//			$table->simple_array('type')->nullable()->default(0)->comment('0=neregistrovany,1=registrovany,2=velkoobchod');
 			$table->enum('approved', array('0','1'))->nullable()->default('0');
 			$table->enum('temp', array('0','1'))->nullable()->default('1');
 			$table->timestamps();

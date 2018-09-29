@@ -47,13 +47,19 @@ function decide($name) {
 
 	if(Client::exists()) {
 
-		$model = new Client;
-		$client = $model->get();
+		$client = (new Client)->get();
 
-		if(strstr($name,'.')) list($table, $column) = explode('.', $name);
-		else $column = $name;
-		if (isset($table) and isset($client->$table->$column)) return $client->$table->$column;
-		if (isset($client->$column)) return $client->$column;
+		if(strstr($name,'.')) {
+            list($table, $column) = explode('.', $name);
+            if (isset($table) and isset($client->$table->$column))
+                return $client->$table->$column;
+        }
+		else {
+		    $column = $name;
+            if (isset($client->$column))
+                return $client->$column;
+        }
+
 	}
 
 	return null;

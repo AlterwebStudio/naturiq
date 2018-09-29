@@ -9,6 +9,6 @@ class Address extends Model
 	public $timestamps = false;
 
 	protected $fillable = [
-		'name', 'street', 'zip', 'city', 'country'
+		'name', 'street', 'zip', 'city', 'country', 'use'
 	];
 }

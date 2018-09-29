@@ -2,19 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
+use App\Order;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use App\Product;
+use Illuminate\Support\MessageBag;
 
 class cartController extends Controller
 {
 
-	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function index()
+    /**
+     * @param int $recursive
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+	public function index($recursive=0)
 	{
-		return view('eshop.cart');
+
+	    if(Client::exists()) {
+
+            $client = (new Client)->get();
+            return view('eshop.cart', compact('client'));
+
+        } elseif($recursive <= 1) {
+
+	        $recursive++;
+            clientController::generate_temp();
+            return $this->index($recursive);
+
+        } else {
+
+	        $error = new MessageBag(['Systém nedokázal vygenerovať záznam o zákazníkovi. Kontaktujte nás, prosím.']);
+	        return back()->withErrors($error);
+        }
 	}
 
 
@@ -40,21 +60,14 @@ class cartController extends Controller
 			]
 		)->associate('App\Product');
 
-		return view('eshop.cart')->with('message','Tovar bol pridaný do vášho košíka');
+		if(Client::exists() === false) clientController::generate_temp();
+		if(Order::exists() === false) orderController::generate_temp();
 
-	}
+		return view('eshop.cart')->with([
+		    'message'=>'Tovar bol pridaný do vášho košíka',
+            'client'=>(new Client)->get()
+        ]);
 
-	/**
-	 * @param Request $request
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function register(Request $request)
-	{
-
-		$clientController = new clientController;
-		$clientController->register($request);
-
-		return redirect(route('eshop.shipping_payment'))->withInput();
 	}
 
 }
