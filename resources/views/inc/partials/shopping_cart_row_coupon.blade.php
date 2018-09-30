@@ -30,7 +30,7 @@
 
   <!-- ODSTRANIT PRODUKT Z KOSIKU -->
   <div class="col-auto d-none d-sm-flex">
-    <a href="{{ route('cart.remove_coupon') }}" class="remove" style="visibility:hidden;">
+    <a href="{{ route('cart.remove_coupon') }}" class="remove" {{--style="visibility:hidden;"--}}>
       <i class="fas fa-times"></i>
     </a>
   </div>

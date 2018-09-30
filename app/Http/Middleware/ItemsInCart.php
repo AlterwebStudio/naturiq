@@ -21,10 +21,10 @@ class ItemsInCart
 		if(Cart::content()->count() == 0) {
 
 			$msgs[] = 'Váš košík neobsahuje žiaden tovar. Vráťte sa prosím späť na E-shop a vložte do košíka niektorý z našich produktov.';
-			$msgs[] = '<a href="/eshop/prihlasenie-uzivatela" class="btn btn-sm btn-danger mt-3">prihlásiť sa</a> <a href="/eshop" class="btn btn-sm btn-danger mt-3">späť na e-shop</a>';
+			$msgs[] = '<a href="'.route('login').'" class="btn btn-sm btn-danger mt-3">prihlásiť sa</a> <a href="'.route('eshop').'" class="btn btn-sm btn-danger mt-3">späť na E-shop</a>';
 
 			$errors = new MessageBag($msgs);
-			return redirect(route('cart'))->withErrors($errors);
+			return redirect()->route('cart')->withErrors($errors);
 		}
 
 		return $next($request);

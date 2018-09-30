@@ -21,7 +21,7 @@ class ClientExists
 		if(Client::exists() === false) {
 
 			$msgs[] = 'Relácia vášho prihlásenia, resp. existencie dočasného konta vypršala.';
-			$msgs[] = '<a href="/eshop/prihlasenie-uzivatela" class="btn btn-sm btn-danger mt-3">prihlásiť sa</a> <a href="/eshop" class="btn btn-sm btn-danger mt-3">späť na e-shop</a>';
+			$msgs[] = '<a href="'.route('login').'" class="btn btn-sm btn-danger mt-3">prihlásiť sa</a> <a href="'.route('eshop').'" class="btn btn-sm btn-danger mt-3">späť na e-shop</a>';
 
 			$errors = new MessageBag($msgs);
 			return redirect(route('cart'))->withErrors($errors);

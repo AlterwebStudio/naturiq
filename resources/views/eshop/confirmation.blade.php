@@ -68,11 +68,17 @@
 
                         <div class="shopping-cart__body">
 
-                            @forelse (Cart::content() as $item)
+                            @forelse (Cart::instance('default')->content() as $item)
                                 @include ('inc.partials.shopping_cart_row_static', ['item' => $item])
                             @empty
                                 <p class="alert alert-light">Vás košík je zatiaľ prázdny. Začnite v kategórií <a href="{{ route('eshop') }}">E-shop</a>.</p>
                             @endforelse
+
+                            @if (Cart::instance('others')->count() > 0)
+                                @foreach (Cart::instance('others')->content() as $item)
+                                    @include ('inc.partials.shopping_cart_row_other', ['item' => $item])
+                                @endforeach
+                            @endif
 
                             @if (session()->has('coupon'))
                                 @include ('inc.partials.shopping_cart_row_coupon', ['coupon' => \App\Coupon::get()])
@@ -81,13 +87,13 @@
                         </div>
                         <div class="shopping-cart__footer col-12">
                             <div class="row">
-                                <div class="col text-left">
-                                    <div class="text-bg font-weight-bold">Celkom s DPH:</div>
-                                    <div class="text-sm">Celkom bez DPH:</div>
+                                <div class="col-8 text-left">
+                                    <div class="text-bg font-weight-bold">Celkom vrátane dopravy:</div>
+                                    <div class="text-sm">Za tovar vrátane DPH:</div>
                                 </div>
                                 <div class="col text-right">
-                                    <div class="text-bg font-weight-bold">{{ Cart::total() }} &euro;</div>
-                                    <div class="text-sm">{{ Cart::subtotal() }} &euro;</div>
+                                    <div class="text-bg font-weight-bold">{{ format_money( App\Order::total() ) }}</div>
+                                    <div class="text-sm">{{ format_money( App\Order::subtotal() ) }}</div>
                                 </div>
                             </div>
                         </div>

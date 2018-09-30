@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
                     <li class="breadcrumb-item active">Prihlásenie</li>
                 </ol>
             </div>
@@ -30,7 +30,7 @@
                         <div class="col-md-5 mx-md-auto">
 
                             @if (Auth::check())
-                                <p class="alert alert-secondary text-center mt-5">Autorizácia prebehla v poriadku, boli ste prihlásený!<br/><b>Prajeme vám príjemný nákup.</b></p>
+                                <p class="alert alert-success text-center mt-5">Autorizácia prebehla v poriadku, boli ste prihlásený!<br/><b>Prajeme vám príjemný nákup.</b></p>
                                 <div class="form-group mt-4 text-right" >
                                     <div class="row">
                                         <div class="col-md-auto ml-auto order-1 order-md-2 mb-3 mb-md-0 text-right"><a href="{{ route('eshop.logout') }}" class="btn btn-orange w-100">Odhlásiť z účtu</a></div>
@@ -39,10 +39,12 @@
                             @else
 
                             <p class="text-center m-0">
-                                <small>Nemáte ešte u nás účet? <a href="novy_ucet.php" class="font-weight-bold">Založte si konto Naturiq</a></small>
+                                <small>Nemáte ešte u nás účet? <a href="{{ route('register') }}" class="font-weight-bold">Založte si konto Naturiq</a></small>
                             </p>
 
-                            <form id="text-form" action="#" method="post" class="validate-form my-4">
+                            @include ('inc.partials.messages')
+
+                            <form id="text-form" action="{{ route('login') }}" method="post" class="validate-form my-4">
                                 @csrf
                                 <div class="form-group">
                                     <label for="login">Prihlasovacie meno / email</label>

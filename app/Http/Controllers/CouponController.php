@@ -41,6 +41,18 @@ class CouponController extends Controller
 	}
 
 
+    /**
+     * Remove/Deactivate Coupon
+     */
+    public function remove()
+    {
+        if(session()->has('coupon')) {
+            session()->forget('coupon');
+        }
+        return back();
+    }
+
+
 	/**
 	 * @desc Checks if Coupon can be activated (wasn't used for this order yet)
 	 * @return bool

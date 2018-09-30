@@ -146,7 +146,8 @@
                                     @foreach ($shippings as $shipping)
                                     <div class="col-md-3 col-6">
                                         <label for="doprava{{$loop->iteration}}" class="shopping-cart__method">
-                                            <input type="radio" id="doprava{{$loop->iteration}}" name="shipping_id" class="required" value="{{ $shipping->id }}"/>
+                                            <input type="radio" id="doprava{{$loop->iteration}}" name="shipping_id" class="required"
+                                                   value="{{ $shipping->id }}" @if (session()->has('shipping_id') and session('shipping_id') == $shipping->id) checked="checked" @endif />
                                             <div class="method">
                                                 <figure>
                                                     <img src="https://via.placeholder.com/150x150/f5f5f5/736250">
@@ -185,7 +186,8 @@
                                     @foreach ($payments as $payment)
                                     <div class="col-md-3 col-6">
                                         <label for="platba{{$loop->iteration}}" class="shopping-cart__method">
-                                            <input type="radio" id="platba{{$loop->iteration}}" name="payment_id" class="required" value="{{ $payment->id }}" />
+                                            <input type="radio" id="platba{{$loop->iteration}}" name="payment_id" class="required"
+                                                   value="{{ $payment->id }}" @if (session()->has('payment_id') and session('payment_id') == $payment->id) checked="checked" @endif />
                                             <div class="method">
                                                 <figure>
                                                     <img src="https://via.placeholder.com/150x150/f5f5f5/736250">

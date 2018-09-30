@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
 
 class userController extends Controller
 {
@@ -34,8 +35,9 @@ class userController extends Controller
 		}
 		else
 		{
+		    $error = new MessageBag(['E-mailová adresa, ktorú ste zadali sa nezhoduje s heslom zadaným pri registrácií']);
 			return redirect()->back()
-				->with('warning', 'E-mailová adresa, ktorú ste zadali sa nezhoduje s heslom zadaným pri registrácií');
+				->withErrors($error);
 		}
 	}
 

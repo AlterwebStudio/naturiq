@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Auth;
 use App\Client;
 use Illuminate\Http\Request;
@@ -21,8 +22,8 @@ class clientController extends Controller
 		// Validate personal data fields
 		$request->validate([
 			'client.name' => 'required|min:5',
-			'client.email' => 'required|email',
-			'client.phone' => 'required|numeric',
+			'client.email' => 'required|email', //|unique:clients,email
+			'client.phone' => 'required|min:10|max:14',
 			'client.street' => 'required',
 			'client.zip' => 'required',
 			'client.city' => 'required',
@@ -59,46 +60,6 @@ class clientController extends Controller
 
 
     /**
-     * Generate new client with aditional connections in DB
-     * Store generated Client into the session as Array
-     * Returns true if Client was stored
-     * @param Request $request
-     * @return bool
-     */
-/*    public function generate(Request $request)
-    {
-
-        $client = new Client;
-
-        if($request->address) {
-            $address = $request->address;
-            $address['use'] = '1';
-        } else $address['use'] = '0';
-
-        if($request->company) {
-            $company = $request->company;
-            $company['use'] = '1';
-        } else $company['use'] = '0';
-
-        $client->address_id = DB::table('addresses')->insertGetId($address);
-        $client->company_id = DB::table('companies')->insertGetId($company);
-
-        $client->save($request->input('client'));
-
-        // Store the Client in the Session
-        if($client_id) {
-            session([
-                'client_id' => $client_id
-            ]);
-            if(session()->has('client_id')) return true;
-        }
-
-        return false;
-
-    }*/
-
-
-    /**
      * Generate temporary Client with no profile details
      * @return bool
      */
@@ -118,6 +79,12 @@ class clientController extends Controller
                 'client_id' => $client->id
             ]);
             if(session()->has('client_id')) return true;
+        }
+
+        if(Order::exists()) {
+            $order = (new Order)->get();
+            $order->client_id = $client->id;
+            $order->save();
         }
 
         return false;

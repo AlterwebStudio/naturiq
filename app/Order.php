@@ -30,8 +30,9 @@ class Order extends Model
     	'note',
 	];
 
+
 	/**
-	 * @desc Returns true if Order Eloquent Model is stored in session
+	 * @desc Returns true if Order [order_id] is stored in session
 	 * @return bool
 	 */
 	public static function exists()
@@ -41,10 +42,27 @@ class Order extends Model
 	}
 
 
+    /**
+     * Forget currently
+     * Order [order_id],
+     * Shipping [shipping_id],
+     * Payment [payment_id]
+     * stored in session
+     */
+    public static function forget()
+    {
+	    if(self::exists()) {
+	        session()->forget('order_id');
+	        session()->forget('shipping_id');
+	        session()->forget('payment_id');
+        }
+    }
+
+
 	/**
-	 * @desc Returns Collect instance of temporary Order
+	 * @desc Returns Collect instance of the current Order
 	 *
-	 * @return null
+	 * @return false or Eloquent Order Model with all relations
 	 */
 	public function get()
 	{
@@ -52,6 +70,7 @@ class Order extends Model
 		if($order_id) {
 			return $this->find($order_id);
 		}
+		return false;
 	}
 
 
@@ -83,9 +102,12 @@ class Order extends Model
 	}
 
 
-//	public function statuses() {
-//		return Status::all();
-//	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function statuses() {
+		return Status::all();
+	}
 
 
 	/**
@@ -126,14 +148,30 @@ class Order extends Model
 
 
 	/**
-	 * @desc Vrati celkovu cenu objednavky vratane dopravy a platby
+	 * @desc Returns total price for the Order
+     * including prices for Shipping and Payment method
 	 *
 	 * @return mixed
 	 */
-	public function total()
+	public static function total()
 	{
-		$amount = floatval(str_replace(",", ".", Cart::subtotal()));
-		return ($amount + floatval($this->shipping->price) + floatval($this->payment->price));
+	    $items = Cart::instance('default')->subtotal(2,'.','');
+	    $others = Cart::instance('others')->subtotal(2,'.','');
+        return floatval($items) + floatval($others);
+	}
+
+
+	/**
+	 * @desc Returns Order price without VAT
+     * including prices for Shipping and Payment method
+	 *
+	 * @return mixed
+	 */
+	public static function subtotal()
+	{
+        return Cart::instance('default')->subtotal(2,'.','');
+//        $others = Cart::instance('others')->subtotal(2,'.','');
+//        return floatval($items) + floatval($others);
 	}
 
 

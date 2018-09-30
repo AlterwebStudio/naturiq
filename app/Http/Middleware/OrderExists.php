@@ -6,6 +6,7 @@ use Closure;
 use App\Order;
 use Illuminate\Support\MessageBag;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Http\Controllers\orderController;
 
 class OrderExists
 {
@@ -21,8 +22,13 @@ class OrderExists
 
 		if(Cart::content()->count() == 0 or Order::exists() === false) {
 
-			$msgs[] = 'Nebol vytvorený záznam o objednávke. Pokračujte na 2. kroku objednávky - DOPRAVA A PLATBA.';
-			$msgs[] = '<a href="/eshop/cart" class="btn btn-sm btn-danger mt-3">späť do košíka</a> <a href="/eshop/doprava-a-platba" class="btn btn-sm btn-danger mt-3">prejsť na dopravu a platbu</a>';
+		    if( Order::exists() === false ) {
+		        orderController::generate_temp();
+		        return redirect()->back();
+            }
+
+			$msgs[] = 'Košík neobsahuje žiaden tovar :( Môžete to napraviť v kategórií E-shop.';
+			$msgs[] = '<a href="'.route('eshop.cart').'" class="btn btn-sm btn-danger mt-3">späť do košíka</a> <a href="'.route('eshop').'" class="btn btn-sm btn-danger mt-3">prejsť na E-shop</a>';
 
 			$errors = new MessageBag($msgs);
 			return redirect(route('cart'))->withErrors($errors);

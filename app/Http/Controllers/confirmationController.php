@@ -90,7 +90,7 @@ class confirmationController extends Controller
 
 		if(Client::exists() and is_array($this->data)) {
 
-			Cart::store($this->order_id); // todo: doriešiť celkovú cenu objednávky v maili - vyzerá že nezohľadňuje zľavové kupóny
+			Cart::store($this->order_id);
 
 			//$this->payment_gopay();
 
@@ -177,6 +177,7 @@ class confirmationController extends Controller
 		$this->order->status_id = 1;
 		$this->order->customer = $this->data['order']->client->name;
 		$this->order->total_price = $this->order->total();
+		$this->order->temp = 0;
 	}
 
 	/**
@@ -201,6 +202,7 @@ class confirmationController extends Controller
 	{
 		Cart::destroy();
 		Coupon::remove();
+        Order::forget();
 	}
 
 }

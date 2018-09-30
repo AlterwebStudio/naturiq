@@ -11,10 +11,6 @@
 |
 */
 
-Route::group(['prefix' => 'admin'], function () {
-	Voyager::routes();
-});
-
 Route::get('/', function () {
     return view('home');
 });
@@ -33,26 +29,28 @@ Route::group(['prefix'=>'eshop'], function () {
 	/** 1. SHOPPING CART **/
 
 	// Display Cart
-	Route::get('kosik', 'cartController@index')
+	Route::get('cart', 'cartController@index')
+        ->middleware('verify.client')
 		->name('cart');
 
 	// Add item to Cart
-	Route::post('kosik', 'cartController@addToCart');
+	Route::post('cart', 'cartController@addToCart');
 
 	// Remove Item from the Cart
-	Route::get('kosik/remove/{rowId}', function ($rowId) {
+	Route::get('cart/remove/{rowId}', function ($rowId) {
 		Cart::remove($rowId);
-		return view('eshop.cart');
+        $client = (new App\Client)->get();
+        return view('eshop.cart', compact('client'));
 	})->name('cart.remove_item');
 
 	// Update Cart Item Quantity
-	Route::post('kosik/update/{rowId}', function ($rowId) {
+	Route::post('cart/update/{rowId}', function ($rowId) {
 		Cart::update($rowId,request('quantity'));
 		return redirect()->back();
 	})->name('cart.update_quantity');
 
 	// Empty Cart
-	Route::get('kosik/empty', function () {
+	Route::get('cart/empty', function () {
 		Cart::destroy();
 		return view('eshop.cart');
 	});
@@ -141,12 +139,12 @@ Route::group(['prefix'=>'eshop'], function () {
 
 	// Registration form
 	Route::get('registracia-zakaznika', function() {
-		if(Auth::check()) return redirect('/dodacie-udaje');
+		if(Auth::check()) return redirect()->route('login');
 		else return view('eshop.register');
-	});
+	})->name('register');
 
 	// Submit registration form
-	Route::post('registracia', 'registerController@store');
+	Route::post('registracia-zakaznika', 'registerController@store');
 
 
 	// Update User profile
@@ -160,7 +158,7 @@ Route::group(['prefix'=>'eshop'], function () {
 	})->name('login');
 
 	// Login User
-	Route::post('prihlasenie', 'userController@authenticate');
+	Route::post('prihlasenie-uzivatela', 'userController@authenticate');
 
 
 	// Forgotten password
@@ -172,7 +170,7 @@ Route::group(['prefix'=>'eshop'], function () {
 	// Logout User
 	Route::get('odhlasenie', function () {
 		Auth::logout();
-		return redirect('prihlasenie');
+		return redirect()->route('login')->with('message','Ďakujeme za návštevu!');
 	})->name('eshop.logout');
 
 });

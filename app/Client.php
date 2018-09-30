@@ -76,7 +76,7 @@ class Client extends Model
 
 		// User is logged in and authorized
 		if(Auth::check()) {
-			return Auth::user();
+			return $this->find(Auth::user()->id);
 		}
 
 		// User is going to update his

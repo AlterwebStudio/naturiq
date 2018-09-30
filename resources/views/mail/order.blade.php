@@ -34,12 +34,12 @@
 
             <tbody>
 
-            @foreach (Cart::content() as $row)
+            @foreach (Cart::instance('default')->content() as $row)
 
                 <tr>
                     <td class="align-middle lh-15">
                         <strong class="big"><a href="{{ route('product_detail', [App\Product::get_category_slug($row->id),str_slug($row->name),$row->id]) }}">{{ $row->name }}</a></strong><br/>
-                        <span>@if ($row->options->has('size')) Veľkosť: {{ $row->options->size }} @endif</span>
+                        <span>@if ($row->options->has('weight')) Balenie: {{ $row->options->weight }} @endif</span>
                     </td>
                     <td class="align-middle text-center">{{ $row->qty }}x</td>
                     <td class="align-middle">{{ number_format($row->price,2, ',', ' ') }} &euro;</td>

@@ -6,8 +6,10 @@ use App\Client;
 use App\Order;
 use App\Payment;
 use App\Shipping;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
 
 class shippingController extends Controller
 {
@@ -37,30 +39,73 @@ class shippingController extends Controller
 			'payment_id' => 'required'
 		]);
 
-		if(Client::exists())
+		if(Client::exists() and Order::exists())
 		{
-		    // Set Client as regular user / not temporary
+
+		    // Set Temporary Client as regular user
 			$client = (new Client)->get();
             $client->temp = '0';
             $client->save();
 
-            // Update Order
+            // Store shipping and payment method choices in DB
             $order = (new Order)->get();
+
+            // Shipping definitions
+            $shipping = Shipping::findOrFail($request->shipping_id);
 			$order->shipping_id = $request->shipping_id;
-			$order->shipping_price = Shipping::findOrFail($request->shipping_id)->price;
+			$order->shipping_price = $shipping->price;
+			session(['shipping_id'=>$shipping->id]);
 
+			// Payment definitions
+            $payment = Payment::findOrFail($request->payment_id);
 			$order->payment_id = $request->payment_id;
-			$order->payment_price = Payment::findOrFail($request->payment_id)->price;
+			$order->payment_price = $payment->price;
+            session(['payment_id'=>$payment->id]);
 
+            // Save changes in DB
 			$order->save();
 
-			// Store the order in the session
+			// Destroy Others Shopping Cart Instance
+			Cart::instance('others')->destroy();
+
+
+			// Store shipping in Shopping Cart
+            Cart::instance('others')->add(
+                $shipping->id,
+                $shipping->name,
+                1,
+                $shipping->price,
+                [
+                    'desc' => $shipping->description,
+                    'image' => ''
+                ]
+            )->associate('App\Shipping');
+
+            // Store payment in Shopping Cart
+            Cart::instance('others')->add(
+                $payment->id,
+                $payment->name,
+                1,
+                $payment->price,
+                [
+                    'desc' => $payment->description,
+                    'image' => ''
+                ]
+            )->associate('App\Payment');
+
+
+			// Store Order ID in session
+            // In case the row was just created
 			session([
 			    'order_id'=>$order->id
             ]);
 
-			return redirect(route('eshop.confirmation'));
+
+			return redirect()->route('eshop.confirmation');
 		}
+
+		$error = new MessageBag(['Neexistuje ID užívateľa, alebo objednávky. V procese objednávky nie je možné pokračovať. Kontaktujte prosím administrátora.']);
+		return back()->withErrors($error);
 
 	}
 
