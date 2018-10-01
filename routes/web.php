@@ -135,6 +135,14 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 
+	/** SEARCH PRODUCTS **/
+
+	// Search products and recipes
+	Route::post('vyhladavanie', 'searchController@search')
+		->name('search');
+
+
+
 	/** LOGIN / LOGOUT / REGISTRATION / AUTHORIZATION **/
 
 	// Registration form

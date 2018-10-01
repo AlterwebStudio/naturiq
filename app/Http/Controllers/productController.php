@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Recept;
 use Illuminate\Http\Request;
 use App\Product;
+use Illuminate\Support\MessageBag;
 
 class productController extends Controller
 {

@@ -27,18 +27,17 @@
     <form action="{{ route('cart') }}" method="post">
       @csrf
       <div class="d-none">
-          @forelse($product->childs as $variant)
+          <input type="radio" name="variant_id" data-display-value="{{ $product->weight }}" data-regular-price="{{ $product->price_default }}" data-sale-price="{{ $product->price_action }}" value="{{ $product->id }}" checked="checked">
+          @foreach($product->childs as $variant)
               <input type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ $variant->price_default }}" data-sale-price="{{ $variant->price_action }}" value="{{ $variant->id }}" @if ($loop->first) checked="checked" @endif>
-          @empty
-              <input type="radio" name="variant_id" data-display-value="{{ $product->weight }}" data-regular-price="{{ $product->price_default }}" data-sale-price="{{ $product->price_action }}" value="{{ $product->id }}" checked="checked">
-          @endforelse
+          @endforeach
       </div>
 
       <div class="product__variant-selector btn btn-sm">
         <button type="button" name="button" class="prev-var">
           <img class="svg" src="/images/arrow_slideshow_left.svg" alt="">
         </button>
-        <span class="variant-value"></span>
+        <span class="variant-value text-center d-block"></span>
         <button type="button" name="button" class="next-var">
           <img class="svg" src="/images/arrow_slideshow_right.svg" alt="">
         </button>

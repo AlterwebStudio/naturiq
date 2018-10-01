@@ -85,8 +85,8 @@
                                     <div class="text-sm">Celkom bez DPH:</div>
                                 </div>
                                 <div class="col text-right">
-                                    <div class="text-bg font-weight-bold">{{ Cart::total() }} &euro;</div>
-                                    <div class="text-sm">{{ Cart::subtotal() }} &euro;</div>
+                                    <div class="text-bg font-weight-bold">{{ format_money( App\Order::total() ) }}</div>
+                                    <div class="text-sm">{{ format_money( App\Order::subtotal() ) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -111,8 +111,8 @@
                                     <div class="text-sm">Celkom bez DPH:</div>
                                 </div>
                                 <div class="col text-right">
-                                    <div class="text-bg font-weight-bold">{{ Cart::total() }} &euro;</div>
-                                    <div class="text-sm">{{ Cart::subtotal() }} &euro;</div>
+                                    <div class="text-bg font-weight-bold">{{ format_money( App\Order::total() ) }}</div>
+                                    <div class="text-sm">{{ format_money( App\Order::subtotal() ) }}</div>
                                 </div>
                             </div>
                         </div>
