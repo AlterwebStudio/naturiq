@@ -18,31 +18,69 @@
     <section>
         <div class="container py-5">
             <div class="row">
+
+                <div class="col-12 mb-5">
+                    @include ('inc.partials.messages')
+                </div>
+
+                @if (Auth::check())
+
+                <div class="col-12">
+                    <h2 class="text-center">
+                        {{ Auth::user()->name }}
+                        <div class="line">
+                        </div>
+                    </h2>
+                    <p class="alert text-center mt-3">Vitajte {{ App\Client::getFirstname() }}, máme tu pre vás<br/>zoznam Vašich predchádzajúcich nákupov:</p>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Číslo objednávky</th>
+                                <th>Dátum</th>
+                                <th class="text-center">Stav spracovania</th>
+                                <th class="text-right">Hodnota v EUR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @forelse ($client->orders as $order)
+                            <tr>
+                                <td>{{ $order->number }}</td>
+                                <td>{{ $order->created_at }}</td>
+                                <td>{{ $order->status_id }}</td>
+                                <td>{{ $order->total_price }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4">Zatiaľ žiadne objednávky...</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                    
+                    <div class="form-group mt-4 text-right" >
+                        <div class="row">
+                            <div class="col-md-auto ml-auto mr-auto order-1 order-md-2 mb-3 mb-md-0"><a href="{{ route('eshop.logout') }}" class="btn btn-orange w-100">Odhlásiť z účtu</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                @else
+
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
                             <h2 class="text-center">
-                                Vítame vás v našom obchode
+                                    Vítame vás v našom obchode
                                 <div class="line">
                                 </div>
                             </h2>
                         </div>
                         <div class="col-md-5 mx-md-auto">
 
-                            @if (Auth::check())
-                                <p class="alert alert-success text-center mt-5">Autorizácia prebehla v poriadku, boli ste prihlásený!<br/><b>Prajeme vám príjemný nákup.</b></p>
-                                <div class="form-group mt-4 text-right" >
-                                    <div class="row">
-                                        <div class="col-md-auto ml-auto order-1 order-md-2 mb-3 mb-md-0 text-right"><a href="{{ route('eshop.logout') }}" class="btn btn-orange w-100">Odhlásiť z účtu</a></div>
-                                    </div>
-                                </div>
-                            @else
-
                             <p class="text-center m-0">
                                 <small>Nemáte ešte u nás účet? <a href="{{ route('register') }}" class="font-weight-bold">Založte si konto Naturiq</a></small>
                             </p>
-
-                            @include ('inc.partials.messages')
 
                             <form id="text-form" action="{{ route('login') }}" method="post" class="validate-form my-4">
                                 @csrf
@@ -77,11 +115,12 @@
                                 </small>
                             </p>
 
-                            @endif
-
                         </div>
                     </div>
                 </div>
+
+                @endif
+
             </div>
         </div>
 

@@ -67,6 +67,20 @@ class Client extends Model
     }
 
 
+    /**
+     * Get Client Firstname
+     * @return mixed
+     */
+    public static function getFirstname() {
+        if(self::exists()) {
+            $id = self::id();
+            $fullname = Client::find($id)->name;
+            list($firstname,$lastname) = explode(' ',$fullname);
+            return $firstname;
+        }
+    }
+
+
 	/**
 	 * Get Logged User or Registered Client Eloquent Model
 	 * @return mixed

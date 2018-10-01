@@ -5,7 +5,7 @@
 {{-- TOTO TREBA ASI POLUCNIT A PRESUNUT NORMALNE DO JS --}}
 <script type="text/javascript">
     function set_login_value(){
-        var email = document.getElementById("eml");
+        var email = document.getElementById("company-eml");
         var login = document.getElementById("login");
         login.value = email.value;
     }
@@ -16,7 +16,7 @@
         <div class="row">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Domov</a></li>
-                <li class="breadcrumb-item active">Nový účet</li>
+                <li class="breadcrumb-item active">Nový účet - Veľkoodberatelia</li>
             </ol>
         </div>
     </div>
@@ -31,46 +31,22 @@
 
                 @include ('inc.partials.messages')
 
-                <form id="register-form-wholesale" action="{{ route('register') }}" method="post" class="validate-form">
+                <form id="register-form" action="{{ route('register.seller') }}" method="post" class="validate-form">
                     @csrf
                     <div class="row">
                         <!-- LAVA STRANA -->
                         <div class="col-lg-3">
+
                             <h2>
-                                Nový účet
-                                <div class="line"></div>
-                            </h2>
-
-                            <p class="text-sm">
-                                Tešíme sa, že ste sa rozhodli založiť nový účet v našom obchode.
-                            </p>
-                            <p class="text-sm">
-                                Pomocou nášho účtu zberáte za každý nákup N-iq body, ktoré odmenia vaše pravidelné nákupy  výhodnejšími ponukami.
-                            </p>
-
-                            <div class="text-sm">
-                                <a href="#zakaznicke-bonusy" class="font-weight-bold">
-                                    Viac o zákazníckych bonusoch
-                                </a>
-                            </div>
-
-
-
-                            <h2 class="mt-5">
                                 Veľkoodberatelia
                                 <span class="line"></span>
                             </h2>
 
                             <p class="text-sm">
-                                Máte záujem predávať naše produkty vo vašom obchode ? Požiadajte o&nbsp;vytvorenie veľkoobchodného konta Naturiq pomocou našeho formuláru pre veľkoodberateľov.
+                                Máte záujem predávať naše produkty vo vašom obchode? Požiadajte o&nbsp;vytvorenie veľkoobchodného konta Naturiq pomocou našeho formuláru pre veľkoodberateľov.
                                 <strong>(vyžaduje&nbsp;schválenie)</strong>
                             </p>
 
-                            <div class="text-sm">
-                                <a href="{{ route('register.seller') }}" class="font-weight-bold">
-                                    Tvorba veľkoodberatelského konta
-                                </a>
-                            </div>
                         </div>
 
 
@@ -85,7 +61,7 @@
                                     <div class="form-header row">
                                         <div class="col-auto">
                                             <h3 class="form-header__name">
-                                                Osobné údaje
+                                                Základné údaje
                                             </h3>
                                         </div>
                                         <div class="col">
@@ -95,30 +71,70 @@
                                     </div>
 
                                     <div>
-
-                                        <div class="form-group">
-                                            <label for="name-surname">Meno a priezvisko*</label>
-                                            <input id="name-surname" name="client[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno a priezvisko"
-                                                   value="{{ old('client.name') }}">
-                                            <div class="input_msg" data-id="name-surname"></div>
+                                        <!-- MENO SPOLOČNOSTI -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="company-name">Názov spoločnosti*</label>
+                                                    <input id="company-name" name="company[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ old('company.name') }}">
+                                                    <div class="input_msg" data-id="company-name"></div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <!-- ICO + DIC -->
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="company-id">IČO*</label>
+                                                    <input id="company-id" name="company[ico]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte IČO spoločnosti" value="{{ old('company.ico')  }}">
+                                                    <div class="input_msg" data-id="company-id"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="company-tax-id">DIČ*</label>
+                                                    <input id="company-tax-id" name="company[dic]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte DIČ spoločnosti" value="{{ old('company.dic') }}">
+                                                    <div class="input_msg" data-id="company-tax-id"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- IC DPH -->
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="company-vat-id">IČ DPH</label>
+                                                    <input id="company-vat-id" name="company[icdph]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti" value="{{ old('company.icdph') }}">
+                                                    <div class="input_msg" data-id="company-vat-id"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="company-web">Web</label>
+                                                    <input id="company-web" name="company[web]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno a priezvisko" value="{{ old('company.web') }}">
+                                                    <div class="input_msg" data-id="company-web"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
 
                                         <!-- E mail + Tel c -->
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="eml">E-mail*</label>
-                                                    <input id="eml" name="client[email]" class="form-control required" type="email" data-invalid-response="Prosíme vyplňte váš e-mail"
-                                                           value="{{ old('client.email') }}" onblur="set_login_value()">
-                                                    <div class="input_msg" data-id="eml"></div>
+                                                    <label for="company-eml">E-mail*</label>
+                                                    <input id="company-eml" name="client[email]" class="form-control required" type="email" data-invalid-response="Prosíme vyplňte váš e-mail" value="{{ old('client.email') }}" onblur="set_login_value()">
+                                                    <div class="input_msg" data-id="company-eml"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
+                                            <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="tel">Telefónne číslo*</label>
-                                                    <input id="tel" name="client[phone]" class="form-control required" type="tel" data-invalid-response="Prosíme vyplňte vaše telefónne číslo"
-                                                           value="{{ old('client.phone') }}">
-                                                    <div class="input_msg" data-id="tel"></div>
+                                                    <label for="company-tel">Telefónne číslo*</label>
+                                                    <input id="company-tel" name="client[phone]" class="form-control required" type="tel" data-invalid-response="Prosíme vyplňte vaše telefónne číslo" value="{{ old('client.phone') }}">
+                                                    <div class="input_msg" data-id="company-tel"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,18 +143,16 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="city">Mesto*</label>
-                                                    <input id="city" name="client[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše mesto"
-                                                           value="{{ old('client.city') }}">
-                                                    <div class="input_msg" data-id="city"></div>
+                                                    <label for="company-city">Mesto*</label>
+                                                    <input id="company-city" name="client[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('client.city') }}">
+                                                    <div class="input_msg" data-id="company-city"></div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="street">Ulica a popisné číslo*</label>
-                                                    <input id="street" name="client[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vašu ulicu a číslo"
-                                                           value="{{ old('client.street') }}">
-                                                    <div class="input_msg" data-id="street"></div>
+                                                    <label for="company-street">Ulica a popisné číslo*</label>
+                                                    <input id="company-street" name="client[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('client.street') }}">
+                                                    <div class="input_msg" data-id="company-street"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,18 +161,16 @@
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <div class="form-group">
-                                                    <label for="psc">PSČ*</label>
-                                                    <input id="psc" name="client[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ"
-                                                           value="{{ old('client.zip') }}">
-                                                    <div class="input_msg" data-id="psc"></div>
+                                                    <label for="company-psc">PSČ*</label>
+                                                    <input id="company-psc" name="client[zip]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše PSČ" value="{{ old('client.zip') }}">
+                                                    <div class="input_msg" data-id="company-psc"></div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-8">
                                                 <div class="form-group">
-                                                    <label for="country">Krajina*</label>
-                                                    <input id="country" name="client[country]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte krajinu"
-                                                           value="{{ old('client.country') }}">
-                                                    <div class="input_msg" data-id="country"></div>
+                                                    <label for="company-country">Krajina</label>
+                                                    <input id="company-country" name="client[country]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše bydlisko" value="{{ old('client.country') }}">
+                                                    <div class="input_msg" data-id="company-country"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -168,7 +180,7 @@
                                     <!-- KONIEC SEKCIE FORMULARU -->
 
 
-                                    <!-- INA DORUCOVACIA ADRESA -->
+                                    <!-- INA DORUCOVACIA -->
                                     <div class="form-header row mt-3" data-toggle="collapse" data-target="#dorucovacia" aria-expanded="false" aria-controls="dorucovacia">
                                         <div class="col-auto">
                                             <h3 class="form-header__name">
@@ -189,18 +201,18 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="delivery-street">Ulica a popisné číslo*</label>
-                                                    <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte adresu doručenia"
-                                                           value="{{ old('address.street') }}">
-                                                    <div class="input_msg" data-id="delivery-street"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
                                                     <label for="delivery-city">Mesto*</label>
                                                     <input id="delivery-city" name="address[city]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte adresu doručenia"
                                                            value="{{ old('address.city') }}">
                                                     <div class="input_msg" data-id="delivery-city"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="delivery-street">Ulica a popisné číslo*</label>
+                                                    <input id="delivery-street" name="address[street]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte adresu doručenia"
+                                                           value="{{ old('address.street') }}">
+                                                    <div class="input_msg" data-id="delivery-street"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -226,72 +238,18 @@
                                         </div>
 
 
-                                    </div>
-                                    <!-- KONIEC SEKCIE FORMULARU -->
-
-                                    <!-- OBJEDNAVKA NA FIRMU -->
-                                    <div class="form-header row mt-3" data-toggle="collapse" data-target="#company" aria-expanded="false" aria-controls="company">
-                                        <div class="col-auto">
-                                            <h3 class="form-header__name">
-                                                Objednávka na firmu
-                                            </h3>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-header__line"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-check form-header__checkbox"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="collapse" id="company">
-
-                                        <!-- MENO SPOLOČNOSTI -->
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="company-name">Názov spoločnosti*</label>
-                                                    <input id="company-name" name="company[name]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti"
-                                                           value="{{ old('company.name') }}">
-                                                    <div class="input_msg" data-id="company-name"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- ICO + DIC -->
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="company-id">IČO*</label>
-                                                    <input id="company-id" name="company[ico]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte IČO spoločnosti"
-                                                           value="{{ old('company.ico') }}">
-                                                    <div class="input_msg" data-id="company-id"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="company-tax-id">DIČ*</label>
-                                                    <input id="company-tax-id" name="company[dic]" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte DIČ spoločnosti"
-                                                           value="{{ old('company.dic') }}">
-                                                    <div class="input_msg" data-id="company-tax-id"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- IC DPH -->
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="company-vat-id">IČ DPH</label>
-                                                    <input id="company-vat-id" name="company[icdph]" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše meno spoločnosti"
-                                                           value="{{ old('company.icdph') }}">
-                                                    <div class="input_msg" data-id="company-vat-id"></div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                     </div>
                                     <!-- KONIEC SEKCIE FORMULARU -->
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label for="msg">Správa</label>
+                                            <textarea name="client[note]" id="msg" class="form-control" data-invalid-response="Vyplňte prosím správu" placeholder="Správa" rows="8" cols="80"></textarea>
+                                            <div class="input-msg" data-id="msg"></div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
                                 <!-- PRAVA STRANA - prihlasovacie udaje -->
@@ -311,7 +269,8 @@
 
                                     <div class="form-group">
                                         <label for="login">Prihlasovacie meno</label>
-                                        <input id="login" name="username" class="form-control" type="text" data-invalid-response="Prosíme vyplňte vaše prihlasovacie meno" value="{{ old('client.email') }}" disabled>
+                                        <input id="login" name="login" class="form-control required" type="text" data-invalid-response="Prosíme vyplňte vaše prihlasovacie meno" value="{{ old('client.email') }}" disabled>
+                                        <div class="input_msg" data-id="login"></div>
                                     </div>
 
                                     <div class="form-group">
@@ -361,7 +320,7 @@
 
                                 <div class="col-lg-7 mt-4">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-orange w-100" name="subm">Vytvoriť účet</button>
+                                        <button type="submit" class="btn btn-orange w-100" name="subm">Vytvoriť veľkoodberatelský účet</button>
                                     </div>
                                 </div>
 

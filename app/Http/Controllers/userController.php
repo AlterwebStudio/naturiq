@@ -8,15 +8,6 @@ use Illuminate\Support\MessageBag;
 
 class userController extends Controller
 {
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		//$this->middleware('auth');
-	}
 
 	/**
 	 * Handle an authentication attempt.
@@ -28,14 +19,15 @@ class userController extends Controller
 	public function authenticate(Request $request)
 	{
 		$credentials = $request->only('email', 'password');
+		$credentials['approved'] = '1';
 
 		if (Auth::attempt($credentials))
 		{
-			return redirect()->back();
+			return redirect()->route('login');
 		}
 		else
 		{
-		    $error = new MessageBag(['E-mailová adresa, ktorú ste zadali sa nezhoduje s heslom zadaným pri registrácií']);
+		    $error = new MessageBag(['E-mailová adresa, alebo heslo nebolo zadané správne, alebo vaše konto nebolo zatiaľ schválené administrátorom.']);
 			return redirect()->back()
 				->withErrors($error);
 		}

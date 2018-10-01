@@ -151,8 +151,17 @@ Route::group(['prefix'=>'eshop'], function () {
 		else return view('eshop.register');
 	})->name('register');
 
+	// Registration form
+	Route::get('registracia-velkoodberatela', function() {
+		if(Auth::check()) return redirect()->route('login');
+		else return view('eshop.register_seller');
+	})->name('register.seller');
+
 	// Submit registration form
 	Route::post('registracia-zakaznika', 'registerController@store');
+
+	// Submit Seller registration form
+	Route::post('registracia-velkoodberatela', 'registerController@store_seller');
 
 
 	// Update User profile
@@ -162,7 +171,8 @@ Route::group(['prefix'=>'eshop'], function () {
 
 	// Login User form
 	Route::get('prihlasenie-uzivatela', function () {
-		return view('eshop.login');
+        $client = (new App\Client)->get();
+		return view('eshop.login', compact('client'));
 	})->name('login');
 
 	// Login User
