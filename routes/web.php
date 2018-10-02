@@ -12,9 +12,14 @@
 */
 
 
+// Homepage
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
+
+// Recipes
+Route::get('recepty/{tag?}', 'receptController@index')
+    ->name('home');
 
 
 

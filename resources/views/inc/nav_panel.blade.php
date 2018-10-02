@@ -1,7 +1,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="index.php">
+		<a class="navbar-brand" href="{{ route('home') }}">
 			<img src="images/logo.svg" alt="">
 		</a>
 
@@ -33,19 +33,19 @@
 
 			<ul class="navbar-nav d-none d-lg-flex">
 				<li class="nav-item active">
-					<a class="nav-link" href="#">úvod</a>
+					<a class="nav-link" href="/">úvod</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">náš príbeh</a>
+					<a class="nav-link" href="/nas-pribeh">náš príbeh</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">predajne</a>
+					<a class="nav-link" href="/predajne">predajne</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">recepty</a>
+					<a class="nav-link" href="/recepty">recepty</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">kontakt</a>
+					<a class="nav-link" href="/kontakt">kontakt</a>
 				</li>
 				<li class="nav-item">
 					<a class="btn btn-orange" href="/eshop">e-shop</a>

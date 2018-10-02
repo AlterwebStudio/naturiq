@@ -8,4 +8,12 @@
 
 </nav>--}}
 
-{{ $products->links() }}
+@if (isset($products))
+
+    {{ $products->links() }}
+
+@elseif (isset($recepts))
+
+    {{ $recepts->links() }}
+
+@endif
