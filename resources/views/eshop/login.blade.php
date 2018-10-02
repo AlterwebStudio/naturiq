@@ -33,7 +33,7 @@
                     </h2>
                     <p class="alert text-center mt-3">Vitajte {{ App\Client::getFirstname() }}, máme tu pre vás<br/>zoznam Vašich predchádzajúcich nákupov:</p>
 
-                    <table class="table table-striped">
+                    <table class="table table-striped mb-6">
                         <thead>
                             <tr>
                                 <th>Číslo objednávky</th>
@@ -45,10 +45,10 @@
                         <tbody>
                         @forelse ($client->orders as $order)
                             <tr>
-                                <td>{{ $order->number }}</td>
+                                <td class="font-weight-bold">{{ $order->number }}</td>
                                 <td>{{ $order->created_at }}</td>
-                                <td>{{ $order->status_id }}</td>
-                                <td>{{ $order->total_price }}</td>
+                                <td class="text-center">{{ $order->status_id }}</td>
+                                <td class="text-right">{{ $order->total_price }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -58,9 +58,12 @@
                         </tbody>
                     </table>
                     
-                    <div class="form-group mt-4 text-right" >
+                    <div class="form-group text-right" >
                         <div class="row">
-                            <div class="col-md-auto ml-auto mr-auto order-1 order-md-2 mb-3 mb-md-0"><a href="{{ route('eshop.logout') }}" class="btn btn-orange w-100">Odhlásiť z účtu</a></div>
+                            <div class="col-md-auto ml-auto mr-auto order-1 order-md-2 mb-3 mb-md-0">
+                                <a href="{{ route('eshop.profile') }}" class="btn btn-secondary d-inline">Zmeniť prístupové heslo</a>
+                                <a href="{{ route('eshop.logout') }}" class="btn btn-orange d-inline">Odhlásiť sa z účtu</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,7 +102,6 @@
                                                 <i class="fas fa-eye icon"></i>
                                             </button>
                                         </div>
-
                                     </div>
                                     <div class="input_msg" data-id="password"></div>
                                 </div>
@@ -111,7 +113,7 @@
                             </form>
                             <p class="text-center m-0">
                                 <small>
-                                    <a href="{{ route('login.forgotten_password') }}" class="font-weight-bold">Zabudli ste svoje heslo ?</a>
+                                    <a href="{{ route('eshop.forgotten_password') }}" class="font-weight-bold">Zabudli ste svoje heslo ?</a>
                                 </small>
                             </p>
 

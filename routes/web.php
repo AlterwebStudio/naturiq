@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('home');
 });
@@ -26,7 +27,7 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 
-	/** 1. SHOPPING CART **/
+	/** 1. SHOPPING CART - CHECKOUT **/
 
 	// Display Cart
 	Route::get('cart', 'cartController@index')
@@ -56,6 +57,9 @@ Route::group(['prefix'=>'eshop'], function () {
 	});
 
 
+
+    /** COUPONS **/
+
 	// Activate Discount Coupon
 	Route::post('cart/coupon/activate', 'CouponController@activate')
 		->name('cart.activate_coupon');
@@ -64,6 +68,9 @@ Route::group(['prefix'=>'eshop'], function () {
 	Route::get('cart/coupon/remove', 'CouponController@remove')
 		->name('cart.remove_coupon');
 
+
+
+    /** REGISTRATION DURING CHECKOUT **/
 
 	// Execute Client Registration Form
 	Route::post('cart/register', 'clientController@register')
@@ -143,9 +150,11 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 
-	/** LOGIN / LOGOUT / REGISTRATION / AUTHORIZATION **/
+	/** REGISTRATION | PROFILE | LOGIN | FORGOTTEN PASSWORD | LOGOUT **/
 
-	// Registration form
+    /** REGISTRATION **/
+
+    // Registration form
 	Route::get('registracia-zakaznika', function() {
 		if(Auth::check()) return redirect()->route('login');
 		else return view('eshop.register');
@@ -164,10 +173,21 @@ Route::group(['prefix'=>'eshop'], function () {
 	Route::post('registracia-velkoodberatela', 'registerController@store_seller');
 
 
-	// Update User profile
-	Route::resource('profil', 'profileController')
-		->only('index','store');
 
+    /** EDITING USER PROFILE **/
+
+	// User profile
+	Route::get('profil-uzivatela', function () {
+	    $client = (new App\Client)->get();
+        return view('eshop.profile', compact('client'));
+    })->name('eshop.profile');
+
+	// Update user profile
+	Route::post('profil-uzivatela', 'profileController@store');
+
+
+
+    /** LOGIN **/
 
 	// Login User form
 	Route::get('prihlasenie-uzivatela', function () {
@@ -179,16 +199,32 @@ Route::group(['prefix'=>'eshop'], function () {
 	Route::post('prihlasenie-uzivatela', 'userController@authenticate');
 
 
+
+    /** FORGOTTEN PASSWORD **/
+
 	// Forgotten password
 	Route::get('zabudnute-heslo', function () {
-	//	return view('eshop.login');
-	})->name('login.forgotten_password');
 
+        if(Auth::check()) return back()->with('error','Asi ste sa pomýlili. Funkciu vygenerovania nového hesla väčšinou používajú neprihlásení užívatelia.');
+		return view('eshop.forgotten_password');
+	})->name('eshop.forgotten_password');
+
+	// Confirm generated password
+	Route::get('confirm-password/{password}', 'clientController@confirm_password')
+        ->where('password','[a-zA-Z0-9-$\/.]+');
+
+	// Reset Client Password
+	Route::post('zabudnute-heslo', 'clientController@reset_password');
+
+
+
+    /** LOGOUT **/
 
 	// Logout User
 	Route::get('odhlasenie', function () {
 		Auth::logout();
-		return redirect()->route('login')->with('message','Ďakujeme za návštevu!');
+		return redirect()->route('login');
 	})->name('eshop.logout');
+
 
 });

@@ -7,6 +7,7 @@ use App\Client;
 use App\Company;
 use App\Http\Requests\RegistrationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\DB;
 
 class registerController extends Controller
@@ -140,7 +141,7 @@ class registerController extends Controller
 		$client = new Client;
         $client->address_id = $address->id;
         $client->company_id = $company->id;
-//        $client->name = $request->company['name'];
+        $client->name = $request->company['name'];
         $client->street = $request->client['street'];
         $client->zip = $request->client['zip'];
         $client->city = $request->client['city'];
@@ -152,8 +153,19 @@ class registerController extends Controller
         $client->temp = '0';
         $client->save();
 
+        $this->notify_admin(); // Send notification E-mail to Site Admin
+
 		return redirect()->route('login')
 			->with('message','Registrácia prebehla úspešne.<br/>Uživateľské kontá so žiadosťou o pridelenie štatútu veľkoodberateľa musia pre aktiváciou prejsť manuálnym schválením našimi administrátormi.<br/>O úspešnom schválení účtu vás budeme kontaktovať e-mailom v priebehu najbližších pracovných dní.');
 	}
+
+    /**
+     * Notify Admin about Registration of Seller by Mail
+     */
+    public static function notify_admin()
+    {
+        $user = (new \App\User)->find(2);
+        $user->notify( new \App\Notifications\SellerRegistered() );
+    }
 
 }

@@ -5,10 +5,13 @@ namespace App;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 
 class Client extends Model
 {
+
+    use Notifiable;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -26,6 +29,7 @@ class Client extends Model
 		'phone',
 		'email',
 		'password',
+        'password_reset',
 		'type',
 		'temp'
 	];
@@ -77,6 +81,44 @@ class Client extends Model
             $fullname = Client::find($id)->name;
             list($firstname,$lastname) = explode(' ',$fullname);
             return $firstname;
+        }
+        return false;
+    }
+
+    /**
+     * Get Client Registration Type Attribute
+     * @param $type
+     * @return string
+     */
+    public function getTypeAttribute($type) {
+        switch($type) {
+            case 0: return 'Návštevník'; break;
+            case 1: return 'Užívateľ'; break;
+            case 2: return 'Veľkoodberateľ'; break;
+        }
+    }
+
+    /**
+     * Get Client Registration Type Attribute
+     * @param $type
+     * @return string
+     */
+    public function getTempAttribute($status) {
+        switch($status) {
+            case 0: return 'Nie'; break;
+            case 1: return 'Áno'; break;
+        }
+    }
+
+    /**
+     * Get Current Seller Acceptation Status
+     * @param $status
+     * @return string
+     */
+    public function getApprovedAttribute($status) {
+        switch($status) {
+            case 0: return 'Čaká na schválenie'; break;
+            case 1: return 'Schválený'; break;
         }
     }
 

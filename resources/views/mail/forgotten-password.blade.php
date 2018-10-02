@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kontaktný formulár</title>
+    <title>{{ config('name') }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Colo Shop Template">
@@ -13,32 +13,27 @@
 
 <div class="container">
 
-    <h1 class="title text-center mt-5 mb-5">Dopyt z webu</h1>
+    <h1 class="title text-center mt-5 mb-5">Nové prihlasovacie údaje</h1>
 
     <p class="alert alert-secondary mb-5">
-        Z webu brogy.sk bol práve odoslaný kontaktný formulár. Info o zákazníkovi:
+        Zaznamenali sme požiadavku na vygenerovanie nového prihlasovacieho hesla pre vaše konto.<br/>
+        Kliknutím na tlačidlo nižšie prihlasovacie údaje potvrdíte a aktivujete.
     </p>
 
     <table class="table table-striped">
         <tbody>
         <tr>
-            <td style="width:20%">Meno a priezvisko</td>
-            <td>{{ $data['request']['name'] }}</td>
+            <td style="width:20%">Prihlasovacie meno</td>
+            <td>{{ $credentials['login'] }}</td>
         </tr>
         <tr>
-            <td>E-mail</td>
-            <td>{{ $data['request']['email'] }}</td>
-        </tr>
-        <tr>
-            <td>Telefón</td>
-            <td>{{ $data['request']['phone'] }}</td>
-        </tr>
-        <tr>
-            <td>Poznámka</td>
-            <td>{{ $data['request']['note'] }}</td>
+            <td>Nové heslo</td>
+            <td>{{ $credentials['password'] }}</td>
         </tr>
         </tbody>
     </table>
+
+    <a href="{{ config('app.url') }}/eshop/confirm-password/{{ $credentials['password_hash'] }}" class="btn btn-lg btn-success mt-3">Potvrdiť prihlasovacie údaje</a>
 
     @include ('mail.signature')
 

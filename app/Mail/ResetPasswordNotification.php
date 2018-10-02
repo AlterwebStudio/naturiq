@@ -5,22 +5,20 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-//use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RequestFormNotification extends Mailable
+class ResetPasswordNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data = [];
+    private $credentials;
 
     /**
      * Create a new message instance.
-     * @param $data
-     * @return void
+     * @param array $credentials
      */
-    public function __construct($data=null)
+    public function __construct($credentials = [])
     {
-        if(is_array($data)) $this->data = $data;
+        $this->credentials = $credentials;
     }
 
     /**
@@ -30,9 +28,9 @@ class RequestFormNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.request-form')
+        return $this->view('mail.forgotten-password')
             ->from('tetrev@alterweb.sk', config('app.name'))
-			->subject(config('app.name') . ' - Dopytový formulár')
-			->with('client',$this->data);
+			->subject(config('app.name') . ' - Vaše prihlasovacie údaje')
+            ->with('credentials',$this->credentials);
     }
 }

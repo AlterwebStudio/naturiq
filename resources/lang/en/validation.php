@@ -109,7 +109,7 @@ return [
     ],
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => ':attribute je už v systéme registrovaná. Ak adresa patrí vám, nechajte si <a href="'.route('login.forgotten_password').'">vygenerovať prístupové heslo</a>.',
+    'unique'               => ':attribute je už v systéme registrovaná. Ak adresa patrí vám, nechajte si <a href="'.route('eshop.forgotten_password').'">vygenerovať prístupové heslo</a>.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
 
@@ -162,6 +162,8 @@ return [
 
 		'shipping_id' => 'DOPRAVA',
 		'payment_id' => 'PLATBA',
+
+        'password' => 'Heslo'
 	],
 
 ];

@@ -185,6 +185,15 @@ class Order extends Model
 	}
 
 
+    /**
+     * @param $status_id
+     * @return string
+     */
+	public function getStatusIdAttribute($status_id) {
+	    return Status::find($status_id)->name;
+	}
+
+
 	/**
 	 * @desc Vrati ID rozpracovanej objednavky prihlaseneho zakaznika
 	 * Vrati false v pripade neprihlaseneho uzivatela, alebo

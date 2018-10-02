@@ -5,22 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class profileController extends Controller
 {
 
-	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
 	public function index()
 	{
-		if(Auth::check()) {
-			$client_id = Auth::user()->id;
-			$client_data = Client::find($client_id);
-			return view('eshop.profile')->with('client',$client_data);
-		} else {
-			return view('eshop.login')->with('message','Nie ste prihlásený');
-		}
+	    //
 	}
 
 	/**
@@ -30,18 +22,28 @@ class profileController extends Controller
 	public function store(Request $request)
 	{
 
-		if(Auth::check()) {
-			$client_id = Auth::user()->id;
+	    $request->validate([
+	        'password' => 'required|confirmed|min:6'
+        ]);
 
-			Client::find($client_id)->company()->update($request->company);
-			Client::find($client_id)->address()->update($request->address);
-			Client::find($client_id)->update($request->except('company','address','approve'));
+		if(Auth::check())
+		{
 
-			return redirect()->back()
-				->withInput()
-				->with('message','Údaje boli aktualizované');
+            $client = (new Client)->get();
+
+            if(Hash::check($request->current_password, $client->password)) {
+
+                $password = $request->password;
+                $client->password = bcrypt($password);
+                $client->save();
+
+                return redirect()->back()
+                    ->with('message', 'Údaje boli aktualizované');
+            }
+            else return back()->with('error','Vaše súčasné heslo sa nezhoduje so zadaným.');
 
 		}
+		return redirect()->route('login')->with('error','Údaje sa nepodarilo aktualizovať. Nie ste prihlásený.');
 	}
 
 }

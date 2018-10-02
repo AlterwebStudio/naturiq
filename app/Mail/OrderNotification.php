@@ -31,7 +31,8 @@ class OrderNotification extends Mailable
     public function build()
     {
         return $this->view('mail.order')
-			->subject('Naturiq.sk - Potvrdenie objednávky')
+            ->from('tetrev@alterweb.sk', config('app.name'))
+			->subject(config('app.name') . ' - Potvrdenie objednávky')
 			->with('data',$this->data);
     }
 }
