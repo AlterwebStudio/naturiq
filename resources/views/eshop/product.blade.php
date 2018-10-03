@@ -17,16 +17,16 @@
     </nav>
 
 
-    <!-- PRODUCT -->
+    {{--PRODUCT--}}
     <section class="product-page py-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
 
-                    <!-- HLAVNA SLIDESHOW PRODUKTU -->
+                    {{--HLAVNA SLIDESHOW PRODUKTU--}}
                     <div class="product-page__main-slideshow">
 
-                        <!-- ODZNAKY LAVA STRANA / -->
+                        {{--ODZNAKY LAVA STRANA--}}
                         <div class="product__badges_left">
                             @foreach ($product->tags as $tag)
                                 <div class="badge {{ $tag->class }}">{{ $tag->name }}</div>
@@ -36,7 +36,7 @@
                             @endif
                         </div>
 
-                        <!-- ODZNAKY PRAVA STRANA / -->
+                        {{--ODZNAKY PRAVA STRANA--}}
                         <div class="product__badges_right">
                             @foreach ($product->attributes as $attribute)
                                 <div class="badge"><img src="{{ asset('/storage/'.$attribute->icon) }}" title="{{ $attribute->title }}" /></div>
@@ -50,11 +50,14 @@
                                 </div>
                             </div>
                             <div class="col-10 mx-auto col-lg-8 slideshow">
-								@for ($i=0; $i < 4; $i++)
                                 <div class="slide">
-                                    <img src="{{ asset('/storage/'.$product->image) }}" alt="">
+                                    <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'medium') }}" alt="">
                                 </div>
-								@endfor
+								@foreach (json_decode($product->gallery) as $image )
+                                <div class="slide">
+                                    <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'medium') }}" alt="">
+                                </div>
+								@endforeach
                             </div>
                             <div class="col-2 d-none d-lg-flex align-items-center">
                                 <div class="directional-arrow next">
@@ -64,13 +67,16 @@
                         </div>
                     </div>
 
-                    <!-- PRODUCT GALLERY - SPODNA SLIDESHOW KTORA OVLADA TU HLAVNU -->
+                    {{--PRODUCT GALLERY - SPODNA SLIDESHOW KTORA OVLADA TU HLAVNU--}}
                     <div class="product-page__nav-slideshow  mb-5 mb-lg-0">
-                        @for ($i=0; $i < 4; $i++)
                         <div class="slide">
-                            <img src="/images/produkty/1.png" alt="">
+                            <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'mini') }}" alt="">
                         </div>
-						@endfor
+                        @foreach (json_decode($product->gallery) as $image )
+                            <div class="slide">
+                                <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'mini') }}" alt="">
+                            </div>
+                        @endforeach
                     </div>
 
                 </div>
@@ -207,7 +213,8 @@
             </div>
         </div>
         <!-- slideshow  -->
-		@include ('inc.partials.slideshows.product-slideshow')
+        <?php $featured = $product->featured(false); ?>
+        @include ('inc.partials.slideshows.product-slideshow', ['featured'=>$featured])
     </section>
 
 

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.21)
 # Database: naturiq
-# Generation Time: 2018-10-02 12:17:49 +0000
+# Generation Time: 2018-10-02 16:22:02 +0000
 # ************************************************************
 
 
@@ -1143,6 +1143,64 @@ VALUES
 UNLOCK TABLES;
 
 
+# Dump of table recept_recept-tag
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `recept_recept-tag`;
+
+CREATE TABLE `recept_recept-tag` (
+  `recept-tag_id` smallint(3) unsigned NOT NULL,
+  `recept_id` int(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `recept_recept-tag` WRITE;
+/*!40000 ALTER TABLE `recept_recept-tag` DISABLE KEYS */;
+
+INSERT INTO `recept_recept-tag` (`recept-tag_id`, `recept_id`)
+VALUES
+	(1,3),
+	(1,2),
+	(2,1),
+	(2,2),
+	(2,3),
+	(3,2),
+	(4,4),
+	(4,2),
+	(5,1),
+	(5,4);
+
+/*!40000 ALTER TABLE `recept_recept-tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table recept-tags
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `recept-tags`;
+
+CREATE TABLE `recept-tags` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) DEFAULT NULL,
+  `slug` varchar(32) DEFAULT NULL,
+  `class` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `recept-tags` WRITE;
+/*!40000 ALTER TABLE `recept-tags` DISABLE KEYS */;
+
+INSERT INTO `recept-tags` (`id`, `name`, `slug`, `class`)
+VALUES
+	(1,'Raňajky','ranajky','blue'),
+	(2,'Desiata','desiata','green'),
+	(3,'Obed','obed','gold'),
+	(4,'Olovrant','olovrant','pink'),
+	(5,'Večera','vecera','purple');
+
+/*!40000 ALTER TABLE `recept-tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table recepts
 # ------------------------------------------------------------
 
@@ -1151,7 +1209,7 @@ DROP TABLE IF EXISTS `recepts`;
 CREATE TABLE `recepts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
-  `excerpt` varchar(255) DEFAULT NULL,
+  `excerpt` text,
   `content` text,
   `ingredients` text,
   `illustration` varchar(255) DEFAULT NULL,
@@ -1161,6 +1219,15 @@ CREATE TABLE `recepts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `recepts` WRITE;
+/*!40000 ALTER TABLE `recepts` DISABLE KEYS */;
+
+INSERT INTO `recepts` (`id`, `title`, `excerpt`, `content`, `ingredients`, `illustration`, `gallery`, `created_at`, `updated_at`)
+VALUES
+	(1,'Lorem ipsum dolor sit amet, consetetur sadipscing elitr','Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.','<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','<p>&nbsp;</p>\r\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','recepts/October2018/39Rwh9Vwd3zgkyscut76.png',NULL,'2018-10-02 15:52:41','2018-10-02 15:52:41');
+
+/*!40000 ALTER TABLE `recepts` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table roles

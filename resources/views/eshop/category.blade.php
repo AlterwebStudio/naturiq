@@ -51,6 +51,8 @@
 
     {{-- PRODUCT LOOP --}}
     <section>
+        @include ('inc.partials.messages')
+
         @forelse (collect($products->items()) as $key=>$product)
 
             @if ($loop->first)

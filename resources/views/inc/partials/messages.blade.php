@@ -1,5 +1,5 @@
 @if (session()->has('message'))
-<section class="container mt-3">
+<section class="container mt-3 px-0">
     <div class="alert alert-success">
         <strong class="d-block text-center border-bottom border-success pb-2">Hotovo!</strong>
         <p class="mt-3 mb-0 text-center">{!! session('message') !!}</p>
@@ -8,7 +8,7 @@
 @endif
 
 @if (session()->has('error'))
-<section class="container mt-3">
+<section class="container mt-3 px-0">
     <div class="alert alert-danger">
         <strong class="d-block text-center border-bottom border-danger pb-2">Požiadavku sa nepodarilo spracovať</strong>
         <p class="mt-3 mb-0 text-center">{!! session('error') !!}</p>
@@ -17,7 +17,7 @@
 @endif
 
 @if (count($errors) > 0)
-<section class="container mt-3">
+<section class="container mt-3 px-0">
     <div class="alert alert-danger">
         <strong class="d-block text-center border-bottom border-danger pb-2">Hop! Po ceste sa vyskytli komplikácie</strong>
         <ul class="mt-3 mb-0" style="list-style-type: none">

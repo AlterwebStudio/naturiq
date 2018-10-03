@@ -13,14 +13,39 @@
 
 
 // Homepage
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', 'pageController@home')
+    ->name('home');
+
+// Our story
+Route::get('nas-pribeh', function () {
+    return view('about-us');
+})->name('about');
+
+// Stores
+Route::get('predajne', 'storesController@index')
+    ->name('stores');
+
+// Contact
+Route::get('kontakt', 'pageController@contact')
+    ->name('contact');
+
+// Contact Form Request
+Route::post('kontakt', 'pageController@form')
+    ->name('contact');
+
+// Newsletter
+Route::post('newsletter/subscribe', 'newsletterController@subscribe')->name('newsletter_subscribe');
+Route::get('newsletter/unsubscribe={email}', 'newsletterController@unsubscribe')->name('newsletter_unsubscribe');
 
 // Recipes
 Route::get('recepty/{tag?}', 'receptController@index')
-    ->name('home');
+    ->name('recipes');
 
+// Recipe Detail
+Route::get('recepty/{slug}/{id}', 'receptController@show')
+    ->where('slug', '[a-zA-Z0-9-]+')
+    ->where('id', '[0-9]+')
+    ->name('recipe');
 
 
 /** E-SHOP ROUTING **/
@@ -233,3 +258,6 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 });
+
+// Static Page
+Route::get('{slug}', 'pageController@index');

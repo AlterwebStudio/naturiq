@@ -13,7 +13,7 @@
     <!-- OBRAZOK PRODUKTU -->
     <a href="{{ route('product_detail',[$product->category->slug,$product->slug,$product->id]) }}" class="product__image">
       <div>
-        <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'small') }}" alt="{{ $product->name }}">
+        <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'small') }}">
       </div>
     </a>
 

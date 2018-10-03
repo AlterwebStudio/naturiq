@@ -46,7 +46,7 @@
 
     <div class="col-sm prices mb-3 mb-sm-0">
         <div class="price_total">
-            {{ number_format($item->total,2, ',', ' ') }} &euro;
+            {{ number_format($item->subtotal,2, ',', ' ') }} &euro;
         </div>
         <div class="price_unit">
             {{ number_format($item->price,2, ',', ' ') }} &euro; / ks

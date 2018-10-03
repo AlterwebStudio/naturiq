@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-    @include('inc.partials.slideshows.product-slideshow')
+    @include('inc.partials.slideshows.product-slideshow', ['featured'=>$featured])
 
 </section>
 
@@ -123,7 +123,7 @@
     </div>
 
     <!-- slideshow  -->
-    @include('inc.partials.slideshows.product-slideshow')
+    @include('inc.partials.slideshows.product-slideshow', ['featured'=>$sale])
 
 </section>
 <!-- END AKCIOVE PRODUKTY -->

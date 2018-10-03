@@ -59,19 +59,47 @@ class Order extends Model
     }
 
 
-	/**
-	 * @desc Returns Collect instance of the current Order
-	 *
-	 * @return false or Eloquent Order Model with all relations
-	 */
-	public function get()
-	{
-	    $order_id = $this->get_id();
-		if($order_id) {
-			return $this->find($order_id);
-		}
-		return false;
-	}
+    /**
+     * @desc Returns Collect instance of the current Order
+     *
+     * @return false or Eloquent Order Model with all relations
+     */
+    public function get()
+    {
+        $order_id = $this->get_id();
+        if($order_id) {
+            return $this->findOrFail($order_id);
+        }
+        return false;
+    }
+
+
+    /**
+     * @desc Vrati ID rozpracovanej objednavky prihlaseneho zakaznika
+     * Vrati false v pripade neprihlaseneho uzivatela, alebo
+     * v pripade, ze neexistuje ziadna rozpracovana objednavka
+     *
+     * @return bool
+     */
+    public function get_id()
+    {
+        if(Order::exists())
+        {
+            return session('order_id');
+        }
+
+        if(Client::exists())
+        {
+            $client_id = session('client_id');
+            $order = $this->where('client_id',$client_id)->where('status_id','0')->first();
+
+            if(isset($order->id)) {
+                return $order->id;
+            }
+        }
+
+        return null;
+    }
 
 
 	/**
@@ -176,6 +204,8 @@ class Order extends Model
 
 
 	/**
+     * @desc Get Total Price formatted
+     *
 	 * @param $price
 	 * @return string
 	 */
@@ -186,39 +216,14 @@ class Order extends Model
 
 
     /**
+     * @desc Get the name of current process status
+     *
      * @param $status_id
      * @return string
      */
 	public function getStatusIdAttribute($status_id) {
-	    return Status::find($status_id)->name;
-	}
-
-
-	/**
-	 * @desc Vrati ID rozpracovanej objednavky prihlaseneho zakaznika
-	 * Vrati false v pripade neprihlaseneho uzivatela, alebo
-	 * v pripade, ze neexistuje ziadna rozpracovana objednavka
-	 *
-	 * @return bool
-	 */
-	public function get_id()
-	{
-        if(Order::exists())
-        {
-            return session('order_id');
-        }
-
-    	if(Client::exists())
-    	{
-			$client_id = session('client_id');
-            $order = $this->where('client_id',$client_id)->where('status_id','0')->first();
-
-            if(isset($order->id)) {
-                return $order->id;
-            }
-		}
-
-		return null;
+	    if($status_id == 0) return 0;
+        return Status::findOrFail($status_id)->name;
 	}
 
 }

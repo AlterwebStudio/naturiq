@@ -16,6 +16,10 @@
 
         @include ('inc.nav_panel')
 
+        @if(master_message())
+            @include ('inc.partials.messages')
+        @endif
+
         @yield ('content')
 
         @include ('inc.footer')

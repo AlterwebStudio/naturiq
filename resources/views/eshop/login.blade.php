@@ -44,12 +44,14 @@
                         </thead>
                         <tbody>
                         @forelse ($client->orders as $order)
+                            @if(is_set($order->status_id))
                             <tr>
                                 <td class="font-weight-bold">{{ $order->number }}</td>
                                 <td>{{ $order->created_at }}</td>
                                 <td class="text-center">{{ $order->status_id }}</td>
                                 <td class="text-right">{{ $order->total_price }}</td>
                             </tr>
+                            @endif
                         @empty
                             <tr>
                                 <td colspan="4">Zatiaľ žiadne objednávky...</td>

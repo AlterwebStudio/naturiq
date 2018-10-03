@@ -10,6 +10,6 @@ class ReceptTag extends Model
 
     public function recepts()
     {
-        return $this->belongsToMany('App\Recept', 'recept_recept-tag', 'recept_id', 'recept-tag_id');
+        return $this->belongsToMany('App\Recept', 'recept_recept-tag', 'recept_id', 'recept_tag_id');
     }
 }

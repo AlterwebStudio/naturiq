@@ -102,8 +102,29 @@ class Product extends Model
 				->inRandomOrder()
 				->take(8)
 				->get(); // Ini tiez kupili
-		}
-		return null;
+		} else {
+            return Product::where('product_id', '0')
+                ->where('active', '1')
+                ->orderBy('buys')
+                ->inRandomOrder()
+                ->take(8)
+                ->get(); // Najoblubenejsie produkty
+        }
+	}
+
+
+	/**
+	 * @desc get products in sale
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function sale()
+	{
+        return Product::where('price_action', '>', '0')
+            ->where('active', '1')
+            ->orderBy('buys')
+            ->inRandomOrder()
+            ->take(8)
+            ->get(); // Akciove produkty
 	}
 
 

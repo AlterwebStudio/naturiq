@@ -55,6 +55,32 @@ class Client extends Model
 		return false;
 	}
 
+
+    /**
+     * Get Logged User or Registered Client Eloquent Model
+     * @return mixed
+     */
+    public function get()
+    {
+
+        // User is logged in and authorized
+        if(Auth::check()) {
+            return $this->find(Auth::user()->id);
+        }
+
+        // User is going to update his
+        // temporary profile
+        if(session()->has('client_id')) {
+            $client_id = session('client_id');
+            return $this->find($client_id);
+        }
+
+        // User is not authorized and hasn't
+        // created profile yet
+        return null;
+    }
+
+
     /**
      * Get User ID or Temporary Client ID
      * @return \Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed
@@ -121,31 +147,6 @@ class Client extends Model
             case 1: return 'Schválený'; break;
         }
     }
-
-
-	/**
-	 * Get Logged User or Registered Client Eloquent Model
-	 * @return mixed
-	 */
-	public function get()
-	{
-
-		// User is logged in and authorized
-		if(Auth::check()) {
-			return $this->find(Auth::user()->id);
-		}
-
-		// User is going to update his
-		// temporary profile
-		if(session()->has('client_id')) {
-			$client_id = session('client_id');
-			return $this->find($client_id);
-		}
-
-		// User is not authorized and hasn't
-		// created profile yet
-		return null;
-	}
 
 
 	/**

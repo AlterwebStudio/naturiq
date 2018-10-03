@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Coupon;
+use App\Product;
 use \Auth;
 use App\Client;
 use App\Order;
@@ -92,6 +93,8 @@ class confirmationController extends Controller
 
 			Cart::store($this->order_id);
 
+			$this->enhance_buys(); // Zvysit pocet nakupov jednotlivych produktov
+
 			//$this->payment_gopay();
 
 			$this->prepare();
@@ -169,6 +172,19 @@ class confirmationController extends Controller
 		}
 	}*/
 
+    /**
+     * Enhance count of Product buys
+     */
+    private function enhance_buys()
+    {
+        foreach(Cart::content() as $item)
+        {
+            $product = Product::find($item->id);
+            $product->buys += 1;
+            $product->save();
+        }
+    }
+
 	/**
 	 * Prepare values to update in db [order number, status ...]
 	 */
@@ -177,7 +193,7 @@ class confirmationController extends Controller
 		$this->order->status_id = 1;
 		$this->order->customer = $this->data['order']->client->name;
 		$this->order->total_price = $this->order->total();
-		$this->order->temp = 0;
+		$this->order->temp = '0';
 	}
 
 	/**

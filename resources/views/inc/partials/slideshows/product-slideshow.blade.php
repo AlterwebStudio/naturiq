@@ -1,4 +1,3 @@
-<?php $featured = $product->featured(false); ?>
 
 <div class="container product-slideshow_container">
   <div class="row">

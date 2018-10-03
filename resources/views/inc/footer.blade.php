@@ -88,7 +88,7 @@
 
                 <h4 class="mt-4">Newsletter</h4>
 
-                <form class="validate-form" id="newsletter-form" action="" method="post">
+                <form class="validate-form" id="newsletter-form" action="{{ route('newsletter_subscribe') }}" method="post">
                     @csrf
                     <div class="input-group mb-4">
                         <input id="newsletter_eml" name="newsletter[email]" type="email" class="form-control required mr-2"
@@ -108,9 +108,9 @@
 
 
                 <div class="social">
-                    <a href="#facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="#facebook"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
-                    <a href="#instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="{{ setting('site.facebook') }}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="{{ setting('site.pinterest') }}"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
+                    <a href="{{ setting('site.instagram') }}"><i class="fab fa-instagram" aria-hidden="true"></i></a>
                 </div>
 
             </div>
@@ -134,12 +134,12 @@
             <div class="col-sm-3 mb-4">
                 <h4>Dôležité informácie</h4>
                 <ul>
-                    <li><a href="#">Reklamačný poriadok</a></li>
-                    <li><a href="#">Možnosti platby</a></li>
-                    <li><a href="#">Obchodné podmienky</a></li>
-                    <li><a href="#">Formulár na odstúpenie</a></li>
-                    <li><a href="#">Dodacie podmienky</a></li>
-                    <li><a href="#">Ochrana osobných údajov</a></li>
+                    <li><a href="/reklamacny-poriadok">Reklamačný poriadok</a></li>
+                    <li><a href="/moznosti-platby">Možnosti platby</a></li>
+                    <li><a href="/obchodne-podmienky">Obchodné podmienky</a></li>
+                    <li><a href="/formular-na-odstupenie">Formulár na odstúpenie</a></li>
+                    <li><a href="/dodacie-podmienky">Dodacie podmienky</a></li>
+                    <li><a href="/ochrana-osobnych-udajov">Ochrana osobných údajov</a></li>
 
                 </ul>
             </div>

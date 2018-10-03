@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\MessageBag;
@@ -23,6 +25,14 @@ class userController extends Controller
 
 		if (Auth::attempt($credentials))
 		{
+		    // If temporary Client created Order before log,
+            // assign this Order to the logged User
+		    if(Order::exists()) {
+		        $order = (new Order)->get();
+		        $order->client_id = Auth::user()->id;
+		        $order->save();
+            }
+
 			return redirect()->route('login');
 		}
 		else

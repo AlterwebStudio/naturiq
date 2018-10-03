@@ -1,9 +1,8 @@
 <?php
 
-use App\Client;
-
 /**
  * @desc Format money
+ *
  * @param $price
  * @return string
  */
@@ -17,12 +16,13 @@ function format_money($price)
 
 /**
  * @desc Get requested thumbnail image path
+ *
  * @param $image
  * @param string $type
  * @return string
  */
-function image_get_thumbnail($image, $type='thumb') {
-
+function image_get_thumbnail($image, $type='thumb')
+{
 	// We need to get extension type ( .jpeg , .png ...)
 	$ext = pathinfo($image, PATHINFO_EXTENSION);
 
@@ -32,51 +32,44 @@ function image_get_thumbnail($image, $type='thumb') {
 
 	// We merge original name + type + extension
 	return $name.'-'.$type.'.'.$ext;
-
 }
 
 
 /**
- * @desc Deside what
- * @param $name
- * @return mixed
+ * @desc Returns true if current subpage is not part of E-shop Route group
+ * or current Page is not part of Non-Master-Routes. This function serves
+ * for displaying S2U messages on correct places
+ *
+ * @return boolean
  */
-function decide($name) {
+function master_message()
+{
+    $non_master_routes = ['kontakt'];
 
-	if(old($name)) return old($name);
+    $page = request()->segment(1);
+    $prefix = substr(request()->route()->getPrefix(),1);
 
-	if(Client::exists()) {
+    if($prefix and $prefix === 'eshop') return false;
+    elseif(in_array($page, $non_master_routes)) return false;
 
-		$client = (new Client)->get();
-
-		if(strstr($name,'.')) {
-            list($table, $column) = explode('.', $name);
-            if (isset($table) and isset($client->$table->$column))
-                return $client->$table->$column;
-        }
-		else {
-		    $column = $name;
-            if (isset($client->$column))
-                return $client->$column;
-        }
-
-	}
-
-	return null;
-
+    return true;
 }
 
 
 /**
  * @desc Returns true if variable has no empty value
+ *
  * @param $variable
  * @return boolean
  */
-function is_set($variable) {
-	if(is_array($variable)) {
+function is_set($variable)
+{
+	if(is_array($variable))
+	{
 		if(count($variable) > 0) return true;
 	}
-	else {
+	else
+    {
 		if(isset($variable)
 			and $variable != ''
 			and $variable != 'NULL'

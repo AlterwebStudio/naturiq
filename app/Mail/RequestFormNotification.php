@@ -31,8 +31,8 @@ class RequestFormNotification extends Mailable
     public function build()
     {
         return $this->view('mail.request-form')
-            ->from('tetrev@alterweb.sk', config('app.name'))
-			->subject(config('app.name') . ' - Dopytový formulár')
-			->with('client',$this->data);
+            ->from(setting('admin.email'), config('app.name'))
+			->subject(config('app.name') . ' - Kontaktný formulár')
+			->with('form',$this->data);
     }
 }

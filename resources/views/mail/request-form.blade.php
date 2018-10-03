@@ -16,26 +16,22 @@
     <h1 class="title text-center mt-5 mb-5">Dopyt z webu</h1>
 
     <p class="alert alert-secondary mb-5">
-        Z webu brogy.sk bol práve odoslaný kontaktný formulár. Info o zákazníkovi:
+        Z webu bol práve odoslaný kontaktný formulár s nasledujúcim obsahom:
     </p>
 
     <table class="table table-striped">
         <tbody>
         <tr>
             <td style="width:20%">Meno a priezvisko</td>
-            <td>{{ $data['request']['name'] }}</td>
+            <td>{{ $form['name'] }}</td>
         </tr>
         <tr>
             <td>E-mail</td>
-            <td>{{ $data['request']['email'] }}</td>
-        </tr>
-        <tr>
-            <td>Telefón</td>
-            <td>{{ $data['request']['phone'] }}</td>
+            <td>{{ $form['email'] }}</td>
         </tr>
         <tr>
             <td>Poznámka</td>
-            <td>{{ $data['request']['note'] }}</td>
+            <td>{{ $form['message'] }}</td>
         </tr>
         </tbody>
     </table>
