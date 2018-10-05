@@ -20,27 +20,26 @@
                             <thead>
                             <tr>
                                 <th>Meno a priezvisko</th>
-                                <th>Číslo objednávky</th>
-                                <th>Aktuálny stav</th>
-                                <th>Hodnota objednávky</th>
+                                <th>Adresa</th>
+                                <th>PSČ</th>
+                                <th>Mesto</th>
+                                <th>Telefón</th>
+                                <th>E-mail</th>
                                 <th class="actions text-right">Zobraziť</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($clients as $client)
                                 <tr>
-                                    <td>{{ $order->customer }}</td>
-                                    <td>{{ $order->number }}</td>
-                                    <td>{{ $order->status_id }}</td>
-                                    <td>{{ $order->total_price }}</td>
+                                    <td>{{ $client->name }}</td>
+                                    <td>{{ $client->street }}</td>
+                                    <td>{{ $client->zip }}</td>
+                                    <td>{{ $client->city }}</td>
+                                    <td>{{ $client->phone }}</td>
+                                    <td>{{ $client->email }}</td>
                                     <td class="no-sort no-click bread-actions">
-                                        @can('delete', $order)
-                                            <div class="btn btn-sm btn-danger pull-right delete" data-id="{{ $order->id }}">
-                                                <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
-                                            </div>
-                                        @endcan
-                                        <a href="{{ route('voyager.orders.show', $order->id) }}" class="btn btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}
+                                        <a href="{{ route('voyager.clients.show', $client->id) }}" class="btn btn-sm btn-primary pull-right edit">
+                                            <i class="voyager-eye"></i> Detail
                                         </a>
                                     </td>
                                 </tr>

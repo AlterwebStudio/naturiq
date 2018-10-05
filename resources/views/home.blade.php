@@ -90,31 +90,31 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 content-banner-container">
-                <a class="content-banner banner-small blue">
+                <a href="{{ route('eshop') }}" class="content-banner banner-small blue">
                     <div class="banner-text">
                         <img src="/images/banners/e-shop.png" alt="">
                     </div>
                 </a>
-                <a class="content-banner banner-small pink">
+                <a href="{{ route('about') }}" class="content-banner banner-small pink">
                     <div class="banner-text">
                         <img src="/images/banners/pribeh.png" alt="">
                     </div>
                 </a>
             </div>
             <div class="col-md-4 content-banner-container">
-                <a class="content-banner banner-small green">
+                <a href="{{ route('contact') }}" class="content-banner banner-small green">
                     <div class="banner-text">
                         <img src="/images/banners/kde_nas_najdete.png" alt="">
                     </div>
                 </a>
-                <a class="content-banner banner-small yellow">
+                <a href="{{ route('register.seller') }}" class="content-banner banner-small yellow">
                     <div class="banner-text">
                         <img src="/images/banners/vo-velkom.png" alt="">
                     </div>
                 </a>
             </div>
             <div class="col-md-4 content-banner-container">
-                <a class="content-banner banner-big purple">
+                <a href="{{ route('recipes') }}" class="content-banner banner-big purple">
                     <div class="banner-text">
                         <img src="/images/banners/recepty.png" alt="">
                     </div>

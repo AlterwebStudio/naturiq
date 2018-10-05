@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Mail\RequestFormNotification;
 use App\Product;
+use App\Slideshow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use TCG\Voyager\Models\Page;
@@ -34,12 +35,13 @@ class pageController extends Controller
     public function home()
     {
         $featured = (new Product)->get_featured(false);
+        $slideshow = (new Slideshow)->all();
         $sale = (new Product)->sale();
         $categories = Category::all()
             ->where('active',1)
             ->sortBy('order');
         view()->share('categories',$categories);
-        return view('home', compact('featured', 'sale', 'categories'));
+        return view('home', compact('featured', 'sale', 'categories', 'slideshow'));
     }
 
     /**
