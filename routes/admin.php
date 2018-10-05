@@ -14,7 +14,12 @@
 // Admin
 Voyager::routes();
 Route::group(['middleware' => 'admin'], function () {
-//    Route::get('orders', 'OrdersController@index');
+
+    // Clients
+    Route::get('clients', 'ClientsController@index');
+
+    // Orders
     Route::get('orders/{order}', ['uses' => 'OrdersController@show', 'as' => 'voyager.orders.show']);
     Route::post('orders/{order}', ['uses' => 'OrdersController@update']);
+
 });

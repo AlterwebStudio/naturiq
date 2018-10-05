@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReceptTag extends Model
 {
+    public $timestamps = false;
     protected $table = 'recept-tags';
 
     public function recepts()

@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'color'                => 'Farba v tvare RGB alebo HEX (voliteľné)',
+    'color_ph'             => 'Farba (napr. #ffffff alebo rgb(255, 255, 255)',
+    'create_new_item'      => 'Vytvoriť novú položku menu',
+    'delete_item_confirm'  => 'Áno, odstrániť položku',
+    'delete_item_question' => 'Naozaj chcete túto položku odstrániť?',
+    'drag_drop_info'       => 'Poradie položiek môžete meniť presúvaním.',
+    'dynamic_route'        => 'Dynamická cesta',
+    'edit_item'            => 'Upraviť položku',
+    'icon_class'           => 'Ikona položky (použite ',
+    'icon_class2'          => 'Voyager Font Class</a>)',
+    'icon_class_ph'        => 'Icon Class (voliteľné)',
+    'item_route'           => 'Cesta (route)',
+    'item_title'           => 'Názov položky',
+    'link_type'            => 'Typ odkazu',
+    'new_menu_item'        => 'Nová položka',
+    'open_in'              => 'Spôsob otvorenia',
+    'open_new'             => 'V novom okne / záložke (_blank)',
+    'open_same'            => 'V rovnakom okne (_self)',
+    'route_parameter'      => 'Parametre cesty (voliteľné)',
+    'static_url'           => 'Statická URL adresa',
+    'successfully_created' => 'Položka bola úspešne vytvorená.',
+    'successfully_deleted' => 'Položka bola úspešne odstránený.',
+    'successfully_updated' => 'Položka bola úspešne upravená.',
+    'updated_order'        => 'Poradie bolo úspešne upravené.',
+    'url'                  => 'URL',
+    'usage_hint'           => 'Menu môžete zobraziť kdekoľvek zavolaním|Toto menu môžete '.
+                              'zobraziť kdekoľvek na stránke zavolaním',
+];

@@ -1,0 +1,93 @@
+<?php
+
+return [
+    'data_rows'  => [
+        'author'           => 'Autor',
+        'avatar'           => 'Avatar',
+        'body'             => 'Obsah',
+        'category'         => 'Kategória',
+        'created_at'       => 'Dátum vytvorenia',
+        'display_name'     => 'Zobrazované meno',
+        'email'            => 'E-mail',
+        'excerpt'          => 'Výňatok',
+        'featured'         => 'Featured',
+        'id'               => 'ID',
+        'meta_description' => 'Popis pre vyhľadávače',
+        'meta_keywords'    => 'Kľúčové slová pre vyhľadávače',
+        'name'             => 'Názov',
+        'order'            => 'Poradie',
+        'page_image'       => 'Obrázok stránky',
+        'parent'           => 'Nadradené',
+        'password'         => 'Heslo',
+        'post_image'       => 'Obrázok príspevku',
+        'remember_token'   => 'Zapamätať prihlásenie',
+        'role'             => 'Skupina privilégií',
+        'seo_title'        => 'SEO Názov',
+        'slug'             => 'Slug',
+        'status'           => 'Stav',
+        'title'            => 'Titulok',
+        'updated_at'       => 'Dátum aktualizácie',
+    ],
+    'data_types' => [
+        'category' => [
+            'singular' => 'Kategória',
+            'plural'   => 'Kategórie',
+        ],
+        'menu'     => [
+            'singular' => 'Navigácia',
+            'plural'   => 'Navigácie',
+        ],
+        'page'     => [
+            'singular' => 'Stránka',
+            'plural'   => 'Stránky',
+        ],
+        'post'     => [
+            'singular' => 'Článok',
+            'plural'   => 'Články',
+        ],
+        'role'     => [
+            'singular' => 'Privilégium',
+            'plural'   => 'Privilégiá',
+        ],
+        'user'     => [
+            'singular' => 'Užívateľ',
+            'plural'   => 'Užívatelia',
+        ],
+    ],
+    'menu_items' => [
+        'bread'        => 'BREAD',
+        'categories'   => 'Kateģorie',
+        'compass'      => 'Kompas',
+        'dashboard'    => 'Dashboard',
+        'database'     => 'Databáza',
+        'media'        => 'Médiá',
+        'menu_builder' => 'Menu Generátor',
+        'pages'        => 'Stránky',
+        'posts'        => 'Články',
+        'roles'        => 'Privilégiá',
+        'settings'     => 'Nastavenia',
+        'tools'        => 'Nástroje',
+        'users'        => 'Užívatelia',
+    ],
+    'roles'      => [
+        'admin' => 'Administrátor',
+        'user'  => 'Užívateľ',
+    ],
+    'settings'   => [
+        'admin' => [
+            'background_image'           => 'Obrázok pozadia pre Admin',
+            'description'                => 'Admin popis',
+            'description_value'          => 'Vitajte vo Voyager. Chýbajúcom adminovi pre Laravel',
+            'google_analytics_client_id' => 'Google Analytics Client ID (používaný pre Admin Dashboard)',
+            'icon_image'                 => 'Ikona Administrátora',
+            'loader'                     => 'Admin Loader',
+            'title'                      => 'Titulok Admina',
+        ],
+        'site'  => [
+            'description'                  => 'Popis stránky',
+            'google_analytics_tracking_id' => 'Google Analytics Tracking ID',
+            'logo'                         => 'Logo',
+            'title'                        => 'Titulok',
+        ],
+    ],
+];

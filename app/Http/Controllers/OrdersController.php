@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use \App\Order;
-use Auth;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
 
@@ -19,8 +18,6 @@ class OrdersController extends Controller
         // GET THE DataType based on the slug
         $dataType = Voyager::model('DataType')->where('slug', '=', 'orders')->first();
         $orders = Order::where('status_id','>',1)->where('temp','0');
-
-//        dd(auth()->guard('admin')->user());
 
         return Voyager::view('voyager::orders.index')->with(compact('dataType','orders'));
     }
