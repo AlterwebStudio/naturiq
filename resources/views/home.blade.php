@@ -60,6 +60,7 @@
 
 
 <!-- AKCIOVE PRODUKTY  -->
+@if ($sale->count())
 <section class="pt-4 pb-5">
     <div class="container">
         <div class="row align-items-center  mb-3  section-heading">
@@ -82,6 +83,7 @@
 
 </section>
 <!-- END AKCIOVE PRODUKTY -->
+@endif
 
 <section class="alt-bg-100 py-5 py-lg-6">
 

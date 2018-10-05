@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div class="header-slideshow__bg" style="background-image:url('images/bg/watercolor_purple.jpg')"></div>
+      <div class="header-slideshow__bg" style="background-image:url('/images/bg/watercolor_purple.jpg')"></div>
     </div>
 
     <?php

@@ -64,7 +64,7 @@
                 @include ('inc.partials.product', ['product' => $product])
             </div>
 
-            @if ($loop->iteration == 5)
+            @if ($loop->iteration == 4)
 
                 </div>
             </div>
