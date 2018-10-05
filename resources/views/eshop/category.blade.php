@@ -37,7 +37,7 @@
                 <div class="col-lg col-6 product-categories__icon">
                     <a href="{{ route('category',[$category->slug,$category->id]) }}">
                         <div class="icon">
-                            {{--<img src="images/icons/.svg" alt="">--}}
+                            {{--<img src="{{ $category->icon }}" alt="">--}}
                         </div>
                         {{ $category->name }}
                     </a>

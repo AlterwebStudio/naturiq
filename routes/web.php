@@ -11,7 +11,6 @@
 |
 */
 
-
 // Homepage
 Route::get('/', 'pageController@home')
     ->name('home');
@@ -52,8 +51,33 @@ Route::get('recepty/{slug}/{id}', 'receptController@show')
 
 Route::group(['prefix'=>'eshop'], function () {
 
-	// Default page - list featured products
-	Route::get('/', 'categoryController@featured')->name('eshop');
+
+
+    /** CATEGORIES / LISTING PRODUCTS **/
+
+    // Default page - list featured products
+    Route::get('/', 'categoryController@featured')->name('eshop');
+
+    // Main category definition
+    Route::get('{category}/{category_id}', 'categoryController@list')
+        ->where('category', '[a-zA-Z0-9-]+')
+        ->where('category_id', '[0-9-]+')
+        ->name('category');
+
+    // Featured products
+    Route::get('oblubene-produkty', 'categoryController@featured')
+        ->name('featured');
+
+
+
+    /** PRODUCT DETAIL **/
+
+    // Product detail
+    Route::get('{category}/{product_slug}/{product_id}', 'productController@show')
+        ->where('category','[a-zA-Z0-9-]+')
+        ->where('product','[a-zA-Z0-9-]+')
+        ->where('product_id','[0-9-]+')
+        ->name('product_detail');
 
 
 
@@ -147,31 +171,6 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 
-	/** CATEGORIES / LISTING PRODUCTS **/
-
-	// Main category definition
-	Route::get('{category}/{category_id}', 'categoryController@list')
-		->where('category', '[a-zA-Z0-9-]+')
-		->where('category_id', '[0-9-]+')
-		->name('category');
-
-	// Featured products
-	Route::get('oblubene-produkty', 'categoryController@featured')
-		->name('featured');
-
-
-
-	/** PRODUCT DETAIL **/
-
-	// Product detail
-	Route::get('{category}/{product_slug}/{product_id}', 'productController@show')
-		->where('category','[a-zA-Z0-9-]+')
-		->where('product','[a-zA-Z0-9-]+')
-		->where('product_id','[0-9-]+')
-		->name('product_detail');
-
-
-
 	/** SEARCH PRODUCTS **/
 
 	// Search products and recipes
@@ -260,4 +259,4 @@ Route::group(['prefix'=>'eshop'], function () {
 });
 
 // Static Page
-Route::get('{slug}', 'pageController@index');
+//Route::get('{slug}', 'pageController@index');

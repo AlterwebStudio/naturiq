@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Mail\RequestFormNotification;
 use App\Product;
 use Illuminate\Http\Request;
@@ -32,9 +33,13 @@ class pageController extends Controller
      */
     public function home()
     {
-        $featured = (new Product)->featured();
+        $featured = (new Product)->get_featured(false);
         $sale = (new Product)->sale();
-        return view('home', compact('featured', 'sale'));
+        $categories = Category::all()
+            ->where('active',1)
+            ->sortBy('order');
+        view()->share('categories',$categories);
+        return view('home', compact('featured', 'sale', 'categories'));
     }
 
     /**

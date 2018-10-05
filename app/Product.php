@@ -4,17 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class Product extends Model
 {
 	public $timestamps = false;
 
 
-	/**
-	 * @desc Vrati cenu produktu platnu pre konkretneho navstevnika / uzivatela
-	 * @param $details
-	 * @return mixed
-	 */
+    /**
+     * @desc Vrati cenu produktu platnu pre konkretneho navstevnika / uzivatela
+     * @return mixed
+     */
 	public function getPriceAttribute()
 	{
 		$price = ($this->price_action > 0 and $this->price_action < $this->price_default) ? $this->price_action : $this->price_default;
@@ -22,46 +22,46 @@ class Product extends Model
 	}
 
 
-	/**
-	 * @param $price
-	 * @return string
-	 */
-	public function getPriceDefaultAttribute($price)
-	{
-		setlocale(LC_MONETARY, 'de_DE');
-		return money_format('%!n €', $price);
-	}
-
-
-	/**
-	 * @param $price
-	 * @return string
-	 */
-	public function setPriceDefaultAttribute($price)
-	{
-		return $this->float_price($price);
-	}
-
-
-	/**
-	 * @param $price
-	 * @return string
-	 */
-	public function getPriceActionAttribute($price)
-	{
-		setlocale(LC_MONETARY, 'de_DE');
-		return money_format('%!n €', $price);
-	}
-
-
-	/**
-	 * @param $price
-	 * @return string
-	 */
-	public function setPriceActionAttribute($price)
-	{
-		return $this->float_price($price);
-	}
+//	/**
+//	 * @param $price
+//	 * @return string
+//	 */
+//	public function getPriceDefaultAttribute($price)
+//	{
+//		setlocale(LC_MONETARY, 'de_DE');
+//		return money_format('%!n €', $price);
+//	}
+//
+//
+//    /**
+//     * @param $price
+//     * @return string
+//     */
+//    public function getPriceActionAttribute($price)
+//    {
+//        setlocale(LC_MONETARY, 'de_DE');
+//        return money_format('%!n €', $price);
+//    }
+//
+//
+//    /**
+//     * @param $price
+//     * @return string
+//     */
+//    public function setPriceDefaultAttribute($price)
+//    {
+//        return float_price($price);
+//    }
+//
+//
+//    /**
+//     * @param $price
+//     * @return string
+//     */
+//    public function setPriceActionAttribute($price)
+//    {
+//        return float_price($price);
+//    }
 
 
 	/**
@@ -88,28 +88,33 @@ class Product extends Model
 	}
 
 
-	/**
-	 * @desc get the most wanted products in category
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function featured()
+    /**
+     * @desc get the most wanted products in category or globaly
+     * @param bool $paginate
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+	public function get_featured($paginate=true)
 	{
-		if(isset($this->category_id)) {
-			return Product::where('category_id', $this->category_id)
-				->where('product_id', '0')
-				->where('active', '1')
-				->orderBy('buys')
-				->inRandomOrder()
-				->take(8)
-				->get(); // Ini tiez kupili
-		} else {
-            return Product::where('product_id', '0')
-                ->where('active', '1')
-                ->orderBy('buys')
-                ->inRandomOrder()
-                ->take(8)
-                ->get(); // Najoblubenejsie produkty
+		if(isset($this->category_id))
+		{
+            $products = Product::selectRaw("*, substring_index(code,'-',1) as `codeBase`")
+                ->where('category_id', $this->category_id)
+                ->where('active','yes')
+                ->orderByDesc('featured')
+                ->orderByDesc('buys')
+                ->groupBy("codeBase")
+                ->limit(8); // Ini tiez kupili
+		}
+		else
+        {
+		    $products = Product::selectRaw("*, substring_index(code,'-',1) as `codeBase`")
+                ->where('active','yes')
+                ->orderByDesc('featured')
+                ->orderByDesc('buys')
+                ->groupBy("codeBase")
+                ->limit(8); // Najoblubenejsie produkty
         }
+        return $paginate ? $products->paginate(8) : $products->get();
 	}
 
 
@@ -120,9 +125,8 @@ class Product extends Model
 	public function sale()
 	{
         return Product::where('price_action', '>', '0')
-            ->where('active', '1')
-            ->orderBy('buys')
-            ->inRandomOrder()
+            ->where('active','yes')
+            ->orderByDesc('buys')
             ->take(8)
             ->get(); // Akciove produkty
 	}
@@ -135,21 +139,11 @@ class Product extends Model
 	public function parent()
 	{
 		// Product is parent - returns itself as main
-		if ($this->product_id === 0) {
+		if ($this->product_id === 0 or !$this->product_id) {
 			return $this->belongsTo('App\Product', 'id');
 		}
 		// Product is child - returns parent
 		return $this->belongsTo('App\Product', 'product_id');
-	}
-
-
-	/**
-	 * @desc Returns product childs
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\HasOne
-	 */
-	public function childs()
-	{
-		return $this->hasMany('App\Product')->orderBy('weight');
 	}
 
 
@@ -172,9 +166,20 @@ class Product extends Model
 		return DB::table('products')
 			->where('id', '=', $this->parent->id)
 			->orWhere('product_id', '=', $this->parent->id)
-			->orderBy('weight')
+            ->where('active','yes')
+			->orderBy('order')
 			->get();
 	}
+
+
+    /**
+     * @desc Returns product childs
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function childs()
+    {
+        return $this->hasMany('App\Product')->orderBy('order');
+    }
 
 
 	/**
@@ -197,6 +202,24 @@ class Product extends Model
 	}
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categoryId()
+    {
+        return $this->belongsTo('App\Category');
+    }
+
+
 	/**
 	 * @desc Check if the product has action price set and is lower than it's default price
 	 * @return boolean
@@ -213,39 +236,8 @@ class Product extends Model
 	 */
 	public function get_discount()
 	{
-		$discount = 100 - (($this->float_price($this->price_default) / $this->float_price($this->price_action)) * 100);
+		$discount = 100 - ((float_price($this->price_default) / float_price($this->price_action)) * 100);
 		return round($discount) . '%';
-	}
-
-
-	/**
-	 * @desc Convert output formatted price to float num
-	 * @param $price
-	 * @return string
-	 */
-	public function float_price($price)
-	{
-		$price = str_replace(['€', ' '], '', $price);
-		$price = str_replace(',', '.', $price);
-		return floatval($price);
-	}
-
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function category()
-	{
-		return $this->belongsTo('App\Category');
-	}
-
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function categoryId()
-	{
-		return $this->belongsTo('App\Category');
 	}
 
 
@@ -254,9 +246,30 @@ class Product extends Model
 	 * method returns images prepared to print out as Associative Array
 	 * @return mixed
 	 */
-	public function gallery()
+	public function get_gallery()
 	{
 		return json_decode($this->image);
 	}
+
+
+    /**
+     * Returns readable format of current product status if output is in browse view
+     * @param $status
+     * @return string
+     */
+    public function getActiveAttribute($status)
+    {
+        if(Request::route()->getPrefix()=='admin' and empty(Request::segment(3))) {
+            switch ($status) {
+                case 'no':
+                    return 'Neaktívny';
+                    break;
+                case 'yes':
+                    return 'Aktívny';
+                    break;
+            }
+        }
+        return $status;
+    }
 
 }

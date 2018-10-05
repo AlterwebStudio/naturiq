@@ -43,6 +43,8 @@
                             @endforeach
                         </div>
 
+                        {{--HLAVNA SLIDESHOW--}}
+                        @if (is_set($product->image) or is_set($product->gallery))
                         <div class="row">
                             <div class="col-2 d-none d-lg-flex align-items-center">
                                 <div class="directional-arrow prev">
@@ -53,11 +55,13 @@
                                 <div class="slide">
                                     <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'medium') }}" alt="">
                                 </div>
+                                @if (is_set($product->gallery))
 								@foreach (json_decode($product->gallery) as $image )
                                 <div class="slide">
                                     <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'medium') }}" alt="">
                                 </div>
 								@endforeach
+                                @endif
                             </div>
                             <div class="col-2 d-none d-lg-flex align-items-center">
                                 <div class="directional-arrow next">
@@ -65,19 +69,24 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
 
-                    {{--PRODUCT GALLERY - SPODNA SLIDESHOW KTORA OVLADA TU HLAVNU--}}
+                    {{--SPODNA SLIDESHOW - OVLADA HLAVNU--}}
+                    @if (is_set($product->image) OR is_set($product->gallery))
                     <div class="product-page__nav-slideshow  mb-5 mb-lg-0">
                         <div class="slide">
-                            <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'mini') }}" alt="">
+                            <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'cropped') }}" alt="">
                         </div>
+                        @if (is_set($product->gallery))
                         @foreach (json_decode($product->gallery) as $image )
                             <div class="slide">
-                                <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'mini') }}" alt="">
+                                <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'cropped') }}" alt="">
                             </div>
                         @endforeach
+                        @endif
                     </div>
+                    @endif
 
                 </div>
                 <div class="col-lg-6 ml-auto">
@@ -104,7 +113,7 @@
                             <div class="btn-group">
                                 @foreach($product->variants() as $variant)
                                     <label for="variant{{$loop->iteration}}" class="btn">
-                                        <input id="variant{{$loop->iteration}}" type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ format_money($variant->price_default) }}" data-sale-price="{{ format_money($variant->price_action) }}" value="{{ $variant->id }}" @if($product->id == $variant->id) checked="checked" @endif>
+                                        <input id="variant{{$loop->iteration}}" type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ format_money($variant->price_default) }}" @if (regular_price($variant->price_action)) data-sale-price="{{ $variant->price_action }}" @endif value="{{ $variant->id }}" @if($product->id == $variant->id) checked="checked" @endif>
                                         <span>{{ $variant->weight }}</span>
                                     </label>
                                 @endforeach
@@ -213,7 +222,7 @@
             </div>
         </div>
         <!-- slideshow  -->
-        <?php $featured = $product->featured(false); ?>
+        <?php $featured = $product->get_featured(false); ?>
         @include ('inc.partials.slideshows.product-slideshow', ['featured'=>$featured])
     </section>
 

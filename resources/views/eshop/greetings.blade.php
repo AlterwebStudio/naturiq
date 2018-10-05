@@ -34,18 +34,18 @@
                             <table class="table mb-5">
                                 <thead>
                                 <tr>
-                                    <th colspan="2" class="col-6">Položka na objednanie</th>
+                                    <th colspan="2" class="col-6">Názov položky</th>
                                     <th class="col-2 text-center">Množstvo</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
 
-                                @foreach (Cart::content() as $row)
+                                @foreach (Cart::instance('default')->content() as $row)
 
                                     <tr class="bg-light">
                                         <td class="col-2">
-                                            <div class="bg-light rounded"><img src="{{ asset('storage/'.$row->options->image) }}" /></div>
+                                            <div class="bg-light rounded"><img src="{{ image_get_thumbnail(asset('storage/'.$row->options->image),'mini') }}" /></div>
                                         </td>
                                         <td class="align-middle lh-15">
                                             <strong class="big">{{ $row->name }}</strong>
@@ -61,36 +61,41 @@
                             @endif
 
 
-                            <table class="table mb-5 text-center">
+                            <table class="table mb-5">
                                 <tr>
-                                    <td class="col-3 bg-light"><h5 class="font-weight-bold">Fakturačné údaje</h5></td>
-                                    <td class="col-3"><h5 class="font-weight-bold">Firemné údaje</h5></td>
-                                    <td class="col-3 bg-light"><h5 class="font-weight-bold">Doručovacie údaje</h5></td>
-                                    <td class="col-3"><h5 class="font-weight-bold">Kontaktné údaje</h5></td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-light">{{ $dataset['order']->client->name }}</td>
-                                    <td>{{ $dataset['order']->client->company->name }}</td>
-                                    <td class="bg-light">{{ $dataset['order']->client->address->street }}</td>
-                                    <td>{{ $dataset['order']->client->phone }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-light">{{ $dataset['order']->client->street }}</td>
-                                    <td>IČO: {{ $dataset['order']->client->company->ico }}</td>
-                                    <td class="bg-light">{{ $dataset['order']->client->address->zip }}</td>
-                                    <td>{{ $dataset['order']->client->email }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-light">{{ $dataset['order']->client->zip }}</td>
-                                    <td>DIČ: {{ $dataset['order']->client->company->dic }}</td>
-                                    <td class="bg-light">{{ $dataset['order']->client->address->city }}</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-light">{{ $dataset['order']->client->city }}</td>
-                                    <td>IČ DPH: {{ $dataset['order']->client->company->icdph }}</td>
-                                    <td class="bg-light">{{ $dataset['order']->client->address->country }}</td>
-                                    <td></td>
+                                    <td class="col-3">
+                                        <h5 class="font-weight-bold">Fakturačné údaje</h5>
+                                        {{ $dataset['order']->client->name }}<br/>
+                                        {{ $dataset['order']->client->street }}<br/>
+                                        {{ $dataset['order']->client->zip }}<br/>
+                                        {{ $dataset['order']->client->city }}
+                                    </td>
+
+                                    @if (is_set($dataset['order']->client->address->street))
+                                    <td class="col-3">
+                                        <h5 class="font-weight-bold">Firemné údaje</h5>
+                                        {{ $dataset['order']->client->address->street }}<br/>
+                                        {{ $dataset['order']->client->address->zip }}<br/>
+                                        {{ $dataset['order']->client->address->city }}<br/>
+                                        {{ $dataset['order']->client->address->country }}
+                                    </td>
+                                    @endif
+
+                                    @if (is_set($dataset['order']->client->company->name))
+                                    <td class="col-3">
+                                        <h5 class="font-weight-bold">Doručovacie údaje</h5>
+                                        {{ $dataset['order']->client->company->name }}<br/>
+                                        IČO: {{ $dataset['order']->client->company->ico }}<br/>
+                                        DIČ: {{ $dataset['order']->client->company->dic }}<br/>
+                                        IČ DPH: {{ $dataset['order']->client->company->icdph }}
+                                    </td>
+                                    @endif
+
+                                    <td class="col-3">
+                                        <h5 class="font-weight-bold">Kontaktné údaje</h5>
+                                        {{ $dataset['order']->client->phone }}<br/>
+                                        {{ $dataset['order']->client->email }}
+                                    </td>
                                 </tr>
                             </table>
 

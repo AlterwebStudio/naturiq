@@ -48,7 +48,7 @@
                             <tr>
                                 <td class="font-weight-bold">{{ $order->number }}</td>
                                 <td>{{ $order->created_at }}</td>
-                                <td class="text-center">{{ $order->status_id }}</td>
+                                <td class="text-center">{{ $order->status->name }}</td>
                                 <td class="text-right">{{ $order->total_price }}</td>
                             </tr>
                             @endif

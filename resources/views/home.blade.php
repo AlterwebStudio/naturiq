@@ -8,62 +8,17 @@
     <!-- Product row -->
     <div class="container">
         <div class="row product-categories">
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Morušový čaj</a>
-            </div>
 
+            @foreach ($categories as $category)
             <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
+                <a href="{{ route('category',[$category->slug,$category->id]) }}">
+                    <div class="icon">
+                       {{--<img src="{{ $category->icon }}" alt="">--}}
                     </div>
-                    Sušené ovocie</a>
+                    {{ $category->name }}
+                </a>
             </div>
-
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Trail mix</a>
-            </div>
-
-
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Müesli bezlepkové</a>
-            </div>
-
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Müesli original</a>
-            </div>
-
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Orechy</a>
-            </div>
-
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Vločky</a>
-            </div>
-
-            <div class="col-lg mb-4 mb-lg-0 col-6 product-categories__icon">
-                <a href="/product"><div class="icon">
-                        <img src="images/icons/.svg" alt="">
-                    </div>
-                    Semienka</a>
-            </div>
+            @endforeach
 
         </div>
     </div>
@@ -135,31 +90,31 @@
             <div class="col-md-4 content-banner-container">
                 <a class="content-banner banner-small blue">
                     <div class="banner-text">
-                        <img src="images/banners/e-shop.png" alt="">
+                        <img src="/images/banners/e-shop.png" alt="">
                     </div>
                 </a>
                 <a class="content-banner banner-small pink">
                     <div class="banner-text">
-                        <img src="images/banners/pribeh.png" alt="">
+                        <img src="/images/banners/pribeh.png" alt="">
                     </div>
                 </a>
             </div>
             <div class="col-md-4 content-banner-container">
                 <a class="content-banner banner-small green">
                     <div class="banner-text">
-                        <img src="images/banners/kde_nas_najdete.png" alt="">
+                        <img src="/images/banners/kde_nas_najdete.png" alt="">
                     </div>
                 </a>
                 <a class="content-banner banner-small yellow">
                     <div class="banner-text">
-                        <img src="images/banners/vo-velkom.png" alt="">
+                        <img src="/images/banners/vo-velkom.png" alt="">
                     </div>
                 </a>
             </div>
             <div class="col-md-4 content-banner-container">
                 <a class="content-banner banner-big purple">
                     <div class="banner-text">
-                        <img src="images/banners/recepty.png" alt="">
+                        <img src="/images/banners/recepty.png" alt="">
                     </div>
                 </a>
             </div>

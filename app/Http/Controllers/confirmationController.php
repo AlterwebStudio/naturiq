@@ -91,17 +91,20 @@ class confirmationController extends Controller
 
 		if(Client::exists() and is_array($this->data)) {
 
-			Cart::store($this->order_id);
+            Cart::instance('default')->store($this->order_id);
 
 			$this->enhance_buys(); // Zvysit pocet nakupov jednotlivych produktov
 
 			//$this->payment_gopay();
 
 			$this->prepare();
-			$this->notify('tetrev@alterweb.sk'); // Notifikacia klientovi
+            $this->enclose();
+
+			$this->notify(setting('admin.email')); // Notifikacia klientovi
 			$this->notify($this->data['order']->client->email); // Notifikacia zakaznikovi
-			$this->enclose();
+
 			$this->clear();
+
 			return view('eshop.greetings')->with('dataset',$this->data);
 
 		}

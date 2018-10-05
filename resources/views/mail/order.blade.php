@@ -69,37 +69,41 @@
             </tfoot>
         </table>
 
+        <table class="table mb-5">
+            <tr>
+                <td width="25%">
+                    <h5 class="font-weight-bold">Fakturačné údaje</h5>
+                    {{ $data->client->name }}<br/>
+                    {{ $data->client->street }}<br/>
+                    {{ $data->client->zip }}<br/>
+                    {{ $data->client->city }}
+                </td>
 
-        <table class="table mb-5 text-center">
-            <tr>
-                <td class="col-3 table-secondary" style="width:25%"><h5 class="font-weight-bold">Fakturačné údaje</h5></td>
-                <td class="col-3" style="width:25%"><h5 class="font-weight-bold">Firemné údaje</h5></td>
-                <td class="col-3 table-secondary" style="width:25%"><h5 class="font-weight-bold">Doručovacie údaje</h5></td>
-                <td class="col-3" style="width:25%"><h5 class="font-weight-bold">Kontaktné údaje</h5></td>
-            </tr>
-            <tr>
-                <td class="table-secondary">{{ $data->client->name }}</td>
-                <td>{{ $data->client->company->name }}</td>
-                <td class="table-secondary">{{ $data->client->address->street }}</td>
-                <td>{{ $data->client->phone }}</td>
-            </tr>
-            <tr>
-                <td class="table-secondary">{{ $data->client->street }}</td>
-                <td>IČO: {{ $data->client->company->ico }}</td>
-                <td class="table-secondary">{{ $data->client->address->zip }}</td>
-                <td>{{ $data->client->email }}</td>
-            </tr>
-            <tr>
-                <td class="table-secondary">{{ $data->client->zip }}</td>
-                <td>DIČ: {{ $data->client->company->dic }}</td>
-                <td class="table-secondary">{{ $data->client->address->city }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="table-secondary">{{ $data->client->city }}</td>
-                <td>IČ DPH: {{ $data->client->company->icdph }}</td>
-                <td class="table-secondary">{{ $data->client->address->country }}</td>
-                <td></td>
+                @if (is_set($data->client->address->street))
+                    <td width="25%">
+                        <h5 class="font-weight-bold">Firemné údaje</h5>
+                        {{ $data->client->address->street }}<br/>
+                        {{ $data->client->address->zip }}<br/>
+                        {{ $data->client->address->city }}<br/>
+                        {{ $data->client->address->country }}
+                    </td>
+                @endif
+
+                @if (is_set($data->client->company->name))
+                    <td width="25%">
+                        <h5 class="font-weight-bold">Doručovacie údaje</h5>
+                        {{ $data->client->company->name }}<br/>
+                        IČO: {{ $data->client->company->ico }}<br/>
+                        DIČ: {{ $data->client->company->dic }}<br/>
+                        IČ DPH: {{ $data->client->company->icdph }}
+                    </td>
+                @endif
+
+                <td width="25%">
+                    <h5 class="font-weight-bold">Kontaktné údaje</h5>
+                    {{ $data->client->phone }}<br/>
+                    {{ $data->client->email }}
+                </td>
             </tr>
         </table>
 

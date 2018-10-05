@@ -15,6 +15,31 @@ function format_money($price)
 
 
 /**
+ * @desc Convert output formatted price to float num
+ * @param $price
+ * @return string
+ */
+function float_price($price)
+{
+    $price = str_replace(['€', ' '], '', $price);
+    $price = str_replace(',', '.', $price);
+    return floatval($price);
+}
+
+
+/**
+ * @desc Checks if the price is regular float number higher than 0
+ * @param $price
+ * @return string
+ */
+function regular_price($price)
+{
+    if($price > 0 and $price != '0,00 €') return true;
+    return false;
+}
+
+
+/**
  * @desc Get requested thumbnail image path
  *
  * @param $image

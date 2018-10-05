@@ -12,9 +12,13 @@
 
     <!-- OBRAZOK PRODUKTU -->
     <a href="{{ route('product_detail',[$product->category->slug,$product->slug,$product->id]) }}" class="product__image">
-      <div>
-        <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'small') }}">
-      </div>
+    @if (is_set($product->image))
+    <div>
+        <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'mini') }}">
+    </div>
+    @else
+    <div class="mb-6 mt-3"></div>
+    @endif
     </a>
 
     <!-- NAZOV PRODUKTU -->
@@ -27,9 +31,9 @@
     <form action="{{ route('cart') }}" method="post">
       @csrf
       <div class="d-none">
-          <input type="radio" name="variant_id" data-display-value="{{ $product->weight }}" data-regular-price="{{ $product->price_default }}" data-sale-price="{{ $product->price_action }}" value="{{ $product->id }}" checked="checked">
+          <input type="radio" name="variant_id" data-display-value="{{ $product->weight }}" data-regular-price="{{ format_money($product->price_default) }}" @if (regular_price($product->price_action)) data-sale-price="{{ format_money($product->price_action) }}" @endif value="{{ $product->id }}" checked="checked">
           @foreach($product->childs as $variant)
-              <input type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ $variant->price_default }}" data-sale-price="{{ $variant->price_action }}" value="{{ $variant->id }}" @if ($loop->first) checked="checked" @endif>
+              <input type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ format_money($variant->price_default) }}" @if (regular_price($variant->price_action)) data-sale-price="{{ format_money($variant->price_action) }}" @endif value="{{ $variant->id }}" @if ($loop->first) checked="checked" @endif>
           @endforeach
       </div>
 

@@ -28,7 +28,7 @@ class OrderExists
             }
 
 			$msgs[] = 'Košík neobsahuje žiaden tovar :( Môžete to napraviť v kategórií E-shop.';
-			$msgs[] = '<a href="'.route('eshop.cart').'" class="btn btn-sm btn-danger mt-3">späť do košíka</a> <a href="'.route('eshop').'" class="btn btn-sm btn-danger mt-3">prejsť na E-shop</a>';
+			$msgs[] = '<a href="'.route('cart').'" class="btn btn-sm btn-danger mt-3">späť do košíka</a> <a href="'.route('eshop').'" class="btn btn-sm btn-danger mt-3">prejsť na E-shop</a>';
 
 			$errors = new MessageBag($msgs);
 			return redirect(route('cart'))->withErrors($errors);

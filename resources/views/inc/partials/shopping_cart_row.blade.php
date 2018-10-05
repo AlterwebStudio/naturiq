@@ -4,7 +4,7 @@
     <!-- OBRAZOK PRODUKTU -->
     <div class="col-12 text-center col-sm-2 pr-sm-4  mb-3 mb-sm-0">
         <a href="{{ route('product_detail', [App\Product::get_category_slug($item->id),str_slug($item->name),$item->id]) }}" class="image text-center">
-            <img src="{{ image_get_thumbnail(asset('/storage/'.$item->options->image),'small') }}" alt="{{ $item->name }}">
+            <img src="{{ image_get_thumbnail(asset('/storage/'.$item->options->image),'mini') }}" alt="{{ $item->name }}">
         </a>
     </div>
 
@@ -46,10 +46,10 @@
 
     <div class="col-sm prices mb-3 mb-sm-0">
         <div class="price_total">
-            {{ number_format($item->subtotal,2, ',', ' ') }} &euro;
+            {{ format_money($item->subtotal) }}
         </div>
         <div class="price_unit">
-            {{ number_format($item->price,2, ',', ' ') }} &euro; / ks
+            {{ format_money($item->price) }} / ks
         </div>
     </div>
 

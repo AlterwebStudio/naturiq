@@ -6,6 +6,7 @@ use App\Product;
 use App\Category;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class categoryController extends Controller
 {
@@ -17,7 +18,7 @@ class categoryController extends Controller
 	public function __construct()
 	{
 		$categories = Category::all()
-			->where('active',1)
+            ->where('active','yes')
 			->sortBy('order');
 		view()->share('categories',$categories);
 	}
@@ -30,11 +31,12 @@ class categoryController extends Controller
 	 */
 	public function list(Request $request)
 	{
-		if(!$request->category_id) return $this->featured();
+		if(!$request->category_id) return $this->featured(false);
 		$products = Product::where('category_id', $request->category_id)
 			->where('product_id','0')
-			->where('active','1')
-			->paginate(2); // Produkty z kategorie
+			->orWhere('product_id','=','NULL')
+            ->where('active','yes')
+			->paginate(8); // Produkty z kategorie
 		return view('eshop.category', compact('products'));
 	}
 
@@ -46,11 +48,14 @@ class categoryController extends Controller
 	 */
 	public function featured($paginate=true)
 	{
-		$list = Product::where('featured','1')
-			->where('product_id','0')
-			->where('active','1')
-			->orderBy('buys');
-		$products = $paginate ? $list->paginate(2) : $list->get();
+
+        $products = Product::where('product_id','0')
+            ->where('active','yes')
+            ->orderByDesc('featured')
+            ->orderByDesc('buys')
+            ->groupBy("code")
+            ->paginate(8);
+
 		return view('eshop.category', compact('products'));
 	}
 

@@ -130,6 +130,15 @@ class Order extends Model
 	}
 
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function payment_status()
+	{
+		return $this->belongsTo('App\PaymentStatus');
+	}
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
@@ -185,6 +194,7 @@ class Order extends Model
 	{
 	    $items = Cart::instance('default')->total(2,'.','');
 	    $others = Cart::instance('others')->total(2,'.','');
+	    //todo Prepocitavanie kosika s kuponovou zlavou
         return floatval($items) + floatval($others);
 	}
 
@@ -212,18 +222,6 @@ class Order extends Model
 	public function getTotalPriceAttribute($price) {
 		setlocale(LC_MONETARY, 'de_DE');
 		return money_format('%!n €', $price);
-	}
-
-
-    /**
-     * @desc Get the name of current process status
-     *
-     * @param $status_id
-     * @return string
-     */
-	public function getStatusIdAttribute($status_id) {
-	    if($status_id == 0) return 0;
-        return Status::findOrFail($status_id)->name;
 	}
 
 }

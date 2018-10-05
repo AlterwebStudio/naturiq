@@ -336,7 +336,7 @@
                                 @else
 
                                     <span class="filled-data">
-                                        Nie, objednáva súkromná osoba
+                                        Váš doklad bude vystavený na súkromnú osobu.
                                     </span>
 
                                 @endif
