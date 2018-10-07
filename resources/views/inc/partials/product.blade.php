@@ -31,10 +31,15 @@
     <form action="{{ route('cart') }}" method="post">
       @csrf
       <div class="d-none">
+          @if ($product->active == 'NA')
+          <input type="radio" name="variant_id" data-display-value="MOMENTÁLNE" value="0" checked="checked">
+          <input type="radio" name="variant_id" data-display-value="NEDOSTUPNÉ" value="0" checked="checked">
+          @else
           <input type="radio" name="variant_id" data-display-value="{{ $product->weight }}" data-regular-price="{{ format_money($product->price_default) }}" @if (regular_price($product->price_action)) data-sale-price="{{ format_money($product->price_action) }}" @endif value="{{ $product->id }}" checked="checked">
           @foreach($product->childs as $variant)
               <input type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ format_money($variant->price_default) }}" @if (regular_price($variant->price_action)) data-sale-price="{{ format_money($variant->price_action) }}" @endif value="{{ $variant->id }}" @if ($loop->first) checked="checked" @endif>
           @endforeach
+          @endif
       </div>
 
       <div class="product__variant-selector btn btn-sm">
@@ -52,7 +57,7 @@
         <span class="regular-price"></span>
       </div>
 
-      <button type="submit" class="btn btn-orange w-100">
+      <button type="submit" class="btn btn-orange w-100" @if ($product->price_default == 0) disabled @endif>
         do košíka
       </button>
     </form>

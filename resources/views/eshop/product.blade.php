@@ -97,14 +97,13 @@
                         <span class="line"></span>
                     </h1>
 
-                    <span class="label">Zloženie</span>
+                    <span class="label">Popis</span>
 
-                    {!! $product->contents !!}
+                    {!! $product->description !!}
 
-                    <span class="label">
-							Gramáž
-						</span>
+                    @if ($product->active=='yes' and $product->price > 0)
 
+                    <span class="label">Gramáž</span>
                     <form id="product" action="{{ route('cart') }}" method="post">
 
                         @csrf
@@ -152,6 +151,11 @@
                         </div>
 
                     </form>
+                    @else
+
+                        <p class="alert alert-warning">PRODUKT JE MOMENTÁLNE NEDOSTUPNÝ NA OBJEDNANIE</p>
+
+                    @endif
 
 
 
@@ -163,14 +167,18 @@
                 <div class="col-12">
                     <ul class="nav nav-tabs tab-menu" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">POPIS PRODUKTU</a>
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">ZLOŽENIE PRODUKTU</a>
                         </li>
+                        @if (is_set($product->nutritions))
                         <li class="nav-item">
                             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">NUTRIČNÉ HODNOTY</a>
                         </li>
+                        @endif
+                        @if ($product->recepts->count() > 0)
                         <li class="nav-item">
                             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">V RECEPTOCH</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
 
@@ -179,7 +187,7 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                            {!! $product->description !!}
+                            {!! $product->contents !!}
 
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -188,11 +196,13 @@
 
                         </div>
                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                            <p>
-                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A eos, mollitia quibusdam vitae rerum officiis, libero animi? Temporibus, ratione, debitis! Fugiat modi perspiciatis, provident quos ea ex at? Optio, porro.</span>
-                                <span>Itaque perspiciatis, quas harum at adipisci odit. Hic nesciunt, incidunt fugit dicta delectus mollitia veniam in magni, consequatur! Quo nesciunt itaque, et eius ratione exercitationem aut quae debitis doloribus modi.</span>
-                                <span>Laborum, dolorum delectus cumque iure eveniet optio non deleniti quod. Pariatur, ipsam, fuga quasi tempore mollitia perspiciatis expedita at dignissimos animi officia omnis molestias aliquam maiores alias cupiditate earum facilis!</span>
-                            </p>
+                            <div class="row">
+                            @foreach ($product->recepts as $recept)
+                                <div class="col-sm-12 col-lg-4">
+                                @include ('inc.partials.recipe', ['recept'=>$recept])
+                                </div>
+                            @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

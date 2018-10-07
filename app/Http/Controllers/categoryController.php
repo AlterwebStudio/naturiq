@@ -34,7 +34,6 @@ class categoryController extends Controller
 		if(!$request->category_id) return $this->featured(false);
 		$products = Product::where('category_id', $request->category_id)
 			->where('product_id','0')
-			->orWhere('product_id','=','NULL')
             ->where('active','yes')
 			->paginate(8); // Produkty z kategorie
 		return view('eshop.category', compact('products'));

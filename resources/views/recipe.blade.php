@@ -33,40 +33,6 @@
                     <!-- ZOZNAM INGREDIENCII  -->
                     <div class="row ingredients mb-4">
                         {!! $recipe->ingredients !!}
-{{--                    <div class="ingredients__amount">
-                            250g
-                        </div>
-                        <div class="ingredients__ingredient">
-                            Čerstvých malín
-                        </div>
-
-                        <div class="ingredients__amount">
-                            1cl
-                        </div>
-                        <div class="ingredients__ingredient">
-                            Karibský rum
-                        </div>
-
-                        <div class="ingredients__amount">
-                            75g
-                        </div>
-                        <div class="ingredients__ingredient">
-                            BIO Mandlí
-                        </div>
-
-                        <div class="ingredients__amount">
-                            1kg
-                        </div>
-                        <div class="ingredients__ingredient">
-                            Celozrnnej múky
-                        </div>
-
-                        <div class="ingredients__amount">
-                            300ml
-                        </div>
-                        <div class="ingredients__ingredient">
-                            Plnotučné mlieko
-                        </div>--}}
                     </div>
 
                     <h2>
@@ -109,6 +75,9 @@
 
                             {{--VELKE NAHLADY - musia korespondovat so zmenseninami v content-gallery-small--}}
                             <div class="content-gallery-large">
+                                <div class="gallery-item">
+                                    <img src="{{ image_get_thumbnail(asset('/storage/'.$recipe->illustration),'medium') }}" alt="">
+                                </div>
                                 @foreach (json_decode($recipe->gallery) as $image)
                                 <div class="gallery-item">
                                     <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'medium') }}" alt="">
@@ -122,7 +91,9 @@
                         {{--MALE NAHLADY - musia korespondovat s velkymi content-gallery-large--}}
                         <div style="overflow-y:visible; overflow-x:hidden;">
                             <div class="content-gallery-small">
-
+                                <div class="gallery-item">
+                                    <img src="{{ image_get_thumbnail(asset('/storage/'.$recipe->illustration),'thumb') }}" alt="">
+                                </div>
                                 @foreach (json_decode($recipe->gallery) as $image)
                                     <div class="gallery-item">
                                         <img src="{{ image_get_thumbnail(asset('/storage/'.$image),'thumb') }}" alt="">

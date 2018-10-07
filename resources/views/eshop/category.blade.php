@@ -33,16 +33,7 @@
         </div>
         <div id="filterPane" class="container collapse show">
             <div class="row product-categories py-4">
-                @foreach ($categories as $category)
-                <div class="col-lg col-6 product-categories__icon">
-                    <a href="{{ route('category',[$category->slug,$category->id]) }}">
-                        <div class="icon">
-                            {{--<img src="{{ $category->icon }}" alt="">--}}
-                        </div>
-                        {{ $category->name }}
-                    </a>
-                </div>
-                @endforeach
+                @include ('inc.partials.categories', ['categories'=>$categories])
             </div>
         </div>
     </section>

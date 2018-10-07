@@ -18,50 +18,20 @@ class Product extends Model
 	public function getPriceAttribute()
 	{
 		$price = ($this->price_action > 0 and $this->price_action < $this->price_default) ? $this->price_action : $this->price_default;
-		return floatval($price);
+		$price = floatval($price);
+		if($price > 0) return $price;
+		else return 0;
 	}
 
 
-//	/**
-//	 * @param $price
-//	 * @return string
-//	 */
-//	public function getPriceDefaultAttribute($price)
-//	{
-//		setlocale(LC_MONETARY, 'de_DE');
-//		return money_format('%!n €', $price);
-//	}
-//
-//
-//    /**
-//     * @param $price
-//     * @return string
-//     */
-//    public function getPriceActionAttribute($price)
-//    {
-//        setlocale(LC_MONETARY, 'de_DE');
-//        return money_format('%!n €', $price);
-//    }
-//
-//
-//    /**
-//     * @param $price
-//     * @return string
-//     */
-//    public function setPriceDefaultAttribute($price)
-//    {
-//        return float_price($price);
-//    }
-//
-//
-//    /**
-//     * @param $price
-//     * @return string
-//     */
-//    public function setPriceActionAttribute($price)
-//    {
-//        return float_price($price);
-//    }
+    /**
+     * @desc Product can be possibly used in Recepts as ingredient
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function recepts()
+    {
+        return $this->belongsToMany('App\Recept');
+    }
 
 
 	/**
@@ -178,7 +148,7 @@ class Product extends Model
      */
     public function childs()
     {
-        return $this->hasMany('App\Product')->orderBy('order');
+        return $this->hasMany('App\Product')->orderByDesc('order');
     }
 
 

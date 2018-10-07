@@ -12,6 +12,6 @@ class City extends Model
      */
     public function stores()
     {
-        return $this->hasMany('App\Store');
+        return $this->hasMany('App\Store')->where('active','yes');
     }
 }
