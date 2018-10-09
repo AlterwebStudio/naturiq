@@ -259,4 +259,4 @@ Route::group(['prefix'=>'eshop'], function () {
 });
 
 // Static Page
-//Route::get('{slug}', 'pageController@index');
+Route::get('{slug}', 'pageController@index');

@@ -35,9 +35,23 @@ class OrdersController extends Controller
         $order->status_id = $request->status_id;
         $order->save();
 
+        if($request->notify_client == 'yes')
+        $this->notify_client($order->client->id, $order->id);
+
         return redirect()->back()->with(['message' => "Stav objednávky bol zmenený!", 'alert-type' => 'success']);
 
     }
+
+	/**
+	 * Notify Admin about Registration of Seller by Mail
+	 * @param $client_id
+	 * @param $order_id
+	 */
+	public static function notify_client($client_id,$order_id)
+	{
+		$client = (new \App\Client)->find($client_id);
+		$client->notify( new \App\Notifications\OrderStatusChanged($order_id) );
+	}
 
 
     /**

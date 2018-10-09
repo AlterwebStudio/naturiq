@@ -73,7 +73,7 @@ return [
     'submit'                 => 'Odoslať',
     'successfully_added_new' => 'Úspešne pridaný',
     'successfully_deleted'   => 'Úspešne odstránený',
-    'successfully_updated'   => 'Úspěšně upravený',
+    'successfully_updated'   => 'Úspešne ste aktualizovali',
     'timestamp'              => 'Timestamp',
     'title'                  => 'Nadpis',
     'type'                   => 'Typ',

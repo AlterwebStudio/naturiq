@@ -68,11 +68,14 @@
                                         <form method="post" action="">
                                             @csrf
                                             <div class="form-group">
-                                                <select name="status_id" class="form-control">
+                                                <select name="status_id" class="form-control" style="margin-bottom:10px">
                                                     @foreach ($order->statuses() as $status)
                                                         <option value="{{ $status->id }}" @if ($order->status_id == $status->id) selected @endif>{{ $status->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                <label for="notify-client">
+                                                    <input type="checkbox" name="notify_client" id="notify-client" value="yes" /> Informovať zákazníka e-mailom o zmene stavu objednávky
+                                                </label>
                                                 <input type="submit" name="update_status" class="btn btn-success" value="Uložiť" />
                                             </div>
                                         </form>

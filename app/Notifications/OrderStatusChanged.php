@@ -7,18 +7,20 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class SellerRegistered extends Notification
+class OrderStatusChanged extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $order;
+
+	/**
+	 * Create a new notification instance.
+	 *
+	 * @param $order_id
+	 */
+    public function __construct($order_id)
     {
-        //
+        $this->order = \App\Order::find($order_id);
     }
 
     /**
@@ -40,11 +42,13 @@ class SellerRegistered extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = url('/admin/clients');
-        return (new MailMessage)
-            ->from(setting('admin.email'), config('app.name'))
-            ->subject('Registrácia veľkoodberateľa')
-            ->markdown('mail.seller-registered', ['url'=>$url]);
+		return (new MailMessage)
+			->subject('Zmena stavu vašej objednávky')
+			->greeting($this->order->status->name)
+			->line('Číslo objednávky: '.$this->order->number)
+			->line($this->order->status->notification)
+//			->action('Otvoriť objednávku', route('eshop.order',[$this->order->id]'))
+			->line('Ďakujeme za dôveru!');
     }
 
     /**
