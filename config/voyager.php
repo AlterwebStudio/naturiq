@@ -43,7 +43,7 @@ return [
     */
 
     'models' => [
-        //'namespace' => 'App\\',
+//        'namespace' => 'App\\',
     ],
 
     /*
@@ -110,7 +110,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * Set whether or not the admin layout default is RTL.
@@ -120,14 +120,14 @@ return [
         /*
          * Select default language
          */
-        'default' => 'en',
+        'default' => 'sk',
 
         /*
          * Select languages that are supported.
          */
         'locales' => [
             'en',
-            //'pt',
+			'sk',
         ],
     ],
 
@@ -161,7 +161,7 @@ return [
 
         'widgets' => [
             'TCG\\Voyager\\Widgets\\UserDimmer',
-            'TCG\\Voyager\\Widgets\\PostDimmer',
+            'App\\Widgets\\Recepts',
             'TCG\\Voyager\\Widgets\\PageDimmer',
         ],
 

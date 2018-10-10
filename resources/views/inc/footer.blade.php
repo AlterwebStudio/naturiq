@@ -1,93 +1,28 @@
 <section class="alt-bg-200 py-5">
-
     <div class="container">
         <div class="row justify-content-center">
+            @foreach ($benefits as $benefit)
             <div class="col-6 mb-4 mb-lg-0 col-lg">
                 <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez umelých<br>hnojív</span>
+                    <div class="tag-icon__icon"><img src="{{ $benefit->icon }}" alt=""></div>
+                    <span class="d-flex p-xl-3 text-center">{{ $benefit->name }}</span>
                 </div>
             </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez genetických<br>modifikácii</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez pridaného<br>cukru</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez umelých<br>dochucovadiel</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Prirodzený tvar<br>chuť a vôňa</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>S vystopovateľným<br>pôvodom</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center pt-lg-5">
-            <div class="col-6 mb-4 mb-lg-0 col-lg-2">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez genetických<br>modifikácii</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg-2">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez pridaného<br>cukru</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg-2">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Bez umelých<br>dochucovadiel</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg-2">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>Prirodzený tvar<br>chuť a vôňa</span>
-                </div>
-            </div>
-            <div class="col-6 mb-4 mb-lg-0 col-lg-2">
-                <div class="tag-icon">
-                    <div class="tag-icon__icon"><img src="" alt=""></div>
-                    <span>S vystopovateľným<br>pôvodom</span>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
 
 
 <footer class="alt-bg-300 py-5 py-lg-6">
-
     <div class="container">
         <div class="row">
             <div class="col-sm-5 mr-auto mb-4">
                 <h4>Infolinka</h4>
                 <div class="large-text">
-                    +421 905 123 456
+                    {{ setting('site.infolinka') }}
                 </div>
-
                 <h4 class="mt-4">Newsletter</h4>
-
                 <form class="validate-form" id="newsletter-form" action="{{ route('newsletter_subscribe') }}" method="post">
                     @csrf
                     <div class="input-group mb-4">
@@ -97,53 +32,21 @@
                         <button class="btn btn-orange px-md-5" type="submit">odoslať</button>
                         <div class="input-msg" data-id="newsletter_eml"></div>
                     </div>
-
-                    <!-- <div class="form-check mt-4">
-                        <input class="form-check-input required" type="checkbox" value="áno" id="gdpr_consent" name="gdpr_consent" data-invalid-response="Bez vášho súhlasu nemôžeme e-mail zaregistrovať">
-                      <label class="form-check-label" for="gdpr_consent">
-                       Prihlásením sa na odber súhlasíte s pravidlami ochrany osobných údajov.
-                      </label>
-                    </div> -->
                 </form>
-
-
                 <div class="social">
                     <a href="{{ setting('site.facebook') }}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
                     <a href="{{ setting('site.pinterest') }}"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
                     <a href="{{ setting('site.instagram') }}"><i class="fab fa-instagram" aria-hidden="true"></i></a>
                 </div>
-
             </div>
             <div class="col-sm-3 mb-4">
                 <h4>Spoločnosť</h4>
-                <p>
-                    NATURIQ s.r.o. <br>
-                    Krivec 298, 962 05 Hriňová <br>
-                    Slovak Republic <br>
-                </p>
-                <p>
-                    +421 907 719 789<br/>
-
-                </p>
-                <a href="mailto:info@naturiq.sk">info@naturiq.sk</a><br/>
-
-
+                {!! setting('site.footer_contact') !!}
             </div>
-
-
             <div class="col-sm-3 mb-4">
                 <h4>Dôležité informácie</h4>
-                <ul>
-                    <li><a href="/reklamacny-poriadok">Reklamačný poriadok</a></li>
-                    <li><a href="/moznosti-platby">Možnosti platby</a></li>
-                    <li><a href="/obchodne-podmienky">Obchodné podmienky</a></li>
-                    <li><a href="/formular-na-odstupenie">Formulár na odstúpenie</a></li>
-                    <li><a href="/dodacie-podmienky">Dodacie podmienky</a></li>
-                    <li><a href="/ochrana-osobnych-udajov">Ochrana osobných údajov</a></li>
-
-                </ul>
+                {{ menu('Footer') }}
             </div>
         </div>
     </div>
-
 </footer>

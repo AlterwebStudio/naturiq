@@ -18,15 +18,15 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
-     * Define the application's command schedule.
+     * Delete Daily temporary clients from database
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        // Delete Daily temporary clients from database
-        // Triggers also delete additional Address, Company and temporary Order
+        // Triggers then delete additional content from tables:
+		// Address, Company and temporary Order
          $schedule->call(function() {
 
              $yesterday = date('Y-m-d H:i:s', strtotime('yesterday'));
