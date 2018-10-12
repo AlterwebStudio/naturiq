@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Domov</a></li>
                     <li class="breadcrumb-item active">Recepty</li>
                 </ol>
             </div>
@@ -32,7 +32,7 @@
 
             <div class="row product-categories py-4">
                 @foreach (App\ReceptTag::all() as $item)
-                <div class="col-4 col-sm mb-4 mb-lg-0"><a href="/recepty/{{ $item->slug }}" class="tag {{ $item->class }}">{{ $item->name }}</a></div>
+                <div class="col-4 col-sm mb-4 mb-lg-0"><a href="{{ asset('/recepty/'.$item->slug)  }}" class="tag {{ $item->class }}">{{ $item->name }}</a></div>
                 @endforeach
             </div>
 
@@ -40,7 +40,7 @@
     </section>
 
 
-    @foreach ($recepts as $recept)
+    @forelse ($recepts as $recept)
 
     @if ($loop->first)
     <section>
@@ -78,7 +78,14 @@
                 </div>
             </div>
         @endif
-    @endforeach
+
+    @empty
+
+        <div class="container">
+            <p class="alert alert-light my-6">Žiaľ, nenašli sme žiadne recepty vyhovujúce týmto kritériám :/</p>
+        </div>
+
+    @endforelse
 
     @include ('inc.partials.pagination')
 

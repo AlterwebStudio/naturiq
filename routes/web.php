@@ -40,8 +40,14 @@ Route::get('newsletter/unsubscribe={email}', 'newsletterController@unsubscribe')
 Route::get('recepty/{tag?}', 'receptController@index')
     ->name('recipes');
 
+// Recipes with Product as Ingredient
+Route::get('recepty/{product}/{id}', 'receptController@product')
+    ->where('product', '[a-zA-Z0-9-]+')
+    ->where('id', '[0-9]+')
+    ->name('product_recipes');
+
 // Recipe Detail
-Route::get('recepty/{slug}/{id}', 'receptController@show')
+Route::get('recept/{slug}/{id}', 'receptController@show')
     ->where('slug', '[a-zA-Z0-9-]+')
     ->where('id', '[0-9]+')
     ->name('recipe');
@@ -59,7 +65,7 @@ Route::group(['prefix'=>'eshop'], function () {
     Route::get('/', 'categoryController@featured')->name('eshop');
 
     // Main category definition
-    Route::get('{category}/{category_id}', 'categoryController@list')
+    Route::get('produkty/{category}/{category_id}', 'categoryController@list')
         ->where('category', '[a-zA-Z0-9-]+')
         ->where('category_id', '[0-9-]+')
         ->name('category');
@@ -73,7 +79,7 @@ Route::group(['prefix'=>'eshop'], function () {
     /** PRODUCT DETAIL **/
 
     // Product detail
-    Route::get('{category}/{product_slug}/{product_id}', 'productController@show')
+    Route::get('produkt/{category}/{product_slug}/{product_id}', 'productController@show')
         ->where('category','[a-zA-Z0-9-]+')
         ->where('product','[a-zA-Z0-9-]+')
         ->where('product_id','[0-9-]+')
@@ -83,13 +89,12 @@ Route::group(['prefix'=>'eshop'], function () {
 
 	/** 1. SHOPPING CART - CHECKOUT **/
 
-	// Display Cart
+	// Cart
 	Route::get('cart', 'cartController@index')
-        ->middleware('verify.client')
 		->name('cart');
 
 	// Add item to Cart
-	Route::post('cart', 'cartController@addToCart');
+	Route::post('cart', 'cartController@buy');
 
 	// Remove Item from the Cart
 	Route::get('cart/remove/{rowId}', function ($rowId) {
@@ -168,6 +173,22 @@ Route::group(['prefix'=>'eshop'], function () {
 	Route::get('dakujeme-za-objednavku', function() {
 		return view('eshop.greetings');
 	})->name('eshop.greetings');
+
+
+
+	/** CLIENT ORDERS **/
+
+	// Order Detail
+	Route::get('objednavka/{number}', 'orderController@show')
+		->middleware('auth')
+		->where('number','[0-9-]+')
+		->name('eshop.order');
+
+	// ReOrder Items
+	Route::post('objednavka/{number}', 'orderController@reorder')
+		->middleware('auth')
+		->where('number','[0-9-]+')
+		->name('eshop.order.reorder');
 
 
 

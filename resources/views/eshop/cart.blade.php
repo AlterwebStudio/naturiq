@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Domov</a></li>
                     <li class="breadcrumb-item active">Košík - Dodacie údaje</li>
                 </ol>
             </div>
@@ -81,12 +81,13 @@
                         <div class="shopping-cart__footer col-12">
                             <div class="row">
                                 <div class="col text-left">
-                                    <div class="text-bg font-weight-bold">Celkom s DPH:</div>
-                                    <div class="text-sm">Celkom bez DPH:</div>
+                                    <div class="text-bg font-weight-bold">Celkom:</div>
+                                    <div class="text-sm">vrátane DPH</div>
+                                    {{--<div class="text-sm">Celkom bez DPH:</div>--}}
                                 </div>
                                 <div class="col text-right">
-                                    <div class="text-bg font-weight-bold">{{ format_money(Cart::total()) }}</div>
-                                    <div class="text-sm">{{ format_money( App\Order::subtotal() ) }}</div>
+                                    <div class="text-bg font-weight-bold">{{ format_money(App\Order::subtotal()) }}</div>
+                                    {{--<div class="text-sm">{{ format_money( App\Order::subtotal() ) }}</div>--}}
                                 </div>
                             </div>
                         </div>

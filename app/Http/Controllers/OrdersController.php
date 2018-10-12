@@ -17,7 +17,7 @@ class OrdersController extends Controller
     {
         // GET THE DataType based on the slug
         $dataType = Voyager::model('DataType')->where('slug', '=', 'orders')->first();
-        $orders = Order::where('status_id','>',1)->where('temp','0');
+        $orders = Order::where('status_id','>',0)->where('temp','0')->get();
 
         return Voyager::view('voyager::orders.index')->with(compact('dataType','orders'));
     }

@@ -7,8 +7,8 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
-                    <li class="breadcrumb-item"><a href="/eshop">E-shop</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('eshop') }}">E-shop</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('category', [$product->category->slug, $product->category->id]) }}">{{ $product->category->name }}</a></li>
                     <li class="breadcrumb-item active">{{ $product->name }}</li>
                 </ol>
@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col-2 d-none d-lg-flex align-items-center">
                                 <div class="directional-arrow prev">
-                                    <img class="svg" src="/images/arrow_slideshow_left.svg" alt="">
+                                    <img class="svg" src="{{ asset('images/arrow_slideshow_left.svg') }}" alt="">
                                 </div>
                             </div>
                             <div class="col-10 mx-auto col-lg-8 slideshow">
@@ -65,7 +65,7 @@
                             </div>
                             <div class="col-2 d-none d-lg-flex align-items-center">
                                 <div class="directional-arrow next">
-                                    <img class="svg" src="/images/arrow_slideshow_right.svg" alt="">
+                                    <img class="svg" src="{{ asset('images/arrow_slideshow_right.svg') }}" alt="">
                                 </div>
                             </div>
                         </div>

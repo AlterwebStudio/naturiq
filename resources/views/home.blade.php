@@ -81,31 +81,31 @@
             <div class="col-md-4 content-banner-container">
                 <a href="{{ route('eshop') }}" class="content-banner banner-small blue">
                     <div class="banner-text">
-                        <img src="/images/banners/e-shop.png" alt="">
+                        <img src="images/banners/e-shop.png" alt="">
                     </div>
                 </a>
                 <a href="{{ route('about') }}" class="content-banner banner-small pink">
                     <div class="banner-text">
-                        <img src="/images/banners/pribeh.png" alt="">
+                        <img src="images/banners/pribeh.png" alt="">
                     </div>
                 </a>
             </div>
             <div class="col-md-4 content-banner-container">
                 <a href="{{ route('contact') }}" class="content-banner banner-small green">
                     <div class="banner-text">
-                        <img src="/images/banners/kde_nas_najdete.png" alt="">
+                        <img src="images/banners/kde_nas_najdete.png" alt="">
                     </div>
                 </a>
                 <a href="{{ route('register.seller') }}" class="content-banner banner-small yellow">
                     <div class="banner-text">
-                        <img src="/images/banners/vo-velkom.png" alt="">
+                        <img src="images/banners/vo-velkom.png" alt="">
                     </div>
                 </a>
             </div>
             <div class="col-md-4 content-banner-container">
                 <a href="{{ route('recipes') }}" class="content-banner banner-big purple">
                     <div class="banner-text">
-                        <img src="/images/banners/recepty.png" alt="">
+                        <img src="images/banners/recepty.png" alt="">
                     </div>
                 </a>
             </div>

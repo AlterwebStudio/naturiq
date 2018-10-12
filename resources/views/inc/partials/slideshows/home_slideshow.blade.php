@@ -35,10 +35,10 @@
           <div class="col-lg-5 ml-auto mt-5 mt-lg-0">
             <div class="directional">
               <div class="directional-arrow prev">
-                <img class="svg" src="/images/arrow_slideshow_left.svg" alt="">
+                <img class="svg" src="{{ asset('images/arrow_slideshow_left.svg') }}" alt="">
               </div>
               <div class="directional-arrow next ml-2">
-                <img class="svg" src="/images/arrow_slideshow_right.svg" alt="">
+                <img class="svg" src="{{ asset('images/arrow_slideshow_right.svg') }}" alt="">
               </div>
             </div>
             <h2>
@@ -49,9 +49,11 @@
             <a href="{{ route('product_detail',[$slide->product->category->slug,$slide->product->slug,$slide->product->id]) }}" class="btn btn-orange mb-3 mr-lg-3">
               Viac o produkte
             </a>
-            <a href="#" class="btn  mb-3 btn-outline-light">
+            @if ($slide->product->recepts->count() > 0)
+            <a href="{{ route('product_recipes', [$slide->product->slug, $slide->product_id]) }}" class="btn  mb-3 btn-outline-light">
               Recepty s produktom
             </a>
+            @endif
           </div>
 
           <div class="header-slideshow__hero col-lg-6">

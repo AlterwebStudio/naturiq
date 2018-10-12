@@ -30,7 +30,7 @@ class Product extends Model
      */
     public function recepts()
     {
-        return $this->belongsToMany('App\Recept');
+        return $this->belongsToMany('App\Recept')->orderBy('created_at');
     }
 
 

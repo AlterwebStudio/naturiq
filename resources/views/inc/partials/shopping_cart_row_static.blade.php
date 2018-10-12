@@ -10,7 +10,7 @@
   </div>
 
   <!-- NAZOV PRODUKTU -->
-  <div class="col-sm-4 text-center text-sm-left mb-3 mb-sm-0">
+  <div class="col-sm-6 text-center text-sm-left mb-3 mb-sm-0">
     <div class="name">
       <a class="heading" href="{{ route('product_detail', [App\Product::get_category_slug($item->id),str_slug($item->name),$item->id]) }}">
         {{ $item->name }}

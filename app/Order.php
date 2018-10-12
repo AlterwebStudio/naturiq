@@ -192,8 +192,8 @@ class Order extends Model
 	 */
 	public static function total()
 	{
-	    $items = Cart::instance('default')->total(2,'.','');
-	    $others = Cart::instance('others')->total(2,'.','');
+	    $items = Cart::instance('default')->subtotal(2,'.','');
+	    $others = Cart::instance('others')->subtotal(2,'.','');
 	    //todo Prepocitavanie kosika s kuponovou zlavou
         return floatval($items) + floatval($others);
 	}

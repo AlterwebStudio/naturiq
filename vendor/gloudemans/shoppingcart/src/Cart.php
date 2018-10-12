@@ -350,9 +350,9 @@ class Cart
     {
         $content = $this->getContent();
 
-//        if ($this->storedCartWithIdentifierExists($identifier)) {
-//            throw new CartAlreadyStoredException("A cart with identifier {$identifier} was already stored.");
-//        }
+        if ($this->storedCartWithIdentifierExists($identifier)) {
+            throw new CartAlreadyStoredException("A cart with identifier {$identifier} was already stored.");
+        }
 
         $this->getConnection()->table($this->getTableName())->insert([
             'identifier' => $identifier,

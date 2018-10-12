@@ -4,7 +4,7 @@
     <div class="col-2 col-md-1 d-flex align-items-center">
       @if ($featured->count() > 4)
       <div class="directional-arrow prev">
-        <img class="svg" src="/images/arrow_slideshow_left.svg" alt="">
+        <img class="svg" src="{{ asset('images/arrow_slideshow_left.svg') }}" alt="">
       </div>
       @endif
     </div>
@@ -26,7 +26,7 @@
     <div class="col-2 col-md-1 d-flex align-items-center">
       @if ($featured->count() > 4)
       <div class="directional-arrow next">
-        <img class="svg" src="/images/arrow_slideshow_right.svg" alt="">
+        <img class="svg" src="{{ asset('images/arrow_slideshow_right.svg') }}" alt="">
       </div>
       @endif
     </div>

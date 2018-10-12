@@ -43,11 +43,12 @@ class OrderStatusChanged extends Notification
     public function toMail($notifiable)
     {
 		return (new MailMessage)
+			->from(setting('admin.email'), config('app.name'))
 			->subject('Zmena stavu vašej objednávky')
 			->greeting($this->order->status->name)
 			->line('Číslo objednávky: '.$this->order->number)
 			->line($this->order->status->notification)
-//			->action('Otvoriť objednávku', route('eshop.order',[$this->order->id]'))
+			->action('Otvoriť objednávky', route('eshop.order',[$this->order->number]))
 			->line('Ďakujeme za dôveru!');
     }
 

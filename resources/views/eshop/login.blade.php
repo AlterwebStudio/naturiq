@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Domov</a></li>
                     <li class="breadcrumb-item active">Prihlásenie</li>
                 </ol>
             </div>
@@ -40,6 +40,7 @@
                                 <th>Dátum</th>
                                 <th class="text-center">Stav spracovania</th>
                                 <th class="text-right">Hodnota v EUR</th>
+                                <th class="text-right">Detail</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,6 +51,7 @@
                                 <td>{{ $order->created_at }}</td>
                                 <td class="text-center">{{ $order->status->name }}</td>
                                 <td class="text-right">{{ $order->total_price }}</td>
+                                <td class="text-right"><a class="btn btn-sm btn-orange" href="{{ route('eshop.order',[$order->number]) }}">Zobraziť</a></td>
                             </tr>
                             @endif
                         @empty

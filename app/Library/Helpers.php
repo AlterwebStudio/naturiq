@@ -10,6 +10,7 @@
 function format_money($price)
 {
 	setlocale(LC_MONETARY, 'de_DE');
+	$price = float_price($price);
 	return money_format('%!n €', floatval($price));
 }
 

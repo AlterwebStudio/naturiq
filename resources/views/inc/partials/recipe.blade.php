@@ -7,7 +7,7 @@
     </div>
 
     <!-- OBRAZOK RECEPTU -->
-    <a href="/recepty/{{str_slug($recept->title)}}/{{$recept->id}}" class="recipe__image card-img-top">
+    <a href="{{ route('recipe', [str_slug($recept->title), $recept->id]) }}" class="recipe__image card-img-top">
         <figure class="content-image">
             <img src="{{ image_get_thumbnail(asset('/storage/'.$recept->illustration),'medium') }}">
         </figure>

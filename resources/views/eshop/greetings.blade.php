@@ -5,7 +5,7 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Domov</a></li>
                     <li class="breadcrumb-item">Objednávka</li>
                     <li class="breadcrumb-item active">Potvrdenie vašej objednávky</li>
                 </ol>

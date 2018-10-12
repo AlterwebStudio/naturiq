@@ -23,6 +23,8 @@
                                 <th>Číslo objednávky</th>
                                 <th>Aktuálny stav</th>
                                 <th>Hodnota objednávky</th>
+                                <th>Spôsob dopravy</th>
+                                <th>Dátum prijatia</th>
                                 <th class="actions text-right">Zobraziť</th>
                             </tr>
                             </thead>
@@ -31,16 +33,18 @@
                                 <tr>
                                     <td>{{ $order->customer }}</td>
                                     <td>{{ $order->number }}</td>
-                                    <td>{{ $order->status_id }}</td>
+                                    <td>{{ $order->status->name }}</td>
                                     <td>{{ $order->total_price }}</td>
+                                    <td>{{ $order->shipping->name }}</td>
+                                    <td>{{ $order->created_at }}</td>
                                     <td class="no-sort no-click bread-actions">
                                         @can('delete', $order)
                                             <div class="btn btn-sm btn-danger pull-right delete" data-id="{{ $order->id }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
                                             </div>
                                         @endcan
-                                        <a href="{{ route('voyager.orders.show', $order->id) }}" class="btn btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}
+                                        <a href="{{ route('voyager.orders.show', $order->id) }}" class="btn btn-sm btn-warning pull-right edit">
+                                            <i class="voyager-eye"></i> Zobraziť
                                         </a>
                                     </td>
                                 </tr>

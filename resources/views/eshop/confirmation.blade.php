@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Domov</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Domov</a></li>
                     <li class="breadcrumb-item active">Košík - Doprava a platba</li>
                 </ol>
             </div>
@@ -89,7 +89,7 @@
                             <div class="row">
                                 <div class="col-8 text-left">
                                     <div class="text-bg font-weight-bold">Celkom vrátane dopravy:</div>
-                                    <div class="text-sm">Za tovar vrátane DPH:</div>
+                                    <div class="text-sm"><b>Za tovar</b> (ceny sú uvádzané vrátane DPH):</div>
                                 </div>
                                 <div class="col text-right">
                                     <div class="text-bg font-weight-bold">{{ format_money( App\Order::total() ) }}</div>

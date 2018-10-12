@@ -12,13 +12,30 @@ use Illuminate\Support\MessageBag;
 class cartController extends Controller
 {
 
-    /**
+	/**
+	 * Generate Temporary Client and Order if it does not exist yet
+	 *
+	 * Every Visitor has to own at least temporary account to
+	 * accomplish the Order. Client is automaticaly moved
+	 * from Temp to Real after Order is successfuly sent
+	 * or is deleted if Temp status will not change
+	 * for more than 24 hours.
+	 */
+	public function __construct()
+	{
+		if(Client::exists() === false) clientController::generate_temp();
+		if(Order::exists() === false) orderController::generate_temp();
+	}
+
+
+	/**
+	 * Show Shopping Cart Content to the User
+	 *
      * @param int $recursive
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
 	public function index($recursive=0)
 	{
-
 	    if(Client::exists()) {
 
             $client = (new Client)->get();
@@ -39,17 +56,19 @@ class cartController extends Controller
 
 
 	/**
+	 * Buy Product - Add it to the Cart
+	 *
 	 * @desc Add Product to the Cart
 	 * @param $request
 	 * @return mixed
 	 */
-	public function addToCart(Request $request)
+	public function buy(Request $request)
 	{
 
 		$product = Product::find($request->variant_id);
 		$quantity = (isset($request->quantity)) ? $request->quantity : 1;
 
-		Cart::add(
+		$this->addItemToCart(
 			$product->id,
 			$product->name,
 			$quantity,
@@ -58,16 +77,35 @@ class cartController extends Controller
 				'weight' => $product->weight,
 				'image' => $product->parent->image
 			]
-		)->associate('App\Product');
-
-		if(Client::exists() === false) clientController::generate_temp();
-		if(Order::exists() === false) orderController::generate_temp();
+		);
 
 		return view('eshop.cart')->with([
 		    'message'=>'Tovar bol pridaný do vášho košíka',
             'client'=>(new Client)->get()
         ]);
 
+	}
+
+
+	/**
+	 * Add Single Item to the Shopping Cart
+	 *
+	 * @param $id
+	 * @param $name
+	 * @param $quantity
+	 * @param $price
+	 * @param null $options
+	 * @return \Gloudemans\Shoppingcart\CartItem
+	 */
+	public function addItemToCart($id, $name, $quantity, $price, $options=null)
+	{
+		return Cart::add(
+			$id,
+			$name,
+			$quantity,
+			$price,
+			$options
+		)->associate('App\Product');
 	}
 
 }

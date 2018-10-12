@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="{{ route('home') }}">
-			<img src="images/logo.svg" alt="">
+			<img src="{{ asset('images/logo.svg') }}" alt="">
 		</a>
 
 
@@ -33,22 +33,22 @@
 
 			<ul class="navbar-nav d-none d-lg-flex">
 				<li class="nav-item active">
-					<a class="nav-link" href="/">úvod</a>
+					<a class="nav-link" href="{{ route('home') }}">úvod</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/nas-pribeh">náš príbeh</a>
+					<a class="nav-link" href="{{ route('about') }}">náš príbeh</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/predajne">predajne</a>
+					<a class="nav-link" href="{{ route('stores') }}">predajne</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/recepty">recepty</a>
+					<a class="nav-link" href="{{ route('recipes') }}">recepty</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/kontakt">kontakt</a>
+					<a class="nav-link" href="{{ route('contact') }}">kontakt</a>
 				</li>
 				<li class="nav-item">
-					<a class="btn btn-orange" href="/eshop">e-shop</a>
+					<a class="btn btn-orange" href="{{ route('eshop') }}">e-shop</a>
 				</li>
 			</ul>
 
