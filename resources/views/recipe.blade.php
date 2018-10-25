@@ -32,7 +32,9 @@
                     </h2>
                     <!-- ZOZNAM INGREDIENCII  -->
                     <div class="row ingredients mb-4">
+                      <div class="col-12">
                         {!! $recipe->ingredients !!}
+                      </div>
                     </div>
 
                     <h2>
@@ -41,7 +43,7 @@
                     </h2>
                     <div class="tags">
                         @foreach ($recipe->tags as $tag)
-                            <div class="tag {{ $tag->class }}">{{ $tag->name }}</div>
+                            <a href="{{ asset('/recepty/'.$tag->slug) }}" class="tag {{ $tag->class }}">{{ $tag->name }}</a>
                         @endforeach
                     </div>
                 </div>

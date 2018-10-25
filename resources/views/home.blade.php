@@ -21,12 +21,12 @@
         <div class="row align-items-center mb-3 section-heading">
             <div class="col">
                 <h2>
-                    Najobľúbenejšie produkty
+                    Obľúbené produkty
                     <span class="line"></span>
                 </h2>
             </div>
             <div class="col text-right">
-                <a href="#">
+                <a href="{{ route('featured') }}">
                     Všetky produkty
                 </a>
             </div>

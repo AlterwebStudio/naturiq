@@ -34,8 +34,8 @@
                                     <td>{{ $order->customer }}</td>
                                     <td>{{ $order->number }}</td>
                                     <td>{{ $order->status->name }}</td>
-                                    <td>{{ $order->total_price }}</td>
-                                    <td>{{ $order->shipping->name }}</td>
+                                    <td>{{ format_money($order->total_price) }}</td>
+                                    <td>@if ($order->shipping) {{ $order->shipping->name }} @endif</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td class="no-sort no-click bread-actions">
                                         @can('delete', $order)

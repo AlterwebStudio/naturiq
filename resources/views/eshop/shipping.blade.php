@@ -75,7 +75,7 @@
                             @endforelse
 
                             @if (session()->has('coupon'))
-                                @include ('inc.partials.shopping_cart_row_coupon', ['coupon' => \App\Coupon::get()])
+                                @include ('inc.partials.shopping_cart_row_static_coupon', ['coupon' => \App\Coupon::get()])
                             @endif
 
                         </div>

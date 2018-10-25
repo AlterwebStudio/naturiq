@@ -15,11 +15,35 @@ class Coupon extends Model
 	 */
 	public static function get($code=null)
 	{
-		if(session()->has('coupon')) {
-			$code = session('coupon');
-		}
+		if(self::exists()) $code = session('coupon');
 		if(empty($code)) return null;
 		return self::where('code', '=', $code)->first();
+	}
+
+	/**
+	 * @desc Returns true if Coupon is activated
+	 * @return bool
+	 */
+	public static function exists()
+	{
+		if(session()->has('coupon')) {
+		 return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @desc Get Activated Coupon ID
+	 * returns NULL if Coupon does not exist
+	 */
+	public static function get_id()
+	{
+		if(self::exists())
+		{
+			$coupon = self::get();
+			if(isset($coupon->id)) return $coupon->id;
+		}
+		return NULL;
 	}
 
 	/**
@@ -29,8 +53,8 @@ class Coupon extends Model
 	public function getDiscountAttribute()
 	{
 		$discount = number_format($this->value, 0);
-		if($this->type == 'AMOUNT') return '- '. $discount .'&nbsp;&euro;';
-		if($this->type == 'PERCENT') return '- '. $discount .'&nbsp;&#37;';
+		if($this->type == 'AMOUNT') return '-'. $discount .'&nbsp;&euro;';
+		if($this->type == 'PERCENT') return '-'. $discount .'&nbsp;&#37;';
 		return null;
 	}
 

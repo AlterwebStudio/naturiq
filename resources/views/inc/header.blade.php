@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Naturiq.sk</title>
+	<title>{{ setting('site.title') }}</title>
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 	<meta charset="UTF-8" />

@@ -46,12 +46,8 @@
                         {{--HLAVNA SLIDESHOW--}}
                         @if (is_set($product->image) or is_set($product->gallery))
                         <div class="row">
-                            <div class="col-2 d-none d-lg-flex align-items-center">
-                                <div class="directional-arrow prev">
-                                    <img class="svg" src="{{ asset('images/arrow_slideshow_left.svg') }}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-10 mx-auto col-lg-8 slideshow">
+
+                            <div class="col-12 mx-auto col-lg-8 slideshow">
                                 <div class="slide">
                                     <img src="{{ image_get_thumbnail(asset('/storage/'.$product->image),'medium') }}" alt="">
                                 </div>
@@ -63,11 +59,7 @@
 								@endforeach
                                 @endif
                             </div>
-                            <div class="col-2 d-none d-lg-flex align-items-center">
-                                <div class="directional-arrow next">
-                                    <img class="svg" src="{{ asset('images/arrow_slideshow_right.svg') }}" alt="">
-                                </div>
-                            </div>
+
                         </div>
                         @endif
                     </div>
@@ -146,7 +138,7 @@
                             </div>
 
                             <div class="col-lg-5">
-                                <button class="btn btn-orange btn-sm w-100" type="submit">do košíka</button>
+                                <button class="btn btn-orange w-100" type="submit">do košíka</button>
                             </div>
                         </div>
 
@@ -169,6 +161,11 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">ZLOŽENIE PRODUKTU</a>
                         </li>
+                        @if ($product->details)
+                        <li class="nav-item">
+                            <a class="nav-link" id="home-tab" data-toggle="tab" href="#desc" role="tab" aria-controls="desc" aria-selected="true">VIAC O PRODUKTE</a>
+                        </li>
+                        @endif
                         @if (is_set($product->nutritions))
                         <li class="nav-item">
                             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">NUTRIČNÉ HODNOTY</a>
@@ -177,6 +174,11 @@
                         @if ($product->recepts->count() > 0)
                         <li class="nav-item">
                             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">V RECEPTOCH</a>
+                        </li>
+                        @endif
+                        @if ($product->storage)
+                        <li class="nav-item">
+                            <a class="nav-link" id="storage-tab" data-toggle="tab" href="#storage" role="tab" aria-controls="storage" aria-selected="false">PODMIENKY SKLADOVANIA</a>
                         </li>
                         @endif
                     </ul>
@@ -188,6 +190,11 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                             {!! $product->contents !!}
+
+                        </div>
+                        <div class="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="desc-tab">
+
+                            {!! $product->details !!}
 
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -203,6 +210,11 @@
                                 </div>
                             @endforeach
                             </div>
+                        </div>
+                        <div class="tab-pane fade" id="storage" role="tabpanel" aria-labelledby="storage-tab">
+
+                            {!! $product->storage !!}
+
                         </div>
                     </div>
                 </div>
@@ -243,105 +255,108 @@
 
 @section ('custom-js-scripts')
 
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('.product-slideshow_container').each(function() {
-                const slideShow = $(this).find('.product-slideshow');
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.product-slideshow_container').each(function() {
+      const slideShow = $(this).find('.product-slideshow');
 
-                slideShow.slick({
-                    fade: false,
-                    dots: true,
-                    speed: 250,
-                    cssEase: "ease-in-out",
-                    lazyLoad: 'progressive',
-                    arrows: true,
-                    infinite: true,
-                    dotsClass: 'paging',
-                    draggable: true,
-                    cssEase: 'ease-in-out',
-                    autoplay: true,
-                    autoplaySpeed: 6000,
-                    pauseOnHover: true,
-                    //pauseOnFocus: true,
-                    prevArrow: $(this).find('.prev'),
-                    nextArrow: $(this).find('.next'),
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                    responsive: [{
-                        breakpoint: 992,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 3,
-                            infinite: true,
-                            dots: true
-                        }
-                    },
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                slidesToShow: 2,
-                                slidesToScroll: 2,
-                                dots: false,
-                            }
-                        },
-                        {
-                            breakpoint: 526,
-                            settings: {
-                                slidesToShow: 1,
-                                slidesToScroll: 1,
-                                dots: false,
-                            }
-                        }
-                    ],
-                })
+      slideShow.slick({
+        fade: false,
+        dots: true,
+        speed: 250,
+        cssEase: "ease-in-out",
+        lazyLoad: 'progressive',
+        arrows: true,
+        infinite: true,
+        dotsClass: 'paging',
+        draggable: true,
+        cssEase: 'ease-in-out',
+        autoplay: true,
+        autoplaySpeed: 6000,
+        pauseOnHover: true,
+        //pauseOnFocus: true,
+        prevArrow: $(this).find('.prev'),
+        nextArrow: $(this).find('.next'),
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        responsive: [{
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              dots: false,
+            }
+          },
+          {
+            breakpoint: 526,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              dots: false,
+            }
+          }
+        ],
+      })
 
-                $('.product-page__main-slideshow .slideshow').slick({
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    arrows: true,
-                    fade: true,
-                    asNavFor: '.product-page__nav-slideshow',
-                    prevArrow: $('.product-page__main-slideshow .prev'),
-                    nextArrow: $('.product-page__main-slideshow .next'),
-                });
+      $('.product-page__main-slideshow .slideshow').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        fade: true,
+        infinite: false,
+        draggable: false,
+        asNavFor: '.product-page__nav-slideshow',
+        prevArrow: $('.product-page__main-slideshow .prev'),
+        nextArrow: $('.product-page__main-slideshow .next'),
+      });
 
-                $('.product-page__nav-slideshow').slick({
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                    asNavFor: '.product-page__main-slideshow .slideshow',
-                    dots: false,
-                    arrows: false,
-                    //centerMode: true,
-                    focusOnSelect: true,
-                    responsive: [{
-                        breakpoint: 992,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 1,
-                        }
-                    },
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                slidesToShow: 4,
-                                slidesToScroll: 1,
-                                dots: false,
-                            }
-                        },
-                        {
-                            breakpoint: 526,
-                            settings: {
-                                slidesToShow: 4,
-                                slidesToScroll: 1,
-                                dots: false,
+      $('.product-page__nav-slideshow').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        asNavFor: '.product-page__main-slideshow .slideshow',
+        dots: false,
+        arrows: false,
+        infinite: false,
+        //centerMode: true,
+        focusOnSelect: true,
+        responsive: [{
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 1,
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 1,
+              dots: false,
+            }
+          },
+          {
+            breakpoint: 526,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 1,
+              dots: false,
 
-                            }
-                        }
-                    ]
-                });
+            }
+          }
+        ]
+      });
 
-            });
-        });
-    </script>
+    });
+  });
+</script>
 
 @endsection

@@ -70,7 +70,7 @@ class cartController extends Controller
 
 		$this->addItemToCart(
 			$product->id,
-			$product->name,
+			$product->parent->name,
 			$quantity,
 			$product->price,
 			[

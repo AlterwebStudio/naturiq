@@ -2,17 +2,11 @@
 
 namespace App;
 
-use Auth;
-use App\Client;
 use Illuminate\Database\Eloquent\Model;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Order extends Model
 {
-	/**
-	 * @var Order ID
-	 */
-//	public $id;
 
     public $fillable = [
     	'id',
@@ -20,7 +14,7 @@ class Order extends Model
     	'shipping_id',
     	'payment_id',
     	'status_id',
-    	'discount_id',
+    	'coupon_id',
     	'number',
     	'customer',
     	'shipping_price',
@@ -60,7 +54,7 @@ class Order extends Model
 
 
     /**
-     * @desc Returns Collect instance of the current Order
+     * @desc Returns Order Instance
      *
      * @return false or Eloquent Order Model with all relations
      */
@@ -75,9 +69,8 @@ class Order extends Model
 
 
     /**
-     * @desc Vrati ID rozpracovanej objednavky prihlaseneho zakaznika
-     * Vrati false v pripade neprihlaseneho uzivatela, alebo
-     * v pripade, ze neexistuje ziadna rozpracovana objednavka
+     * @desc Returns Order ID or false in case of customer
+	 * is not logged-in or in case no Order exists
      *
      * @return bool
      */
@@ -176,6 +169,15 @@ class Order extends Model
 
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function coupon()
+	{
+		return $this->belongsTo('App\Coupon');
+	}
+
+
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
 	 */
 	public function items()
@@ -194,8 +196,49 @@ class Order extends Model
 	{
 	    $items = Cart::instance('default')->subtotal(2,'.','');
 	    $others = Cart::instance('others')->subtotal(2,'.','');
-	    //todo Prepocitavanie kosika s kuponovou zlavou
-        return floatval($items) + floatval($others);
+	    return self::discount(floatval($items)) + floatval($others);
+	}
+
+
+	/**
+	 * @desc Apply Coupon Discount to the Order
+	 * if Coupon was applied
+	 *
+	 * @param $amount
+	 * @return float|int
+	 */
+	private static function discount($amount)
+	{
+		$coupon = (new Coupon)->get();
+		if($coupon) {
+			if ($coupon->type == 'PERCENT') {
+				return $amount * (1 - ($coupon->value / 100));
+			} elseif ($coupon->type == 'AMOUNT') {
+				$discounted = $amount - floatval(trim($coupon->value));
+				return ($discounted < 0) ? 0 : $discounted;
+			}
+		}
+		return $amount;
+	}
+
+
+	/**
+	 * @desc Get Discount Amount / Difference in Eur
+	 *
+	 * @param $amount
+	 * @return float|int
+	 */
+	public static function discountAmount($amount)
+	{
+		$coupon = (new Coupon)->get();
+		if($coupon) {
+			if ($coupon->type == 'PERCENT') {
+				return format_money($amount * ($coupon->value / 100));
+			} elseif ($coupon->type == 'AMOUNT') {
+				return format_money($coupon->value);
+			}
+		}
+		return 0;
 	}
 
 
@@ -207,21 +250,8 @@ class Order extends Model
 	 */
 	public static function subtotal()
 	{
-        return Cart::instance('default')->subtotal(2,'.','');
-//        $others = Cart::instance('others')->subtotal(2,'.','');
-//        return floatval($items) + floatval($others);
-	}
-
-
-	/**
-     * @desc Get Total Price formatted
-     *
-	 * @param $price
-	 * @return string
-	 */
-	public function getTotalPriceAttribute($price) {
-		setlocale(LC_MONETARY, 'de_DE');
-		return money_format('%!n €', $price);
+        $subtotal = Cart::instance('default')->subtotal(2,'.','');
+        return self::discount($subtotal);
 	}
 
 }

@@ -13,7 +13,7 @@
     <div class="page-content container-fluid">
         @include('voyager::alerts')
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
 
                 <div class="panel panel-bordered">
                     <div class="panel-body">
@@ -27,63 +27,84 @@
                             </div>
                             <div class="card-body">
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 style="margin-bottom:0">Základné údaje</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <h4 style="margin-bottom:0;">Základné údaje</h4>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <p>{{ $client->name }}</p>
+                                                <p>{{ $client->street }}</p>
+                                                <p>{{ $client->zip }}</p>
+                                                <p>{{ $client->city }}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <p>{{ $client->name }}</p>
-                                        <p>{{ $client->street }}</p>
-                                        <p>{{ $client->zip }}</p>
-                                        <p>{{ $client->city }}</p>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 style="margin-bottom:0">Doručovacia adresa</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        @if (is_set($client->address->street))
-                                        <p>{{ $client->address->street }}</p>
-                                        <p>{{ $client->address->zip }}</p>
-                                        <p>{{ $client->address->city }}</p>
-                                        <p>{{ $client->address->country }}</p>
-                                        @else
-                                        <p>Doručovacie údaje sú zhodné so základnými...</p>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 style="margin-bottom:0">Fakturačné údaje</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        @if (is_set($client->company->name))
-                                        <p>{{ $client->company->name }}</p>
-                                        <p>{{ $client->company->ico }}</p>
-                                        <p>{{ $client->company->dic }}</p>
-                                        <p>{{ $client->company->icdph }}</p>
-                                        @else
-                                            <p>Fakturačné údaje neboli vyplnené...</p>
-                                        @endif
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <h4 style="margin-bottom:0">Doručovacia adresa</h4>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                @if (is_set($client->address->street))
+                                                    <p>{{ $client->address->street }}</p>
+                                                    <p>{{ $client->address->zip }}</p>
+                                                    <p>{{ $client->address->city }}</p>
+                                                    <p>{{ $client->address->country }}</p>
+                                                @else
+                                                    <p>Doručovacie údaje sú zhodné so základnými...</p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 style="margin-bottom:0">Kontaktné údaje</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <h4 style="margin-bottom:0">Fakturačné údaje</h4>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                @if (is_set($client->company->name))
+                                                <p>{{ $client->company->name }}</p>
+                                                <p>{{ $client->company->ico }}</p>
+                                                <p>{{ $client->company->dic }}</p>
+                                                <p>{{ $client->company->icdph }}</p>
+                                                @else
+                                                    <p>Fakturačné údaje neboli vyplnené...</p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <p>Telefón: {{ $client->phone }}</p>
-                                        <p><a href="mailto:{{ $client->email }}">{{ $client->email }}</a></p>
+                                    <div class="col-md-6">
+
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <h4 style="margin-bottom:0">Kontaktné údaje</h4>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <p>Telefón: {{ $client->phone }}</p>
+                                                <p><a href="mailto:{{ $client->email }}">{{ $client->email }}</a></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
 
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-8">
+                <div class="panel panel-bordered">
+                    <div class="panel-body">
 
 
 
@@ -106,12 +127,12 @@
                                     <tbody>
                                     @forelse($client->orders as $order)
                                         <tr>
-                                            <td>{{ $order->number }}</td>
-                                            <td>{{ $order->total_price }}</td>
+                                            <td><a href="{{ route('voyager.orders.show', $order->id) }}">{{ $order->number }}</a></td>
+                                            <td>{{ format_money($order->total_price) }}</td>
                                             <td>{{ $order->created_at }}</td>
                                             <td>{{ $order->status->name }}</td>
                                             <td class="no-sort no-click bread-actions">
-                                                <a href="{{ route('voyager.orders.show', $order->id) }}" class="btn btn-sm btn-primary pull-right edit">
+                                                <a href="{{ route('voyager.orders.show', $order->id) }}" class="btn btn-sm btn-warning pull-right edit">
                                                     <i class="voyager-edit"></i> Detail objednávky
                                                 </a>
                                             </td>
@@ -129,10 +150,10 @@
                             </div>
                         </div>
 
-
-
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>

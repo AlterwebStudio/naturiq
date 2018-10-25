@@ -81,7 +81,7 @@
                             @endif
 
                             @if (session()->has('coupon'))
-                                @include ('inc.partials.shopping_cart_row_coupon', ['coupon' => \App\Coupon::get()])
+                                @include ('inc.partials.shopping_cart_row_static_coupon', ['coupon' => \App\Coupon::get()])
                             @endif
 
                         </div>
@@ -89,7 +89,7 @@
                             <div class="row">
                                 <div class="col-8 text-left">
                                     <div class="text-bg font-weight-bold">Celkom vrátane dopravy:</div>
-                                    <div class="text-sm"><b>Za tovar</b> (ceny sú uvádzané vrátane DPH):</div>
+                                    <div class="text-sm"><b>Za tovar</b> (vrátane DPH):</div>
                                 </div>
                                 <div class="col text-right">
                                     <div class="text-bg font-weight-bold">{{ format_money( App\Order::total() ) }}</div>
@@ -118,7 +118,7 @@
                             @endif
 
                             @if (session()->has('coupon'))
-                                @include ('inc.partials.shopping_cart_row_coupon', ['coupon' => \App\Coupon::get()])
+                                @include ('inc.partials.shopping_cart_row_static_coupon', ['coupon' => \App\Coupon::get()])
                             @endif
                         </div>
                         <div class="shopping-cart__footer col-12">
@@ -201,13 +201,13 @@
 
                                     <!-- PSC + Krajina -->
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="psc">PSČ</label>
                                                 <span class="filled-data">{{ $order->client->zip }}</span>
                                             </div>
                                         </div>
-                                        <div class="col-lg-8">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="country">Krajina</label>
                                                 <span class="filled-data">{{ $order->client->country }}</span>
@@ -257,13 +257,13 @@
 
                                     <!-- PSC + Krajina -->
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-psc">PSČ</label>
                                                 <span class="filled-data">{{ $order->client->address->zip }}</span>
                                             </div>
                                         </div>
-                                        <div class="col-lg-8">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="delivery-country">Krajina</label>
                                                 <span class="filled-data">{{ $order->client->address->country }}</span>

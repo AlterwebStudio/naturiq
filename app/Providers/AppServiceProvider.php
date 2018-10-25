@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Banner;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -14,7 +15,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+    	// Set default db string length
 		Schema::defaultStringLength(191);
+
+		// Share variables used in most of subcategories
+		$banner = Banner::inRandomOrder()->first();
+
+		view()->share([
+			'banner'=>$banner
+		]);
     }
 
     /**

@@ -9,12 +9,19 @@ class OrderItems extends Model
 
     public $table = 'order-items';
 
-    public function order()
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function order()
     {
         return $this->belongsTo('App\Order','identifier');
     }
 
-    public function getContentAttribute($json) {
+	/**
+	 * @param $json
+	 * @return mixed
+	 */
+	public function getContentAttribute($json) {
         return unserialize($json);
     }
 

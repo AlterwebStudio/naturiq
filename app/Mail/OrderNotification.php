@@ -11,16 +11,12 @@ class OrderNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data = [];
-
 	/**
 	 * Create a new message instance.
-	 *
-	 * @param null $order
 	 */
-    public function __construct($order=null)
+    public function __construct()
     {
-        $this->data = $order;
+    	//
     }
 
     /**
@@ -30,9 +26,10 @@ class OrderNotification extends Mailable
      */
     public function build()
     {
+    	$order = (new \App\Order)->get();
         return $this->view('mail.order')
             ->from('tetrev@alterweb.sk', config('app.name'))
 			->subject(config('app.name') . ' - Potvrdenie objednávky')
-			->with('data',$this->data);
+			->with('order',$order);
     }
 }

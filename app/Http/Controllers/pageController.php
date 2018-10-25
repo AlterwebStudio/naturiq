@@ -37,11 +37,10 @@ class pageController extends Controller
         $featured = (new Product)->get_featured(false);
         $slideshow = (new Slideshow)->all();
         $sale = (new Product)->sale();
-        $categories = Category::all()
-            ->where('active',1)
-            ->sortBy('order');
-        view()->share('categories',$categories);
-        return view('home', compact('featured', 'sale', 'categories', 'slideshow'));
+        $categories = Category::where('active',1)
+            ->orderBy('order')
+			->get();
+        return view('home', compact('featured', 'sale', 'categories', 'slideshow', 'categories'));
     }
 
     /**

@@ -9,6 +9,7 @@ return array(
     'Xethron\\MigrationsGenerator' => array($vendorDir . '/xethron/migrations-generator/src'),
     'Way\\Generators' => array($vendorDir . '/xethron/laravel-4-generators/src'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+    'PayPal' => array($vendorDir . '/paypal/rest-api-sdk-php/lib'),
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),

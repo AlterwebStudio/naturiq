@@ -11,7 +11,7 @@ class orderController extends Controller
 {
 
     /**
-     * Generate empty temporary Order
+     * Generate temporary Order
      * @return bool
      */
     public static function generate_temp()
@@ -53,6 +53,11 @@ class orderController extends Controller
 	}
 
 
+	/**
+	 * Reorder Items from previous Order
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function reorder(Request $request)
 	{
 		$order = Order::where('number',$request->number)->first();

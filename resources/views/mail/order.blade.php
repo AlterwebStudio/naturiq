@@ -13,16 +13,16 @@
 
 <div class="container">
 
-    @if (isset($data))
+    @if (isset($order))
 
         <h1 class="title text-center mt-5 mb-5">Naturiq.sk</h1>
 
         <p class="alert alert-secondary mb-5">
             Ďakujeme za vašu objednávku na NATURIQ.SK.<br/>
-            Číslo vašej objednávky: <b>{{ $data->number }}</b>
+            Číslo vašej objednávky: <b>{{ $order->number }}</b>
         </p>
 
-        <table class="table table-striped mb-5">
+        <table class="table mb-5">
             <thead>
             <tr>
                 <th class="col-6" style="width:40%">Názov položky</th>
@@ -36,7 +36,7 @@
 
             @foreach (Cart::instance('default')->content() as $row)
 
-                <tr>
+                <tr class="bg-light">
                     <td class="align-middle lh-15">
                         <strong class="big"><a href="{{ route('product_detail', [App\Product::get_category_slug($row->id),str_slug($row->name),$row->id]) }}">{{ $row->name }}</a></strong><br/>
                         <span>@if ($row->options->has('weight')) Balenie: {{ $row->options->weight }} @endif</span>
@@ -51,20 +51,36 @@
             </tbody>
 
             <tfoot>
+            @if (isset($order->coupon))
+                <tr>
+                    <td>
+                        <b>Kupónová zľava</b><br/>
+                        {{ $order->coupon->title }}
+                    </td>
+                    <td colspan="2"></td>
+                    <td class="font-weight-bold">- {!! $order->discountAmount($order->total_price) !!}</td>
+                </tr>
+            @endif
             <tr>
-                <td colspan="2">&nbsp;</td>
-                <td>{{ $data['shipping']->name }}</td>
-                <td>{{ format_money($data['shipping']->price) }}</td>
+                <td>
+                    <b>Doprava</b><br/>
+                    {{ $order->shipping->name }}
+                </td>
+                <td colspan="2"></td>
+                <td class="font-weight-bold">{{ format_money($order->shipping->price) }}</td>
             </tr>
             <tr>
-                <td colspan="2">&nbsp;</td>
-                <td>{{ $data['payment']->name }}</td>
-                <td>{{ format_money($data['payment']->price) }}</td>
+                <td>
+                    <b>Platba</b><br/>
+                    {{ $order->payment->name }}
+                </td>
+                <td colspan="2"></td>
+                <td class="font-weight-bold">{{ format_money($order->payment->price) }}</td>
             </tr>
-            <tr class="font-weight-bold">
-                <td colspan="2">&nbsp;</td>
-                <td>Celkom k úhrade</td>
-                <td class="table-primary"><big>{{ $data->total_price }}</big></td>
+            <tr>
+                <td class="font-weight-bold"><big>Celkom k úhrade</big></td>
+                <td colspan="2"></td>
+                <td class="table-success font-weight-bold"><big>{{ format_money($order->total_price) }}</big></td>
             </tr>
             </tfoot>
         </table>
@@ -73,36 +89,36 @@
             <tr>
                 <td width="25%">
                     <h5 class="font-weight-bold">Fakturačné údaje</h5>
-                    {{ $data->client->name }}<br/>
-                    {{ $data->client->street }}<br/>
-                    {{ $data->client->zip }}<br/>
-                    {{ $data->client->city }}
+                    {{ $order->client->name }}<br/>
+                    {{ $order->client->street }}<br/>
+                    {{ $order->client->zip }}<br/>
+                    {{ $order->client->city }}
                 </td>
 
-                @if (is_set($data->client->address->street))
+                @if (is_set($order->client->address->street))
                     <td width="25%">
                         <h5 class="font-weight-bold">Firemné údaje</h5>
-                        {{ $data->client->address->street }}<br/>
-                        {{ $data->client->address->zip }}<br/>
-                        {{ $data->client->address->city }}<br/>
-                        {{ $data->client->address->country }}
+                        {{ $order->client->address->street }}<br/>
+                        {{ $order->client->address->zip }}<br/>
+                        {{ $order->client->address->city }}<br/>
+                        {{ $order->client->address->country }}
                     </td>
                 @endif
 
-                @if (is_set($data->client->company->name))
+                @if (is_set($order->client->company->name))
                     <td width="25%">
                         <h5 class="font-weight-bold">Doručovacie údaje</h5>
-                        {{ $data->client->company->name }}<br/>
-                        IČO: {{ $data->client->company->ico }}<br/>
-                        DIČ: {{ $data->client->company->dic }}<br/>
-                        IČ DPH: {{ $data->client->company->icdph }}
+                        {{ $order->client->company->name }}<br/>
+                        IČO: {{ $order->client->company->ico }}<br/>
+                        DIČ: {{ $order->client->company->dic }}<br/>
+                        IČ DPH: {{ $order->client->company->icdph }}
                     </td>
                 @endif
 
                 <td width="25%">
                     <h5 class="font-weight-bold">Kontaktné údaje</h5>
-                    {{ $data->client->phone }}<br/>
-                    {{ $data->client->email }}
+                    {{ $order->client->phone }}<br/>
+                    {{ $order->client->email }}
                 </td>
             </tr>
         </table>

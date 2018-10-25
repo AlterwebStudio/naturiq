@@ -31,7 +31,7 @@ class categoryController extends Controller
 	 */
 	public function list(Request $request)
 	{
-		if(!$request->category_id) return $this->featured(false);
+		if(!$request->category_id) return $this->new();
 		$products = Product::where('category_id', $request->category_id)
 			->where('product_id','0')
             ->where('active','yes')
@@ -42,11 +42,12 @@ class categoryController extends Controller
 
 	/**
 	 * @desc List featured items (sorted by most wanted - how many times was item bought)
-	 * @param bool $paginate
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function featured($paginate=true)
+	public function featured()
 	{
+
+		$subtitle = 'Najpredávanejšie';
 
         $products = Product::where('product_id','0')
             ->where('active','yes')
@@ -55,7 +56,29 @@ class categoryController extends Controller
             ->groupBy("code")
             ->paginate(8);
 
-		return view('eshop.category', compact('products'));
+		return view('eshop.category', compact('products', 'subtitle'));
+	}
+
+
+	/**
+	 * @desc List products from category "Novinky" (New products)
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function new()
+	{
+
+		$subtitle = 'Novinky';
+
+        $products = Product::where('product_id','0')
+			->where('category_id','1')
+            ->where('active','yes')
+            ->orderByDesc('buys')
+            ->groupBy("code")
+            ->paginate(8);
+
+        if($products->count()==0) return $this->featured();
+
+		return view('eshop.category', compact('products','subtitle'));
 	}
 
 }

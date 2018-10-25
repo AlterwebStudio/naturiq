@@ -1,9 +1,12 @@
 
-<p class="mt-5"><b>Internetový obchod NATURIQ.SK prevádzkuje:</b></p>
-
-<table class="table">
+<table class="table mt-5">
     <tbody>
         <tr>
+            <td colspan="3">
+                <p class="mt-2 mb-2"><b>Internetový obchod NATURIQ.SK prevádzkuje:</b></p>
+            </td>
+        </tr>
+        <tr class="bg-light">
             <td>
                 <b>NATURIQ s.r.o.</b><br/>
                 Krivec 298, 962 05 Hriňová<br/>

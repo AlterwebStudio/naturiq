@@ -223,7 +223,7 @@ class Product extends Model
 
 
     /**
-     * Returns readable format of current product status if output is in browse view
+     * @desc Returns readable format of current product status if output is in browse view
      * @param $status
      * @return string
      */

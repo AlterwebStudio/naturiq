@@ -18,19 +18,19 @@
 
     {{-- CATEGORY LOOP SECTION --}}
     <section class="py-3 alt-bg-200 filter-pane">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3><i class="fas fa-filter"></i> Filter</h3>
-                </div>
-                <div class="col text-right">
-                    <button class="close-btn" type="button" data-toggle="collapse" data-target="#filterPane" aria-expanded="true">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-
-            </div>
+      <div class="container" data-toggle="collapse" data-target="#filterPane" aria-expanded="true">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <h3><i class="fas fa-filter mr-2"></i>Kategórie</h3>
         </div>
+        <div class="col text-right">
+          <button class="close-btn" type="button">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
         <div id="filterPane" class="container collapse show">
             <div class="row product-categories py-4">
                 @include ('inc.partials.categories', ['categories'=>$categories])
@@ -39,9 +39,21 @@
     </section>
     {{-- END CATEGORY LOOP SECTION --}}
 
-
     {{-- PRODUCT LOOP --}}
     <section>
+
+        @if (isset($subtitle))
+        <div class="container pt-3">
+            <div class="row">
+                <div class="col">
+                    <h3>{{ $subtitle }}
+                        <span class="line"></span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        @endif
+
         @include ('inc.partials.messages')
 
         @forelse (collect($products->items()) as $key=>$product)

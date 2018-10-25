@@ -50,7 +50,7 @@
                                 <td class="font-weight-bold">{{ $order->number }}</td>
                                 <td>{{ $order->created_at }}</td>
                                 <td class="text-center">{{ $order->status->name }}</td>
-                                <td class="text-right">{{ $order->total_price }}</td>
+                                <td class="text-right">{{ format_money($order->total_price) }}</td>
                                 <td class="text-right"><a class="btn btn-sm btn-orange" href="{{ route('eshop.order',[$order->number]) }}">Zobraziť</a></td>
                             </tr>
                             @endif

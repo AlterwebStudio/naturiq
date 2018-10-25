@@ -172,7 +172,7 @@ class Client extends Model
 	 */
 	public function orders()
 	{
-		return $this->hasMany('App\Order');
+		return $this->hasMany('App\Order')->where('status_id','>',0);
 	}
 
 }

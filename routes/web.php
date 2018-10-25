@@ -176,6 +176,13 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 
+	/** 5. PAYPAL PAYMENT **/
+
+	Route::get('platba-paypal', 'paymentController@payWithpaypal')
+		->name('paywithpaypal');
+
+
+
 	/** CLIENT ORDERS **/
 
 	// Order Detail
