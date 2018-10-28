@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-bag"></i> {{ $client->name }}
+        <i class="voyager-bag"></i> {{ $client->name }} / {{ $client->type }}
     </h1>
 @stop
 
@@ -13,22 +13,18 @@
     <div class="page-content container-fluid">
         @include('voyager::alerts')
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
 
-                <div class="panel panel-bordered">
+                <div class="panel panel-bordered panel-warning">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Registračné údaje</h3>
+                    </div>
+
                     <div class="panel-body">
 
-
-
-
-                        <div class="card" style="width:100%;float:none;">
-                            <div class="card-header" style="background-color: #22A7F0; color:white; padding:15px">
-                                <h4 style="margin:0">Údaje o zákazníkovi</h4>
-                            </div>
-                            <div class="card-body">
-
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="card">
                                             <div class="card-header text-center">
                                                 <h4 style="margin-bottom:0;">Základné údaje</h4>
@@ -41,7 +37,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="card">
                                             <div class="card-header text-center">
                                                 <h4 style="margin-bottom:0">Doručovacia adresa</h4>
@@ -58,10 +54,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="card">
                                             <div class="card-header text-center">
                                                 <h4 style="margin-bottom:0">Fakturačné údaje</h4>
@@ -78,7 +72,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
 
                                         <div class="card">
                                             <div class="card-header text-center">
@@ -96,23 +90,13 @@
                         </div>
 
 
+                <div class="panel panel-bordered panel-primary">
 
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Objednávky zákazníka</h3>
                     </div>
-                </div>
-            </div>
 
-
-            <div class="col-md-8">
-                <div class="panel panel-bordered">
                     <div class="panel-body">
-
-
-
-                        <div class="card" style="width:100%;float:none;">
-                            <div class="card-header" style="background-color: #22A7F0; color:white; padding:15px">
-                                <h4 style="margin:0">Objednávky zákazníka</h4>
-                            </div>
-                            <div class="card-body">
 
                                 <table id="dataTable" class="table table-hover">
                                     <thead>
@@ -153,9 +137,5 @@
                     </div>
                 </div>
 
-
-            </div>
-        </div>
-    </div>
 
 @stop

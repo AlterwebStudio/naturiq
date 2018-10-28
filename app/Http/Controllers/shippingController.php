@@ -20,7 +20,7 @@ class shippingController extends Controller
 	public function index()
 	{
 		$shippings = Shipping::orderBy('order','asc')->get();
-		$payments = Payment::orderBy('order','asc')->get();
+		$payments = Payment::where('active','1')->orderBy('order','asc')->get();
 
 		return view('eshop.shipping')
 			->with('shippings', $shippings)

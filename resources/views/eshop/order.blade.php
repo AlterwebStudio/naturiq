@@ -43,7 +43,7 @@
 
                             {{-- SHIPPING ROW --}}
                             <div class="shopping-cart__row other_row">
-                                <div class="col-sm-4 col-auto">
+                                <div class="col-sm-8 col-auto">
                                     <div class="name">
                                         <span class="heading">
                                             {{ $order->shipping->name }}
@@ -57,6 +57,26 @@
                                 <div class="col prices text-sm-center text-lg-right">
                                     <div class="price_total">
                                         {{ format_money($order->shipping->price) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- PAYMENT ROW --}}
+                            <div class="shopping-cart__row other_row">
+                                <div class="col-sm-8 col-auto">
+                                    <div class="name">
+                                        <span class="heading">
+                                            {{ $order->payment->name }}
+                                        </span>
+                                        <span class="subheading">
+                                            {{ $order->payment->description }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                                <div class="col prices text-sm-center text-lg-right">
+                                    <div class="price_total">
+                                        {{ format_money($order->payment->price) }}
                                     </div>
                                 </div>
                             </div>

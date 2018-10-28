@@ -93,7 +93,7 @@
 
                     {!! $product->description !!}
 
-                    @if ($product->active=='yes' and $product->price > 0)
+                    @if ($product->active=='yes' and $product->price > 0 and $product->variants()->count())
 
                     <span class="label">Gramáž</span>
                     <form id="product" action="{{ route('cart') }}" method="post">
@@ -104,7 +104,12 @@
                             <div class="btn-group">
                                 @foreach($product->variants() as $variant)
                                     <label for="variant{{$loop->iteration}}" class="btn">
-                                        <input id="variant{{$loop->iteration}}" type="radio" name="variant_id" data-display-value="{{ $variant->weight }}" data-regular-price="{{ format_money($variant->price_default) }}" @if (regular_price($variant->price_action)) data-sale-price="{{ $variant->price_action }}" @endif value="{{ $variant->id }}" @if($product->id == $variant->id) checked="checked" @endif>
+                                        <input id="variant{{$loop->iteration}}" type="radio" name="variant_id" data-display-value="{{ $variant->weight }}"
+                                               @if ($variant->price < $variant->price_default)
+                                               data-regular-price="{{ format_money($variant->price_default) }}"
+                                               data-sale-price="{{ format_money($variant->price) }}"
+                                               @else data-regular-price="{{ format_money($variant->price) }}" @endif
+                                               value="{{ $variant->id }}" @if($product->id == $variant->id) checked="checked" @endif>
                                         <span>{{ $variant->weight }}</span>
                                     </label>
                                 @endforeach
@@ -163,7 +168,7 @@
                         </li>
                         @if ($product->details)
                         <li class="nav-item">
-                            <a class="nav-link" id="home-tab" data-toggle="tab" href="#desc" role="tab" aria-controls="desc" aria-selected="true">VIAC O PRODUKTE</a>
+                            <a class="nav-link" id="desc-tab" data-toggle="tab" href="#desc" role="tab" aria-controls="desc" aria-selected="true">VIAC O PRODUKTE</a>
                         </li>
                         @endif
                         @if (is_set($product->nutritions))
@@ -192,7 +197,7 @@
                             {!! $product->contents !!}
 
                         </div>
-                        <div class="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="desc-tab">
+                        <div class="tab-pane fade" id="desc" role="tabpanel" aria-labelledby="desc-tab">
 
                             {!! $product->details !!}
 

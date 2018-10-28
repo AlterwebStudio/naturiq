@@ -25,6 +25,8 @@
                                 <th>Mesto</th>
                                 <th>Telefón</th>
                                 <th>E-mail</th>
+                                <th>Registrácia</th>
+                                <th>Zľava</th>
                                 <th class="actions text-right">Zobraziť</th>
                             </tr>
                             </thead>
@@ -37,9 +39,14 @@
                                     <td>{{ $client->city }}</td>
                                     <td>{{ $client->phone }}</td>
                                     <td>{{ $client->email }}</td>
+                                    <td>{{ $client->type }}</td>
+                                    <td>{{ $client->discount }}%</td>
                                     <td class="no-sort no-click bread-actions">
-                                        <a href="{{ route('voyager.clients.show', $client->id) }}" class="btn btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-eye"></i> Detail
+                                        <a href="{{ route('voyager.clients.edit', $client->id) }}" class="btn btn-sm btn-primary pull-right edit" title="Upraviť">
+                                            <i class="voyager-edit"></i>
+                                        </a>
+                                        <a href="{{ route('voyager.clients.show', $client->id) }}" class="btn btn-sm btn-warning pull-right edit" title="Zobraziť">
+                                            <i class="voyager-eye"></i>
                                         </a>
                                     </td>
                                 </tr>

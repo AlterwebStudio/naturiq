@@ -11,10 +11,7 @@ class VoyagerAuthController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected function guard()
-    {
-        return Auth::guard('admin');
-    }
+	protected $guard = 'admin';
 
     public function login()
     {
@@ -39,6 +36,8 @@ class VoyagerAuthController extends Controller
         }
 
         $credentials = $this->credentials($request);
+
+//		config(['auth.defaults.guard' => 'admin']);
 
         if ($this->guard()->attempt($credentials, $request->has('remember'))) {
             return $this->sendLoginResponse($request);

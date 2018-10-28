@@ -4,9 +4,7 @@ namespace App;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 
 class Client extends Model
 {
@@ -28,6 +26,7 @@ class Client extends Model
 		'country',
 		'phone',
 		'email',
+		'discount',
 		'password',
         'password_reset',
 		'type',
@@ -94,7 +93,23 @@ class Client extends Model
             } else return session('client_id'); // Temporary Client id
 
         }
+        return null;
     }
+
+	/**
+	 * Check if Customer is Seller or Standard User
+	 * Returns true if Seller is logged in
+	 * @return bool
+	 */
+	public static function is_seller()
+	{
+		if(Auth::check())
+		{
+			$client = (new Client)->get();
+			if($client->type=='Veľkoodberateľ') return true;
+		}
+		return false;
+	}
 
 
     /**
@@ -119,7 +134,7 @@ class Client extends Model
     public function getTypeAttribute($type) {
         switch($type) {
             case 0: return 'Návštevník'; break;
-            case 1: return 'Užívateľ'; break;
+            case 1: return 'Zákazník'; break;
             case 2: return 'Veľkoodberateľ'; break;
         }
     }

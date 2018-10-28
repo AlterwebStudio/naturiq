@@ -26,7 +26,9 @@
 
                             <h1 class="title text-center mt-5 mb-5">Platba online</h1>
 
-                            <p class="alert bg-light lh-15">Paypal</p>
+                            <div class="col-12 mb-5">
+                                @include ('inc.partials.messages')
+                            </div>
 
                         </div>
 

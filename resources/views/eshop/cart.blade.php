@@ -70,7 +70,7 @@
                         @forelse (Cart::content() as $item)
                             @include ('inc.partials.shopping_cart_row', ['item' => $item])
                         @empty
-                            <p class="alert alert-light">Vás košík je zatiaľ prázdny. Začnite v kategórií <a href="{{ route('eshop') }}">E-shop</a>.</p>
+                            <p class="alert alert-light">Vás košík je zatiaľ prázdny<br/><a href="{{ route('eshop') }}" class="btn btn-sm btn-outline-orange mt-2">Nakupujte v našom E-shope</a></p>
                         @endforelse
 
                         @if (session()->has('coupon'))

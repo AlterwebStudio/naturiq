@@ -14,11 +14,11 @@
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
 
-    width: 25rem;
-    min-height:15rem;
+    width: 100%;
+    min-height:17rem;
     float: left;
     margin-right:2rem;
-    margin-bottom:2rem;
+    /*margin-bottom:2rem;*/
 }
 
 .card > hr {

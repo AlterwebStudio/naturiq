@@ -29,10 +29,13 @@
 
       <div class="col-sm-12 px-0">
         <ul>
-          <li class="menu_item"><a href="">mobile navigation 1<i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-          <li class="menu_item"><a href="">mobile navigation 2 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-          <li class="menu_item"><a href="">mobile navigation 3 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-          <li class="menu_item"><a href="#">mobile navigation 4 <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+          <li class="menu_item"><a href="{{ route('home') }}">Úvod <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li class="menu_item"><a href="{{ route('about') }}">Náš príbeh <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li class="menu_item"><a href="{{ route('stores') }}">Predajne <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li class="menu_item"><a href="{{ route('recipes') }}">Recepty <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li class="menu_item"><a href="{{ route('contact') }}">Kontakt <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li class="menu_item"><a href="{{ route('eshop') }}">E-shop <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{{--          <li class="menu_item"><a href="#">mobile navigation 4 <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
             <ul>
               <li class="menu_item"><a href="#">subnav 1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                 <ul>
@@ -67,7 +70,7 @@
           <li class="menu_item"><a href="">mobile navigation 7 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
           <li class="menu_item"><a href="">mobile navigation 8 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
           <li class="menu_item"><a href="">mobile navigation 9 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-          <li class="menu_item"><a href="">mobile navigation 10 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li class="menu_item"><a href="">mobile navigation 10 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>--}}
         </ul>
       </div>
       </div>

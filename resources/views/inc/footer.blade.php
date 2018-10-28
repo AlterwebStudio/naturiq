@@ -34,9 +34,9 @@
                     </div>
                 </form>
                 <div class="social">
-                    <a href="{{ setting('site.facebook') }}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="{{ setting('site.pinterest') }}"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
-                    <a href="{{ setting('site.instagram') }}"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    @if (is_set(setting('site.facebook')))<a href="{{ setting('site.facebook') }}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>@endif
+                    @if (is_set(setting('site.pinterest')))<a href="{{ setting('site.pinterest') }}"><i class="fab fa-pinterest" aria-hidden="true"></i></a>@endif
+                    @if (is_set(setting('site.instagram')))<a href="{{ setting('site.instagram') }}"><i class="fab fa-instagram" aria-hidden="true"></i></a>@endif
                 </div>
             </div>
             <div class="col-sm-3 mb-4">

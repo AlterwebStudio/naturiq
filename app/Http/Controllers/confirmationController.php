@@ -10,10 +10,12 @@ use App\Order;
 use App\Mail\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
+/* GoPay */
 //use GoPay;
 //use GoPay\Definition\Language;
 //use GoPay\Definition\Payment\Currency;
@@ -27,11 +29,19 @@ class confirmationController extends Controller
 	private $order = null;
 
 	/**
-	 * confirmationController constructor.
+	 * Order Data Setter
 	 */
 	public function set()
 	{
 		$this->order = (new Order)->get();
+	}
+
+	/**
+	 * Order Data Getter
+	 */
+	public function get()
+	{
+		return $this->order;
 	}
 
 	/**
@@ -68,8 +78,12 @@ class confirmationController extends Controller
             $this->enclose();
 
             // Notify client and customer
-			$this->notify(setting('admin.email')); // Client
+//			$this->notify(setting('admin.email')); // Admin
 			$this->notify($this->order->client->email); // Customer
+
+			// Redirect to Online PayPal Payment if was selected
+			if($this->order->payment->identifier=='PAYPAL')
+				return redirect()->route('eshop.payment.paypal');
 
 			// Clear Sessions
 			$this->clear();
@@ -91,7 +105,8 @@ class confirmationController extends Controller
 	 */
 	private function enclose() {
 
-		$this->enhance_buys(); // Zvysit pocet nakupov jednotlivych produktov
+		$this->enhance_buys(); // Higher up number of buys products in the Cart
+		$this->process_coupon(); // Change status of once usable Coupon if was some
 
 		$this->order->number = date('Ymd-') . $this->order->id;
 		$this->order->status_id = 1;
@@ -103,11 +118,77 @@ class confirmationController extends Controller
 		$this->order->save();
 	}
 
+    /**
+     * Enhance count of Product buys
+     */
+    private function enhance_buys()
+    {
+    	if(Cart::instance('default')->count()>0) {
+			foreach (Cart::instance('default')->content() as $item) {
+				$product = Product::find($item->id);
+				if($product) {
+					$product->buys += 1;
+					$product->save();
+				}
+			}
+		}
+    }
+
 	/**
-	 * @desc Execute payment by GoPay service
+	 * Set one-time Coupon as unavailable
+	 */
+	private function process_coupon()
+	{
+		if(Coupon::exists())
+		{
+			$coupon = Coupon::get();
+			if($coupon->usage=='ONCE')
+			{
+				$coupon->available = 'no';
+				$coupon->used_at = now();
+				$coupon->save();
+			}
+		}
+	}
+
+
+	/**
+	 * Notify client and customer about order placement
+	 * @param $email_address
+	 */
+	private function notify($email_address) {
+		Mail::to($email_address)->send( new OrderNotification() );
+	}
+
+	/**
+	 * @desc Clear session data about client and order
+	 */
+	public function clear()
+	{
+		Cart::destroy();
+		Coupon::remove();
+        Order::forget();
+	}
+
+	/**
+	 * Set Payment Status to Successfuly Realized
+	 * @return bool
+	 */
+	public function set_payment_success()
+	{
+		if(Input::get('paymentId') and Input::get('token') and Input::get('PayerID')) {
+			Order::where('id',$this->order->id)
+				->update(['payment-status_id'=>1]);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @desc GoPay Payment
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
-/*	private function payment_gopay() {
+	/*	private function payment_gopay() {
 		$gopay = GoPay\payments([
 			'goid' => config('gopay.goid'),
 			'clientId' => config('gopay.clientId'),
@@ -161,40 +242,5 @@ class confirmationController extends Controller
 			dd("Chyba pri spracovaní platby {$response->statusCode}: {$response}");
 		}
 	}*/
-
-    /**
-     * Enhance count of Product buys
-     */
-    private function enhance_buys()
-    {
-    	if(Cart::instance('default')->count()>0) {
-			foreach (Cart::instance('default')->content() as $item) {
-				$product = Product::find($item->id);
-				if($product) {
-					$product->buys += 1;
-					$product->save();
-				}
-			}
-		}
-    }
-
-
-	/**
-	 * Notify client and customer about order placement
-	 * @param $email_address
-	 */
-	private function notify($email_address) {
-		Mail::to($email_address)->send( new OrderNotification() );
-	}
-
-	/**
-	 * @desc Clear session data about client and order
-	 */
-	public function clear()
-	{
-		Cart::destroy();
-		Coupon::remove();
-        Order::forget();
-	}
 
 }

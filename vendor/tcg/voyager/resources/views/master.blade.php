@@ -15,7 +15,6 @@
 
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ voyager_asset('css/custom.css') }}">
 
     @yield('css')
     @if(config('voyager.multilingual.rtl'))
@@ -59,7 +58,7 @@
 </div>
 
 <?php
-if (starts_with(Auth::user()->avatar, 'http://') or starts_with(Auth::user()->avatar, 'https://')) {
+if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->avatar, 'https://')) {
     $user_avatar = Auth::user()->avatar;
 } else {
     $user_avatar = Voyager::image(Auth::user()->avatar);

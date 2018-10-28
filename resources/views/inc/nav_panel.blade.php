@@ -8,23 +8,29 @@
 
 
 		<ul class="navbar-nav mr-auto d-none d-lg-flex social">
+			@if (is_set(setting('site.facebook')))
 			<li>
-				<a href="#" class="nav-link mx-1">
+				<a href="{{ setting('site.facebook') }}" class="nav-link mx-1">
 					<i class="fab fa-facebook-f"></i>
 				</a>
 			</li>
+			@endif
 
+			@if (is_set(setting('site.pinterest')))
 			<li>
-				<a class="nav-link mx-1" href="#">
+				<a class="nav-link mx-1" href="{{ setting('site.pinterest') }}">
 					<i class="fab fa-pinterest"></i>
 				</a>
 			</li>
+			@endif
 
+			@if (is_set(setting('site.instagram')))
 			<li>
-				<a class="nav-link" href="#"  target="_blank">
+				<a class="nav-link" href="{{ setting('site.instagram') }}"  target="_blank">
   				<i class="fab fa-instagram"></i>
   			</a>
 			</li>
+			@endif
 		</ul>
 
 

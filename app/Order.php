@@ -178,11 +178,34 @@ class Order extends Model
 
 
 	/**
+	 * @param $id
+	 * @return mixed
+	 */
+	public function getPaymentStatusAttribute($id)
+	{
+		return $id;
+	}
+
+
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
 	 */
 	public function items()
 	{
 		return $this->hasOne('App\OrderItems','identifier');
+	}
+
+
+	/**
+	 * @desc Returns Order price without VAT
+	 * including prices for Shipping and Payment method
+	 *
+	 * @return mixed
+	 */
+	public static function subtotal()
+	{
+		$subtotal = Cart::instance('default')->subtotal(2,'.','');
+		return self::discount($subtotal);
 	}
 
 
@@ -239,19 +262,6 @@ class Order extends Model
 			}
 		}
 		return 0;
-	}
-
-
-	/**
-	 * @desc Returns Order price without VAT
-     * including prices for Shipping and Payment method
-	 *
-	 * @return mixed
-	 */
-	public static function subtotal()
-	{
-        $subtotal = Cart::instance('default')->subtotal(2,'.','');
-        return self::discount($subtotal);
 	}
 
 }

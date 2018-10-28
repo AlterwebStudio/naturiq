@@ -14,7 +14,7 @@
         "gloudemans/shoppingcart": "^2.5",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
-        "srmklive/paypal": "~1.0",
+        "anouar/paypalpayment": ">=3.0",
         "tcg/voyager": "^1.1"
     },
     "require-dev": {

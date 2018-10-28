@@ -56,7 +56,7 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="4">Zatiaľ žiadne objednávky...</td>
+                                <td colspan="5" class="text-center">Z vášho konta sme zatiaľ nezaznamenali objednávku...<br/><a href="{{ route('eshop') }}" class="btn btn-sm btn-outline-orange mt-2">Začnite nakupovať v E-shope</a></td>
                             </tr>
                         @endforelse
                         </tbody>

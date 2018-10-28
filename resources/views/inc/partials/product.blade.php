@@ -31,27 +31,26 @@
     </div>
 
     <!-- OBJEDNAVKOVY FORMULAR -->
+    @if ($product->variants()->count() > 0)
     <form action="{{ route('cart') }}" method="post">
         @csrf
         <div class="d-none">
             @if ($product->active == 'NA')
-                <input type="radio" name="variant_id" data-display-value="MOMENTÁLNE" value="0" checked="checked">
-                <input type="radio" name="variant_id" data-display-value="NEDOSTUPNÉ" value="0" checked="checked">
+                <input type="radio" name="variant_id" data-display-value="NEDOSTUPNÉ" value="0" checked="checked" />
+                <input type="radio" name="variant_id" data-display-value="MOMENTÁLNE" value="0" checked="checked" />
             @else
-                <input type="radio" name="variant_id" data-display-value="{{ $product->weight }}"
-                       data-regular-price="{{ format_money($product->price_default) }}"
-                       @if (regular_price($product->price_action)) data-sale-price="{{ format_money($product->price_action) }}"
-                       @endif value="{{ $product->id }}" checked="checked">
-                @foreach($product->childs as $variant)
+                @foreach($product->variants() as $variant)
                     <input type="radio" name="variant_id" data-display-value="{{ $variant->weight }}"
+                           @if ($variant->price < $variant->price_default)
                            data-regular-price="{{ format_money($variant->price_default) }}"
-                           @if (regular_price($variant->price_action)) data-sale-price="{{ format_money($variant->price_action) }}"
-                           @endif value="{{ $variant->id }}" @if ($loop->first) checked="checked" @endif>
+                           data-sale-price="{{ format_money($variant->price) }}"
+                           @else data-regular-price="{{ format_money($variant->price) }}" @endif
+                           value="{{ $variant->id }}" @if ($loop->first) checked="checked" @endif />
                 @endforeach
             @endif
         </div>
 
-        @if ($product->childs->count() > 0)
+        @if ($product->variants()->count() > 1)
         <div class="product__variant-selector btn btn-sm">
             <button type="button" name="button" class="prev-var">
                 <img class="svg" src="{{ asset('images/arrow_slideshow_left.svg') }}" alt="">
@@ -76,6 +75,7 @@
             do košíka
         </button>
     </form>
+    @endif
 
 
 </div>

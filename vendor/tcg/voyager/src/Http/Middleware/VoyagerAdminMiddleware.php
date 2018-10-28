@@ -18,6 +18,7 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
+
         if (!Auth::guest()) {
             $user = auth()->user();
             if (isset($user->locale)) {

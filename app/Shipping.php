@@ -13,7 +13,7 @@ class Shipping extends Model
 	 */
 	public function payments()
 	{
-		return $this->belongsToMany('App\Payment');
+		return $this->belongsToMany('App\Payment')->where('active','1');
 	}
 
 }

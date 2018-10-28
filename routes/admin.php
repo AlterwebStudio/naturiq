@@ -11,10 +11,10 @@
 |
 */
 
-// Admin
-Voyager::routes();
-
 Route::group(['middleware' => 'admin'], function () {
+
+	// Voyager
+	Voyager::routes();
 
     // Clients
     Route::get('clients', ['uses' => 'ClientsController@index', 'as' => 'voyager.clients.index']);

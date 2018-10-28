@@ -23,10 +23,10 @@ class userController extends Controller
 		$credentials = $request->only('email', 'password');
 		$credentials['approved'] = '1';
 
-		if (Auth::attempt($credentials))
+		if (Auth::guard()->attempt($credentials))
 		{
-		    // If temporary Client created Order before log,
-            // assign this Order to the logged User
+		    // If temporary Client created Order before the login,
+            // assign Order to the Client to continue with it
 		    if(Order::exists()) {
 		        $order = (new Order)->get();
 		        $order->client_id = Auth::user()->id;

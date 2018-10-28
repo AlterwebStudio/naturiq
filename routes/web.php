@@ -28,14 +28,6 @@ Route::get('predajne', 'storesController@index')
 Route::get('kontakt', 'pageController@contact')
     ->name('contact');
 
-// Contact Form Request
-Route::post('kontakt', 'pageController@form')
-    ->name('contact');
-
-// Newsletter
-Route::post('newsletter/subscribe', 'newsletterController@subscribe')->name('newsletter_subscribe');
-Route::get('newsletter/unsubscribe={email}', 'newsletterController@unsubscribe')->name('newsletter_unsubscribe');
-
 // Recipes
 Route::get('recepty/{tag?}', 'receptController@index')
     ->name('recipes');
@@ -51,6 +43,14 @@ Route::get('recept/{slug}/{id}', 'receptController@show')
     ->where('slug', '[a-zA-Z0-9-]+')
     ->where('id', '[0-9]+')
     ->name('recipe');
+
+// Contact Form Request
+Route::post('kontakt', 'pageController@form')
+	->name('contact');
+
+// Newsletter
+Route::post('newsletter/subscribe', 'newsletterController@subscribe')->name('newsletter_subscribe');
+Route::get('newsletter/unsubscribe={email}', 'newsletterController@unsubscribe')->name('newsletter_unsubscribe');
 
 
 /** E-SHOP ROUTING **/
@@ -168,18 +168,24 @@ Route::group(['prefix'=>'eshop'], function () {
 
 
 
-	/** 4. GREETINGS PAGE **/
+	/** 4. PAYPAL PAYMENT **/
+
+	Route::get('platba/paypal', 'paymentController@paywithPaypal')
+		->middleware(['verify.client','verify.order'])
+		->name('eshop.payment.paypal');
+
+	Route::get('platba/uspesna', 'paymentController@paymentSuccessful')
+		->middleware(['verify.client','verify.order']);
+
+	Route::get('platba/zlyhala', 'paymentController@paymentFailure');
+
+
+
+	/** 5. GREETINGS PAGE **/
 
 	Route::get('dakujeme-za-objednavku', function() {
 		return view('eshop.greetings');
 	})->name('eshop.greetings');
-
-
-
-	/** 5. PAYPAL PAYMENT **/
-
-	Route::get('platba-paypal', 'paymentController@payWithpaypal')
-		->name('paywithpaypal');
 
 
 

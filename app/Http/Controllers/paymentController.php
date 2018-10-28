@@ -2,160 +2,289 @@
 
 namespace App\Http\Controllers;
 
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Srmklive\PayPal\Services\AdaptivePayments;
+use Anouar\Paypalpayment\PaypalPayment;
+use App\Order;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Request;
+use PayPal\Exception\PayPalConnectionException;
 
 class paymentController extends Controller
 {
 
-	// private $_api_context;
+	private $config;
 
-	public function payWithpaypal()
+	public function __construct()
 	{
-		try {
+		$this->config = [
+			'mode' => config('paypal_payment.mode'),
 
-			$data = [];
-			$data['items'] = [
-				[
-					'name' => 'Product 1',
-					'price' => 9.99,
-					'qty' => 1
-				],
-				[
-					'name' => 'Product 2',
-					'price' => 4.99,
-					'qty' => 2
-				]
-			];
+			'account' => [
+				'client_id' => config('paypal_payment.account.client_id'),
+				'client_secret' => config('paypal_payment.account.client_secret'),
+			],
 
-			$data['invoice_id'] = 1;
-			$data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
-			$data['return_url'] = url('/payment/success');
-			$data['cancel_url'] = url('/cart');
+			'http' => [
+				'connection_time_out' => config('paypal_payment.http.connection_time_out'),
+			],
 
-			$total = 0;
-			foreach($data['items'] as $item) {
-				$total += $item['price']*$item['qty'];
-			}
-
-			$data['total'] = $total;
-
-			//give a discount of 10% of the order amount
-			$data['shipping_discount'] = round((10 / 100) * $total, 2);
-
-			$provider = new ExpressCheckout;
-			$provider->setCurrency('EUR');
-
-			$response = $provider->setExpressCheckout($data);
-
-			dd($response);
-
-			// This will redirect user to PayPal
-			return view('eshop.payment');
-
-		} catch (\Exception $e) {
-
-			return redirect()->route('paywithpaypal')
-				->with('error', 'Problém pri spracovaní platby');
-
-		}
-
+			'log' => [
+				'log_enabled' => config('paypal_payment.log.log_enabled'),
+				'file_name' => config('paypal_payment.log.file_name'),
+				'log_level' => config('paypal_payment.log.log_level'),
+			],
+		];
 	}
 
 	/*
-	public function __construct()
+	* Process payment using credit card
+	*/
+	/**
+	 * Payment by PayPal Credit card
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function paywithCreditCard()
 	{
+		$PaypalPayment = new PaypalPayment($this->config);
 
-		$paypal_conf = config()->get('paypal');
-		$this->_api_context = new ApiContext(
-			new OAuthTokenCredential(
-				$paypal_conf['client_id'],
-				$paypal_conf['secret']
-			));
-		$this->_api_context->setConfig($paypal_conf['settings']);
+		// ### Address
+		// Base Address object used as shipping or billing
+		// address in a payment. [Optional]
+		$shippingAddress = $PaypalPayment->shippingAddress();
+		$shippingAddress->setLine1("3909 Witmer Road")
+			->setLine2("Niagara Falls")
+			->setCity("Niagara Falls")
+			->setState("NY")
+			->setPostalCode("14305")
+			->setCountryCode("US")
+			->setPhone("716-298-1822")
+			->setRecipientName("Jhone");
 
+		// ### CreditCard
+		$card = $PaypalPayment->creditCard();
+		$card->setType("visa")
+			->setNumber("4758411877817150")
+			->setExpireMonth("05")
+			->setExpireYear("2019")
+			->setCvv2("456")
+			->setFirstName("Joe")
+			->setLastName("Shopper");
+
+		// ### FundingInstrument
+		// A resource representing a Payer's funding instrument.
+		// Use a Payer ID (A unique identifier of the payer generated
+		// and provided by the facilitator. This is required when
+		// creating or using a tokenized funding instrument)
+		// and the `CreditCardDetails`
+		$fi = $PaypalPayment->fundingInstrument();
+		$fi->setCreditCard($card);
+
+		// ### Payer
+		// A resource representing a Payer that funds a payment
+		// Use the List of `FundingInstrument` and the Payment Method
+		// as 'credit_card'
+		$payer = $PaypalPayment->payer();
+		$payer->setPaymentMethod("credit_card")
+			->setFundingInstruments([$fi]);
+
+		$item1 = $PaypalPayment->item();
+		$item1->setName('Ground Coffee 40 oz')
+			->setDescription('Ground Coffee 40 oz')
+			->setCurrency('EUR')
+			->setQuantity(1)
+			->setTax(0.3)
+			->setPrice(7.50);
+
+		$item2 = $PaypalPayment->item();
+		$item2->setName('Granola bars')
+			->setDescription('Granola Bars with Peanuts')
+			->setCurrency('EUR')
+			->setQuantity(5)
+			->setTax(0.2)
+			->setPrice(2);
+
+
+		$itemList = $PaypalPayment->itemList();
+		$itemList->setItems([$item1,$item2])
+			->setShippingAddress($shippingAddress);
+
+
+		$details = $PaypalPayment->details();
+		$details->setShipping("1.2")
+			->setTax("1.3")
+			//total of items prices
+			->setSubtotal("17.5");
+
+		//Payment Amount
+		$amount = $PaypalPayment->amount();
+		$amount->setCurrency("EUR")
+			// the total is $17.8 = (16 + 0.6) * 1 ( of quantity) + 1.2 ( of Shipping).
+			->setTotal("20")
+			->setDetails($details);
+
+		// ### Transaction
+		// A transaction defines the contract of a
+		// payment - what is the payment for and who
+		// is fulfilling it. Transaction is created with
+		// a `Payee` and `Amount` types
+
+		$transaction = $PaypalPayment->transaction();
+		$transaction->setAmount($amount)
+			->setItemList($itemList)
+			->setDescription("Payment description")
+			->setInvoiceNumber(uniqid());
+
+		// ### Payment
+		// A Payment Resource; create one using
+		// the above types and intent as 'sale'
+
+		$payment = $PaypalPayment->payment();
+
+		$payment->setIntent("sale")
+			->setPayer($payer)
+			->setTransactions([$transaction]);
+
+		try {
+			// ### Create Payment
+			// Create a payment by posting to the APIService
+			// using a valid ApiContext
+			// The return object contains the status;
+			$payment->create($PaypalPayment->apiContext());
+		} catch (PayPalConnectionException $ex) {
+			return response()->json(["error" => $ex->getMessage()], 400);
+		}
+
+		return response()->json([$payment->toArray()], 200);
 	}
 
-	public function payWithpaypal(Request $request)
+
+	/**
+	 * Payment by PayPal Express Checkout
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function paywithPaypal()
 	{
 
-		$payer = new Payer();
-		$payer->setPaymentMethod('paypal');
+		$PaypalPayment = new PaypalPayment($this->config);
+		$Order = (new Order)->get();
+		
+		// ### Address
+		// Base Address object used as shipping or billing
+		// address in a payment. [Optional]
+		$shippingAddress= $PaypalPayment->shippingAddress();
+		$shippingAddress->setLine1($Order->client->street)
+			->setCity($Order->client->city)
+			->setState($Order->client->country)
+			->setCountryCode('SK')
+			->setPostalCode($Order->client->zip)
+			->setPhone($Order->client->phone)
+			->setRecipientName($Order->client->name);
 
-		$item_1 = new Item();
+		// ### Payer
+		// A resource representing a Payer that funds a payment
+		// Use the List of `FundingInstrument` and the Payment Method
+		// as 'credit_card'
+		$payer = $PaypalPayment->payer();
+		$payer->setPaymentMethod("paypal");
 
-		$item_1->setName('Item 1')
-		->setCurrency('EUR')
-			->setQuantity(1)
-			->setPrice(10);
+		$items = [];
+		if(Cart::instance('default')->count() > 0) {
 
-		$item_list = new ItemList();
-		$item_list->setItems(array($item_1));
+			foreach(Cart::instance('default')->content() as $key => $item)
+			{
 
-		$amount = new Amount();
-		$amount->setCurrency('USD')
-			->setTotal($request->get('amount'));
+				$PPitem = $PaypalPayment->item();
+				$PPitem->setName($item->name)
+					->setDescription($item->weight)
+					->setCurrency('EUR')
+					->setQuantity($item->qty)
+					->setPrice($item->price);
 
-		$transaction = new Transaction();
+				$items[] = $PPitem;
+			}
+
+		}
+
+
+		$itemList = $PaypalPayment->itemList();
+		$itemList->setItems($items)
+			->setShippingAddress($shippingAddress);
+
+
+		$details = $PaypalPayment->details();
+		$details->setShipping($Order->shipping->price)
+			->setTax(0)
+			->setSubtotal(Order::subtotal());
+
+		//Payment Amount
+		$amount = $PaypalPayment->amount();
+		$amount->setCurrency("EUR")
+			->setTotal($Order->total_price)
+			->setDetails($details);
+
+		// ### Transaction
+		// A transaction defines the contract of a
+		// payment - what is the payment for and who
+		// is fulfilling it. Transaction is created with
+		// a `Payee` and `Amount` types
+
+		$transaction = $PaypalPayment->transaction();
 		$transaction->setAmount($amount)
-			->setItemList($item_list)
-			->setDescription('Your transaction description');
+			->setItemList($itemList)
+			->setDescription("Platba za objednávku (".$Order->number.") na ". config('name'))
+			->setInvoiceNumber(uniqid());
 
-		$redirect_urls = new RedirectUrls();
-		$redirect_urls->setReturnUrl(URL::route('status')) // Specify return URL
-		->setCancelUrl(URL::route('status'));
+		// ### Payment
+		// A Payment Resource; create one using
+		// the above types and intent as 'sale'
 
-		$payment = new Payment();
-		$payment->setIntent('Sale')
+		$redirectUrls = $PaypalPayment->redirectUrls();
+		$redirectUrls->setReturnUrl(url("/eshop/platba/uspesna"))
+			->setCancelUrl(url("/eshop/platba/zlyhala"));
+
+		$payment = $PaypalPayment->payment();
+
+		$payment->setIntent("sale")
 			->setPayer($payer)
-			->setRedirectUrls($redirect_urls)
-			->setTransactions(array($transaction));
-		//dd($payment->create($this->_api_context));exit;
+			->setRedirectUrls($redirectUrls)
+			->setTransactions([$transaction]);
+
 		try {
-
-			$payment->create($this->_api_context);
-
+			// ### Create Payment
+			// Create a payment by posting to the APIService
+			// using a valid ApiContext
+			// The return object contains the status;
+			$payment->create($PaypalPayment->apiContext());
 		} catch (PayPalConnectionException $ex) {
-
-			if (config()->get('app.debug')) {
-
-				session()->put('error', 'Connection timeout');
-				return redirect()->route('paywithpaypal');
-
-			} else {
-
-				session()->put('error', 'Some error occur, sorry for inconvenient');
-				return redirect()->route('paywithpaypal');
-
-			}
-
+			return response()->json(["error" => $ex->getMessage()], 400);
 		}
 
-		foreach ($payment->getLinks() as $link) {
+		return redirect()->away($payment->getApprovalLink());
+		// return response()->json([$payment->toArray(), 'approval_url' => $payment->getApprovalLink()], 200);
+	}
 
-			if ($link->getRel() == 'approval_url') {
 
-				$redirect_url = $link->getHref();
-				break;
+	public function paymentSuccessful()
+	{
+		// Retrieve Order Data to use them
+		$order = new confirmationController;
+		$order->set();
+		$order->set_payment_success();
+		$order->clear();
 
-			}
+		// Display greetings message to Customer
+		return view('eshop.greetings')
+			->with('order',$order->get())
+			->with('message', 'Platba bola úspešne zaznamenaná, ďakujeme.');
+	}
 
-		}
 
-		// add payment ID to session
-		session()->put('paypal_payment_id', $payment->getId());
+	public function paymentFailure()
+	{
 
-		if (isset($redirect_url)) {
+		// Display Error message to Customer
+		return view('eshop.payment')->with('error','Platba nebola zrealizovaná. Vašu objednávku sme však obdržali spolu s informáciou o zlyhaní vašej online platby.
+                                Budeme vás kontaktovať ohľadom výberu iného spôsobu platby. Platbu prípadne môžete skúsiť zopakovať opätovným <a href="'. route('eshop.confirmation') .'">odoslaním objednávky</a>.');
 
-			// redirect to paypal
-			return redirect()->away($redirect_url);
-
-		}
-
-		session()->put('error', 'Unknown error occurred');
-//		return redirect()->route('paywithpaypal');
-		return view('eshop.payment');
-
-	}*/
+	}
 
 }

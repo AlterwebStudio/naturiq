@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CouponController extends Controller
 {
@@ -24,7 +23,7 @@ class CouponController extends Controller
 			$coupon = Coupon::get($code);
 
 			// Coupon does not exists
-			if(!$coupon) $errors->add('coupon', 'Zľavový kupón so zadaným kódom neexistuje');
+			if(!$coupon) $errors->add('coupon', 'Zľavový kupón so zadaným kódom neexistuje, alebo vypršala jeho platnosť');
 
 			// Coupon was already activated
 			if($this->can_be_activated() === false) $errors->add('coupon', 'Jednorazový zľavový kupón už bol na túto objednávku aplikovaný');

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
@@ -12,14 +13,42 @@ class Product extends Model
 
 
     /**
-     * @desc Vrati cenu produktu platnu pre konkretneho navstevnika / uzivatela
+     * @desc Returns individual price falling to a User
      * @return mixed
      */
 	public function getPriceAttribute()
 	{
-		$price = ($this->price_action > 0 and $this->price_action < $this->price_default) ? $this->price_action : $this->price_default;
+		// Default Product Price
+		$price = $this->price_default;
+
+		// Action Price
+		if($this->price_action > 0 and $this->price_action < $this->price_default) {
+			$price = $this->price_action;
+		}
+
+		// Client Discount
+		if(Auth::check())
+		{
+
+			// If Seller is logged, set seller price as default
+			if(Client::is_seller()) $price = $this->price_seller;
+
+			// Logged Client Instance
+			$client = (new Client)->get();
+
+			// Check if Client has Account Discount
+			if($client->discount > 0)
+			{
+				// Apply client Discount to default Product Price
+				$price_discount = $this->price_default * ((100 - $client->discount)/100);
+				if($price_discount < $price) $price = $price_discount; // If discount price is lower than default or action price, returns it
+			}
+
+		}
+
 		$price = floatval($price);
-		if($price > 0) return $price;
+
+		if($price > 0) return round($price,2, PHP_ROUND_HALF_UP);
 		else return 0;
 	}
 
@@ -129,16 +158,26 @@ class Product extends Model
 
 	/**
 	 * @desc Returns all product variants (parent product with all child)
-	 * @return \Illuminate\Support\Collection
 	 */
 	public function variants()
 	{
-		return DB::table('products')
-			->where('id', '=', $this->parent->id)
-			->orWhere('product_id', '=', $this->parent->id)
-            ->where('active','yes')
-			->orderBy('order')
-			->get();
+
+		if(Client::is_seller()) {
+
+			return $this->whereRaw("(`id` = '{$this->parent->id}' OR `product_id` = '{$this->parent->id}')")
+				->where('price_seller','>',0)
+				->where('active','yes')
+				->orderBy('order')
+				->get();
+
+		} else {
+
+			return $this->whereRaw("(`id` = '{$this->parent->id}' OR `product_id` = '{$this->parent->id}')")
+				->where('active','yes')
+				->orderBy('order')
+				->get();
+		}
+
 	}
 
 

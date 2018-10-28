@@ -15,9 +15,34 @@ class Coupon extends Model
 	 */
 	public static function get($code=null)
 	{
-		if(self::exists()) $code = session('coupon');
-		if(empty($code)) return null;
-		return self::where('code', '=', $code)->first();
+		// If Coupon was successfuly activated before
+		// and is stored in sessions, get it
+		if(self::exists()) {
+			$code = session('coupon');
+			return self::where('code', $code)->first();
+		}
+
+		// Find available coupon by code
+		$coupon = self::where('code', $code)->where('available','yes')->first();
+
+		if($coupon) {
+
+			// Only once usable coupon
+			if ($coupon->usage == 'ONCE') {
+				// Check if the coupon wasn't used yet
+				if (!$coupon->used_at) return $coupon;
+			}
+
+			// Permanent coupon or limited by date
+			if ($coupon->usage == 'PERMANENT') {
+				$today = date('Y-m-d');
+				if ((!$coupon->available_from or $today >= $coupon->available_from) and
+					(!$coupon->available_to or $today <= $coupon->available_to))
+					return $coupon;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -27,7 +52,7 @@ class Coupon extends Model
 	public static function exists()
 	{
 		if(session()->has('coupon')) {
-		 return true;
+			return true;
 		}
 		return false;
 	}

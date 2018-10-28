@@ -19,8 +19,6 @@ class User extends Authenticatable implements UserContract
         'settings' => 'array',
     ];
 
-    protected $table = 'users';
-
     public function getAvatarAttribute($value)
     {
         if (is_null($value)) {
